@@ -1,0 +1,45 @@
+{
+	"name": "amgiflol",
+	"description": "Figma-like Web Inspector for designers",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"build": "wxt build --mv3",
+		"build:firefox": "wxt build -b firefox --mv3",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
+		"dev": "wxt --mv3",
+		"dev:firefox": "wxt -b firefox --mv2",
+		"fmt": "dprint fmt",
+		"lint": "oxlint",
+		"postinstall": "wxt prepare",
+		"wxt": "wxt",
+		"zip": "wxt zip",
+		"zip:firefox": "wxt zip -b firefox"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.29.5",
+		"@tailwindcss/typography": "^0.5.16",
+		"@tsconfig/svelte": "^5.0.4",
+		"@wxt-dev/module-svelte": "^2.0.3",
+		"dprint": "0.50.1",
+		"oxlint": "1.6.0",
+		"runed": "^0.29.2",
+		"svelte": "^5.28.2",
+		"svelte-check": "^4.1.6",
+		"tailwindcss-animate": "^1.0.7",
+		"tslib": "^2.8.1",
+		"typescript": "^5.8.3",
+		"wxt": "^0.20.6"
+	},
+	"engines": {
+		"node": ">=24"
+	},
+	"packageManager": "pnpm@10.12.3+sha512.467df2c586056165580ad6dfb54ceaad94c5a30f80893ebdec5a44c5aa73c205ae4a5bb9d5ed6bb84ea7c249ece786642bbb49d06a307df218d03da41c317417",
+	"dependencies": {
+		"@lucide/svelte": "^0.525.0",
+		"@tailwindcss/vite": "^4.1.11",
+		"bits-ui": "^2.8.10",
+		"tailwindcss": "^4.1.11"
+	}
+}

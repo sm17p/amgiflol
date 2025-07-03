@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+:root {
+	color-scheme: dark;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-text-size-adjust: 100%;
+}
+
+#app {
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	width: 320px;
+	margin: 0 auto;
+	/* padding: 2rem; */
+}

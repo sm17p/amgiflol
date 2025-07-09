@@ -26,7 +26,6 @@
 	}
 
 	function handleKeyDown(event: KeyboardEvent) {
-		console.log("🚀 ~ handleKeyDown ~ event:", event);
 		if (!uiStore.isActive) return;
 
 		metadataStore.updateModifiers({
@@ -132,15 +131,6 @@
 		}
 	}
 
-	function handleScroll(event: UIEvent) {
-		if (uiStore.isActive) {
-			sendMessage("VIEWPORT_SCROLL", {
-				x: window.scrollX,
-				y: window.scrollY,
-			}, "content");
-		}
-	}
-
 	function handleMouseOver(event: MouseEvent) {
 		sendMessage("ELEMENT_HOVER", event, "content");
 	}
@@ -216,5 +206,6 @@
 	bind:innerWidth={metadataStore.window.innerWidth}
 	bind:innerHeight={metadataStore.window.innerHeight}
 	onresize={handleWindowResize}
-	onscroll={handleScroll}
+	bind:scrollX={metadataStore.scroll.scrollX}
+	bind:scrollY={metadataStore.scroll.scrollY}
 />

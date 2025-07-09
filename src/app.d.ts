@@ -31,6 +31,7 @@ declare global {
 		interface TrackerState {
 			boundingRect?: DOMRect;
 			element?: HTMLElement;
+			parentElement?: HTMLElement;
 			elementInfo?: ElementInfo;
 			id: string;
 			isLocked: boolean;
@@ -54,6 +55,10 @@ declare global {
 
 		interface MetaDataStore {
 			mouse: MouseState;
+			scroll: {
+				scrollX: number;
+				scrollY: number;
+			},
 			window: {
 				innerHeight: number;
 				innerWidth: number;
@@ -116,8 +121,7 @@ declare global {
 			| "ZOOM_CHANGE"
 			| "MODE_CHANGE"
 			| "SCREENSHOT"
-			| "VIEWPORT_RESIZE"
-			| "VIEWPORT_SCROLL";
+			| "VIEWPORT_RESIZE";
 
 		interface Message<T = any> {
 			type: MessageType;

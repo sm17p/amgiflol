@@ -175,7 +175,6 @@
 			"ZOOM_CHANGE",
 			"MODE_CHANGE",
 			"VIEWPORT_RESIZE",
-			"VIEWPORT_SCROLL",
 		];
 
 		const messageUnsubscribers = messageTypes.map((type) =>

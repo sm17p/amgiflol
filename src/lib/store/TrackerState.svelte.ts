@@ -1,7 +1,8 @@
 import { elementInspector } from "@/lib/core/ElementInspector";
 import { createMessageHandler } from "@/lib/core/MessageBus";
 import { getContext } from "svelte";
-import type { MetaDataStore } from "./MetaDataStore.svelte";
+import { MetaDataStore } from "./MetaDataStore.svelte";
+import { watch } from 'runed';
 
 export class TrackerState implements App.TrackerState {
 	id: string;
@@ -10,6 +11,7 @@ export class TrackerState implements App.TrackerState {
 	boundingRect = $state<DOMRect>();
 	parentRect = $state<DOMRect>();
 	element = $state<HTMLElement>();
+	parentElement = $state<HTMLElement>();
 	elementInfo = $state<App.ElementInfo>();
 	elementStyles?: string;
 	parentStyles?: string;
@@ -25,6 +27,8 @@ export class TrackerState implements App.TrackerState {
 			this.getDistanceLines(this.boundingRect, this.parentRect),
 		);
 
+		const metadataStoreStore = getContext<MetaDataStore>('metadataStore');
+
 		$effect(() => {
 			const unsub = createMessageHandler(
 				"ELEMENT_HOVER",
@@ -36,6 +40,30 @@ export class TrackerState implements App.TrackerState {
 			);
 			return unsub;
 		});
+
+		watch.pre(
+			() => [metadataStoreStore.scroll.scrollX, metadataStoreStore.scroll.scrollY, this.isLocked],
+			([x, y, locked]) => {
+				if (locked) {
+					this.updateTrackerPosition();
+				}
+			},
+			{
+				lazy: true
+			}
+		)
+
+		watch.pre(
+			() => [metadataStoreStore.window.innerHeight, metadataStoreStore.window.innerWidth],
+			([height, width]) => {
+				if (height > 0 && width > 0) {
+					this.updateTrackerPosition();
+				}
+			},
+			{
+				lazy: true
+			}
+		)
 	}
 
 	public toggleLock() {
@@ -43,6 +71,20 @@ export class TrackerState implements App.TrackerState {
 	}
 
 	public updateTrackerPosition() {
+		if (
+			this.element instanceof HTMLElement
+		) {
+			this.elementInfo = elementInspector.getElementInfo(this.element);
+
+		}
+
+		if (
+			this.element instanceof HTMLElement &&
+			this.parentElement instanceof HTMLElement
+		) {
+			this.boundingRect = this.element.getBoundingClientRect();
+			this.parentRect = this.parentElement.getBoundingClientRect();
+		}
 	}
 
 	private handleMouseenter(event: MouseEvent) {
@@ -56,22 +98,11 @@ export class TrackerState implements App.TrackerState {
 		}
 
 		this.element = target;
-
-		let parentElem = this.findParent(target);
-
-		if (
-			target instanceof HTMLElement &&
-			parentElem instanceof HTMLElement
-		) {
-			this.boundingRect = target.getBoundingClientRect();
-			this.parentRect = parentElem.getBoundingClientRect();
-		}
-
-		this.element = target;
-		this.elementInfo = elementInspector.getElementInfo(target);
+		this.parentElement = this.findParent(target);
+		this.updateTrackerPosition();	
 	}
 
-	private findParent(node?: Element | null): Element | null | undefined {
+	private findParent(node?: HTMLElement | null): HTMLElement | undefined {
 		let curr = node;
 		let parent = node?.parentElement;
 		while (this.areSameSize(curr, parent)) {
@@ -79,7 +110,7 @@ export class TrackerState implements App.TrackerState {
 			parent = curr?.parentElement;
 		}
 
-		return parent;
+		return parent ? parent : undefined;
 	}
 
 	private areSameSize(node?: Element | null, parent?: Element | null) {

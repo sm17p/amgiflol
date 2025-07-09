@@ -9,6 +9,10 @@ export class MetaDataStore implements App.MetaDataStore {
 			alt: false,
 		},
 	});
+	scroll = $state({
+		scrollX: 0,
+		scrollY: 0,
+	});
 	window = $state({
 		innerHeight: 0,
 		innerWidth: 0,

@@ -106,22 +106,27 @@ export class TrackerState implements App.TrackerState {
 		let curr = node;
 		let parent = node?.parentElement;
 		while (this.areSameSize(curr, parent)) {
-			curr = parent;
-			parent = curr?.parentElement;
+			if (parent?.style.display === "contents") {
+				parent = curr?.parentElement?.parentElement;
+			} else {
+				curr = parent;
+				parent = curr?.parentElement;
+			}
 		}
 
 		return parent ? parent : undefined;
 	}
 
-	private areSameSize(node?: Element | null, parent?: Element | null) {
-		if (!node || !parent) {
+	private areSameSize(node?: HTMLElement | null, parent?: HTMLElement | null) {
+		if (node == null || parent == null) {
 			return false;
 		}
 
 		const sameWidth = node.clientWidth === parent.clientWidth;
 		const sameHeight = node.clientHeight === parent.clientHeight;
 
-		return sameWidth && sameHeight;
+		// display: contents element are 0 x 0
+		return sameWidth && sameHeight || parent.style.display === "contents";
 	}
 
 	private getId() {

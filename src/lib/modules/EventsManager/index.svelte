@@ -35,11 +35,6 @@
 		});
 
 		switch (event.key) {
-			case "Escape":
-				if (uiStore.isActive) {
-					uiStore.toggleActive("content");
-				}
-				break;
 			case "i":
 			case "I":
 				if (event.ctrlKey || event.metaKey) {
@@ -138,13 +133,9 @@
 	function setupMessageHandlers() {
 		const toggleHandler = createMessageHandler(
 			"EXTENSION_TOGGLE",
-			(payload: any) => {
-				console.log(
-					"🚀 ~ setupMessageHandlers ~ payload:",
-					payload,
-				);
-				if (payload.isActive !== uiStore.isActive) {
-					uiStore.toggleActive();
+			(payload: any, message) => {
+				if (payload.isActive !== uiStore.isActive && message.source !== "content") {
+					uiStore.toggleActive(message.source);
 				}
 			},
 		);

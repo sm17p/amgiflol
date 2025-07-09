@@ -1,4 +1,5 @@
 import { browser } from "wxt/browser";
+import { sendMessage } from "@/lib/core/MessageBus";
 
 export class UIStore implements App.UIStore {
 	isActive = $state(false);
@@ -70,10 +71,12 @@ export class UIStore implements App.UIStore {
 		this.svg.zoomLevel = Math.max(0.1, Math.min(5, zoom));
 	}
 
-	async toggleActive() {
+	async toggleActive(from: App.Message["source"]) {
 		this.isActive = !this.isActive;
-		await this.syncToStorage();
-		this.broadcastStateChange();
+		await this.syncToStorage(from);
+		if (from === "content") {
+			this.broadcastStateChange();
+		}
 	}
 
 	public snapshot(): App.UIStore {
@@ -87,11 +90,17 @@ export class UIStore implements App.UIStore {
 		return snapshot;
 	}
 
-	private async syncToStorage() {
+	private async syncToStorage(from: App.Message["source"]) {
 		try {
+			let active: Record<string, boolean> = {};
+			if (from === "content") {
+				const { host } = window.location;
+				active[host] = this.isActive;
+			}
 			const uiStore = this.snapshot();
 			await browser.storage?.local.set({
 				uiStore,
+				...active
 			});
 		} catch (error) {
 			console.error("Failed to sync inspector state to storage:", error);
@@ -99,20 +108,10 @@ export class UIStore implements App.UIStore {
 	}
 
 	private broadcastStateChange() {
-		const message = {
-			action: "inspectorStateChange",
-			state: $state.snapshot(this),
-		};
-
-		browser.runtime?.sendMessage?.(message);
-
-		browser.tabs?.query({ active: true, currentWindow: true }).then(
-			([tab]) => {
-				if (tab?.id) {
-					browser.tabs?.sendMessage(tab.id, message);
-				}
-			},
-		);
+		sendMessage("EXTENSION_TOGGLE", {
+				isActive: this.isActive,
+				timestamp: Date.now(),
+			}, "popup");
 	}
 
 	async loadFromStorage() {

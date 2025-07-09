@@ -42,7 +42,7 @@ class MessageBus {
 	public async send<T>(
 		type: App.MessageType,
 		payload: T,
-		target: "popup" | "content" | "background" | "all" = "all",
+		target: App.MessageRecipients = "all",
 	): Promise<void> {
 		const message: App.Message<T> = {
 			type,
@@ -167,7 +167,7 @@ class MessageBus {
 		}
 	}
 
-	private getSource(): "popup" | "content" | "background" {
+	private getSource(): App.Message["source"] {
 		if (typeof window === "undefined") {
 			return "background";
 		}
@@ -210,7 +210,7 @@ export const createMessageHandler = <T>(
 export const sendMessage = <T>(
 	type: App.MessageType,
 	payload: T,
-	target?: "popup" | "content" | "background" | "all",
+	target?: App.MessageRecipients,
 ): Promise<void> => {
 	return messageBus.send(type, payload, target);
 };

@@ -121,14 +121,17 @@ declare global {
 			| "ZOOM_CHANGE"
 			| "MODE_CHANGE"
 			| "SCREENSHOT"
-			| "VIEWPORT_RESIZE";
+			| "VIEWPORT_RESIZE"
+			| "*";
+
+		type MessageRecipients = "popup" | "content" | "background" | "all";
 
 		interface Message<T = any> {
 			type: MessageType;
 			payload: T;
 			timestamp: number;
-			source: "popup" | "content" | "background";
-			target?: "popup" | "content" | "background" | "all";
+			source: Omit<MessageRecipients, "all">;
+			target?: MessageRecipients;
 		}
 
 		interface MessageHandler<T = any> {

@@ -47,6 +47,19 @@
 	}
 
 	$effect.pre(() => {
+		const unsub = createMessageHandler(
+			"EXTENSION_TOGGLE",
+			(payload: any, message) => {
+				if (payload.isActive !== isActive && message.source !== "popup") {
+					isActive = payload.isActive;
+				}
+			},
+		);
+
+		return unsub;
+	})
+
+	$effect.pre(() => {
 		mount();
 	});
 

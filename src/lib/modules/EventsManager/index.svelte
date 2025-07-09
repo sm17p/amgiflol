@@ -101,6 +101,15 @@
 					}
 				}
 				break;
+			case "@":
+				if (event.shiftKey)
+				{
+					event.preventDefault();
+					if (trackersStore.current) {
+						trackersStore.current.isLocked = !trackersStore
+							.current.isLocked;
+					}
+				}
 		}
 	}
 

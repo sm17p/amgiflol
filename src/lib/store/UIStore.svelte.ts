@@ -120,7 +120,7 @@ export class UIStore implements App.UIStore {
 			const { host } = window.location;
 			const result: {
 				uiStore?: App.UIStore;
-			} & { [host]: boolean;} = await browser.storage?.local.get([
+			} & { [host]: boolean } = await browser.storage?.local.get([
 				"uiStore",
 				host,
 			]);

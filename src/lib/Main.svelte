@@ -53,6 +53,7 @@
 		position: fixed;
 		inset: 0;
 		z-index: 1000000000;
+		backdrop-filter: brightness(0.85);
 	}
 
 	:global(.amg-root svg) {

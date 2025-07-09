@@ -44,7 +44,6 @@
 
 	const mouse = metadataStore.mouse;
 	const svg = uiStore.svg;
-
 	let selectedTrackers = $derived(
 		Array.from(trackersStore.trackers.values()).filter((t) =>
 			t.isLocked
@@ -116,8 +115,8 @@
 				const tracker1 = selectedTrackers[i];
 				const tracker2 = selectedTrackers[j];
 
-				const rect1 = tracker1.boundingRect;
-				const rect2 = tracker2.boundingRect;
+				const rect1 = tracker1.boundingRect!;
+				const rect2 = tracker2.boundingRect!;
 
 				const center1 = {
 					x: rect1.x + rect1.width / 2,
@@ -147,51 +146,6 @@
 
 		return distances;
 	}
-
-	function getElementSpacing() {
-		const spacing: Array<{
-			id: string;
-			element: DOMRect;
-			parent: DOMRect;
-			top: number;
-			right: number;
-			bottom: number;
-			left: number;
-		}> = [];
-
-		selectedTrackers.forEach((tracker) => {
-			const rect = tracker.boundingRect;
-			const parent = tracker.parentRect;
-
-			if (parent) {
-				spacing.push({
-					id: `spacing-${tracker.id}`,
-					element: rect,
-					parent: parent,
-					top: rect.y - parent.y,
-					right: parent.x + parent.width -
-						(rect.x + rect.width),
-					bottom: parent.y + parent.height -
-						(rect.y + rect.height),
-					left: rect.x - parent.x,
-				});
-			}
-		});
-
-		return spacing;
-	}
-
-	onMount(() => {
-		document.addEventListener("mousedown", handleMouseDown);
-		document.addEventListener("mousemove", handleMouseMove);
-		document.addEventListener("mouseup", handleMouseUp);
-	});
-
-	onDestroy(() => {
-		document.removeEventListener("mousedown", handleMouseDown);
-		document.removeEventListener("mousemove", handleMouseMove);
-		document.removeEventListener("mouseup", handleMouseUp);
-	});
 </script>
 
 {#if uiStore.isActive}
@@ -253,100 +207,6 @@
 				>
 					{distance.distance}px
 				</text>
-			</g>
-		{/each}
-
-		{#each getElementSpacing() as spacing}
-			<g class="element-spacing">
-				{#if spacing.top > 0}
-					<line
-						x1={spacing.element.x + spacing.element.width / 2}
-						y1={spacing.parent.y}
-						x2={spacing.element.x + spacing.element.width / 2}
-						y2={spacing.element.y}
-						stroke="#ef4444"
-						stroke-width="1"
-					/>
-					<text
-						x={spacing.element.x + spacing.element.width / 2 + 5}
-						y={(spacing.parent.y + spacing.element.y) / 2}
-						fill="#ef4444"
-						font-size="11"
-						font-family="Inter, system-ui, sans-serif"
-					>
-						{Math.round(spacing.top)}px
-					</text>
-				{/if}
-
-				{#if spacing.right > 0}
-					<line
-						x1={spacing.element.x + spacing.element.width}
-						y1={spacing.element.y + spacing.element.height / 2}
-						x2={spacing.parent.x + spacing.parent.width}
-						y2={spacing.element.y + spacing.element.height / 2}
-						stroke="#10b981"
-						stroke-width="1"
-					/>
-					<text
-						x={(spacing.element.x +
-							spacing.element.width +
-							spacing.parent.x +
-							spacing.parent.width) /
-							2}
-						y={spacing.element.y + spacing.element.height / 2 - 5}
-						fill="#10b981"
-						font-size="11"
-						font-family="Inter, system-ui, sans-serif"
-						text-anchor="middle"
-					>
-						{Math.round(spacing.right)}px
-					</text>
-				{/if}
-
-				{#if spacing.bottom > 0}
-					<line
-						x1={spacing.element.x + spacing.element.width / 2}
-						y1={spacing.element.y + spacing.element.height}
-						x2={spacing.element.x + spacing.element.width / 2}
-						y2={spacing.parent.y + spacing.parent.height}
-						stroke="#10b981"
-						stroke-width="1"
-					/>
-					<text
-						x={spacing.element.x + spacing.element.width / 2 + 5}
-						y={(spacing.element.y +
-							spacing.element.height +
-							spacing.parent.y +
-							spacing.parent.height) /
-							2}
-						fill="#10b981"
-						font-size="11"
-						font-family="Inter, system-ui, sans-serif"
-					>
-						{Math.round(spacing.bottom)}px
-					</text>
-				{/if}
-
-				{#if spacing.left > 0}
-					<line
-						x1={spacing.parent.x}
-						y1={spacing.element.y + spacing.element.height / 2}
-						x2={spacing.element.x}
-						y2={spacing.element.y + spacing.element.height / 2}
-						stroke="#ef4444"
-						stroke-width="1"
-					/>
-					<text
-						x={(spacing.parent.x + spacing.element.x) / 2}
-						y={spacing.element.y + spacing.element.height / 2 - 5}
-						fill="#ef4444"
-						font-size="11"
-						font-family="Inter, system-ui, sans-serif"
-						text-anchor="middle"
-					>
-						{Math.round(spacing.left)}px
-					</text>
-				{/if}
 			</g>
 		{/each}
 	{/if}

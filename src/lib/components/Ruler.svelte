@@ -13,7 +13,7 @@
 </script>
 
 <!-- Dynamic coordinate axes from mouse position -->
-<g>
+<g filter="url(#invertedOutline)">
 	<!-- Main axes -->
 	<g stroke="#fff" stroke-width="2">
 		<!-- X-axis (horizontal) - extends left and right from mouse -->
@@ -25,7 +25,6 @@
 		/>
 		<!-- Y-axis (vertical) - extends up and down from mouse -->
 		<line
-			stroke="#8967AC"
 			x1={mouseX}
 			y1={0}
 			x2={mouseX}
@@ -87,7 +86,7 @@
 
 		<!-- X-axis labels -->
 		<g
-			font-family="Arial, sans-serif"
+			font-family="Inter, sans-serif"
 			font-size="10"
 			fill="#fff"
 			text-anchor="middle"
@@ -116,7 +115,7 @@
 	<!-- Y-axis ticks and labels -->
 	<g>
 		<!-- Positive Y-axis ticks (upward) -->
-		<g stroke="#DDD" stroke-width="1">
+		<g stroke="#fff" stroke-width="1">
 			{#each Array(Math.floor(yAxisLength / step) + 1) as _, i}
 				{#if i > 0}
 					{@const y = mouseY - i * step}
@@ -128,7 +127,7 @@
 		</g>
 
 		<!-- Negative Y-axis ticks (downward) -->
-		<g stroke="#DDD" stroke-width="1">
+		<g stroke="#fff" stroke-width="1">
 			{#each Array(Math.floor(yAxisLength / step) + 1) as _, i}
 				{#if i > 0}
 					{@const y = mouseY + i * step}
@@ -140,7 +139,7 @@
 		</g>
 
 		<!-- Y-axis minor ticks -->
-		<g stroke="#666" stroke-width="0.5">
+		<g stroke="#fff" stroke-width="0.5">
 			{#each Array(Math.floor(yAxisLength / minorStep) + 1) as _, i}
 				{#if i > 0 && (i * minorStep) % step !== 0}
 					{@const yPos = mouseY - i * minorStep}
@@ -167,9 +166,9 @@
 
 		<!-- Y-axis labels -->
 		<g
-			font-family="Arial, sans-serif"
+			font-family="Inter, sans-serif"
 			font-size="10"
-			fill="#DDD"
+			fill="#fff"
 			text-anchor="end"
 		>
 			{#each Array(Math.floor(yAxisLength / step) + 1) as _, i}
@@ -193,7 +192,7 @@
 		font-family="Inter, sans-serif"
 		font-size="12"
 		font-weight="bold"
-		fill="#DDD"
+		fill="#fff"
 	>
 		{#if true}
 			{@const 			rightLabelX = Math.min(

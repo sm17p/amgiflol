@@ -42,6 +42,9 @@ export class TrackerState implements App.TrackerState {
 		this.isLocked = !this.isLocked;
 	}
 
+	public updateTrackerPosition() {
+	}
+
 	private handleMouseenter(event: MouseEvent) {
 		let { target } = event;
 
@@ -51,6 +54,8 @@ export class TrackerState implements App.TrackerState {
 		) {
 			return;
 		}
+
+		this.element = target;
 
 		let parentElem = this.findParent(target);
 
@@ -114,7 +119,7 @@ export class TrackerState implements App.TrackerState {
 				x2: mouse.x,
 				y2: parent.y,
 				distance: Math.round(element.y - parent.y),
-				color: "#ef4444",
+				color: "#bbf451",
 			},
 			{
 				type: "left",
@@ -123,7 +128,7 @@ export class TrackerState implements App.TrackerState {
 				x2: parent.x,
 				y2: mouse.y,
 				distance: Math.round(element.x - parent.x),
-				color: "#ef4444",
+				color: "#bbf451",
 			},
 			{
 				type: "right",
@@ -136,7 +141,7 @@ export class TrackerState implements App.TrackerState {
 						parent.width -
 						(element.x + element.width),
 				),
-				color: "#10b981",
+				color: "#bbf451",
 			},
 			{
 				type: "bottom",
@@ -149,7 +154,7 @@ export class TrackerState implements App.TrackerState {
 						parent.height -
 						(element.y + element.height),
 				),
-				color: "#10b981",
+				color: "#bbf451",
 			},
 		];
 	}

@@ -4,6 +4,7 @@ import { defineConfig } from "wxt";
 // See https://wxt.dev/api/config.html
 export default defineConfig({
 	srcDir: "src",
+	outDir: "dist",
 	manifest: {
 		permissions: ["activeTab", "downloads", "storage"],
 	},
@@ -30,4 +31,10 @@ export default defineConfig({
 			"https://wxt.dev/guide/resources/community.html",
 		],
 	},
+	zip: {
+		excludeSources: [
+			"ARCHITECTURE.md",
+			"DESIGN.md",
+		],
+	}
 });

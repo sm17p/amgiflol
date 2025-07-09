@@ -54,7 +54,7 @@
 
 <style>
 	.follower-p {
-		box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.5);
+		/* box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.5); */
 		/* outline: 99999px solid rgba(0, 0, 0, 0.25); */
 		/* box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.65); */
 	}

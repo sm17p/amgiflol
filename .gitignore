@@ -8,7 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-.output
+dist
 stats.html
 stats-*.json
 .wxt
@@ -24,5 +24,4 @@ web-ext.config.ts
 *.njsproj
 *.sln
 *.sw?
-design.md
-architechture.md
+tmp/

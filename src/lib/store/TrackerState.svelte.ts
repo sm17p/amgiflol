@@ -1,8 +1,8 @@
 import { elementInspector } from "@/lib/core/ElementInspector";
 import { createMessageHandler } from "@/lib/core/MessageBus";
+import { watch } from "runed";
 import { getContext } from "svelte";
 import { MetaDataStore } from "./MetaDataStore.svelte";
-import { watch } from 'runed';
 
 export class TrackerState implements App.TrackerState {
 	id: string;
@@ -15,7 +15,8 @@ export class TrackerState implements App.TrackerState {
 	elementInfo = $state<App.ElementInfo>();
 	elementStyles?: string;
 	parentStyles?: string;
-	lines?: App.Lines[];
+	lines?: App.Line[];
+	lockedLines = $state<App.Line[]>([]);
 
 	constructor(options: App.TrackerStateOptions) {
 		this.id = $state(options.id ?? this.getId());
@@ -27,7 +28,7 @@ export class TrackerState implements App.TrackerState {
 			this.getDistanceLines(this.boundingRect, this.parentRect),
 		);
 
-		const metadataStoreStore = getContext<MetaDataStore>('metadataStore');
+		const metadataStoreStore = getContext<MetaDataStore>("metadataStore");
 
 		$effect(() => {
 			const unsub = createMessageHandler(
@@ -42,28 +43,47 @@ export class TrackerState implements App.TrackerState {
 		});
 
 		watch.pre(
-			() => [metadataStoreStore.scroll.scrollX, metadataStoreStore.scroll.scrollY, this.isLocked],
+			() => [
+				this.isLocked,
+			],
+			([locked]) => {
+				this.updateLockedLines();
+			},
+			{
+				lazy: true,
+			},
+		);
+
+		watch.pre(
+			() => [
+				metadataStoreStore.scroll.scrollX,
+				metadataStoreStore.scroll.scrollY,
+				this.isLocked,
+			],
 			([x, y, locked]) => {
 				if (locked) {
 					this.updateTrackerPosition();
 				}
 			},
 			{
-				lazy: true
-			}
-		)
+				lazy: true,
+			},
+		);
 
 		watch.pre(
-			() => [metadataStoreStore.window.innerHeight, metadataStoreStore.window.innerWidth],
+			() => [
+				metadataStoreStore.window.innerHeight,
+				metadataStoreStore.window.innerWidth,
+			],
 			([height, width]) => {
 				if (height > 0 && width > 0) {
 					this.updateTrackerPosition();
 				}
 			},
 			{
-				lazy: true
-			}
-		)
+				lazy: true,
+			},
+		);
 	}
 
 	public toggleLock() {
@@ -75,7 +95,6 @@ export class TrackerState implements App.TrackerState {
 			this.element instanceof HTMLElement
 		) {
 			this.elementInfo = elementInspector.getElementInfo(this.element);
-
 		}
 
 		if (
@@ -99,7 +118,7 @@ export class TrackerState implements App.TrackerState {
 
 		this.element = target;
 		this.parentElement = this.findParent(target);
-		this.updateTrackerPosition();	
+		this.updateTrackerPosition();
 	}
 
 	private findParent(node?: HTMLElement | null): HTMLElement | undefined {
@@ -117,7 +136,10 @@ export class TrackerState implements App.TrackerState {
 		return parent ? parent : undefined;
 	}
 
-	private areSameSize(node?: HTMLElement | null, parent?: HTMLElement | null) {
+	private areSameSize(
+		node?: HTMLElement | null,
+		parent?: HTMLElement | null,
+	) {
 		if (node == null || parent == null) {
 			return false;
 		}
@@ -139,7 +161,85 @@ export class TrackerState implements App.TrackerState {
 		return `width: ${rects?.width}px; height: ${rects?.height}px; transform: translate(${rects?.x}px, ${rects?.y}px);`;
 	}
 
-	private getDistanceLines(from?: DOMRect, to?: DOMRect): App.Lines[] {
+	private updateLockedLines() {
+		const element = this.boundingRect;
+		const parent = this.parentRect;
+		const metadataStore = getContext<MetaDataStore>("metadataStore");
+		const window = metadataStore.window;
+
+		if (this.isLocked && element && parent) {
+			this.lockedLines = [
+				{
+					x1: 0,
+					y1: parent.top,
+					x2: window.innerWidth,
+					y2: parent.top,
+					distance: -1,
+					color: "#bbf451",
+				},
+				{
+					x1: 0,
+					y1: element.top,
+					x2: window.innerWidth,
+					y2: element.top,
+					distance: -1,
+					color: "#bbf451",
+				},
+				{
+					x1: parent.left,
+					y1: 0,
+					x2: parent.left,
+					y2: window.innerHeight,
+					distance: -1,
+					color: "#bbf451",
+				},
+				{
+					x1: element.left,
+					y1: 0,
+					x2: element.left,
+					y2: window.innerHeight,
+					distance: -1,
+					color: "#bbf451",
+				},
+				{
+					x1: parent.right,
+					y1: 0,
+					x2: parent.right,
+					y2: window.innerHeight,
+					distance: -1,
+					color: "#bbf451",
+				},
+				{
+					x1: element.right,
+					y1: 0,
+					x2: element.right,
+					y2: window.innerHeight,
+					distance: -1,
+					color: "#bbf451",
+				},
+				{
+					x1: 0,
+					y1: parent.bottom,
+					x2: window.innerWidth,
+					y2: parent.bottom,
+					distance: -1,
+					color: "#bbf451",
+				},
+				{
+					x1: 0,
+					y1: element.bottom,
+					x2: window.innerWidth,
+					y2: element.bottom,
+					distance: -1,
+					color: "#bbf451",
+				},
+			];
+		} else {
+			this.lockedLines = [];
+		}
+	}
+
+	private getDistanceLines(from?: DOMRect, to?: DOMRect): App.Line[] {
 		if (!from || !to) return [];
 		const metadataStore = getContext<MetaDataStore>("metadataStore");
 		const mouse = metadataStore.mouse;
@@ -147,12 +247,15 @@ export class TrackerState implements App.TrackerState {
 		const element = from;
 		const parent = to;
 
-		return [
+		let x = this.isLocked ? (element.x + element.width / 2) : mouse.x;
+		let y = this.isLocked ? (element.y + element.height / 2) : mouse.y;
+
+		let lines: App.Line[] = [
 			{
 				type: "top",
-				x1: mouse.x,
+				x1: x,
 				y1: element.y,
-				x2: mouse.x,
+				x2: x,
 				y2: parent.y,
 				distance: Math.round(element.y - parent.y),
 				color: "#bbf451",
@@ -160,18 +263,18 @@ export class TrackerState implements App.TrackerState {
 			{
 				type: "left",
 				x1: element.x,
-				y1: mouse.y,
+				y1: y,
 				x2: parent.x,
-				y2: mouse.y,
+				y2: y,
 				distance: Math.round(element.x - parent.x),
 				color: "#bbf451",
 			},
 			{
 				type: "right",
 				x1: element.x + element.width,
-				y1: mouse.y,
+				y1: y,
 				x2: parent.x + parent.width,
-				y2: mouse.y,
+				y2: y,
 				distance: Math.round(
 					parent.x +
 						parent.width -
@@ -181,9 +284,9 @@ export class TrackerState implements App.TrackerState {
 			},
 			{
 				type: "bottom",
-				x1: mouse.x,
+				x1: x,
 				y1: element.y + element.height,
-				x2: mouse.x,
+				x2: x,
 				y2: parent.y + parent.height,
 				distance: Math.round(
 					parent.y +
@@ -193,5 +296,7 @@ export class TrackerState implements App.TrackerState {
 				color: "#bbf451",
 			},
 		];
+
+		return lines;
 	}
 }

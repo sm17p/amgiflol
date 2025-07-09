@@ -36,5 +36,5 @@ export default defineConfig({
 			"ARCHITECTURE.md",
 			"DESIGN.md",
 		],
-	}
+	},
 });

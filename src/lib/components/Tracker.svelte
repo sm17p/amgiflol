@@ -13,6 +13,7 @@
 	let {
 		trackerId,
 		showParent = true,
+		zIndex,
 	}: TrackerProps = $props();
 
 	const trackersStore = getContext<TrackersStore>("trackersStore");
@@ -25,7 +26,6 @@
 
 	let isHovered = $state(false);
 	let isSelected = $state(false);
-	$inspect(trackersStore.current?.isLocked);
 
 	$effect(() => {
 		isHovered = trackersStore.hoveredTracker === trackerId;
@@ -38,24 +38,24 @@
 
 {#if tracker}
 	<div
-		class="follower origin-top-left inline-block border-1 border-primary-200 top-0 text-accent mix-blend-difference bg-amber-200/10 absolute duration-75"
-		style={tracker.elementStyles}
+		class="follower origin-top-left inline-block border-1 border-primary-200 top-0 text-accent mix-blend-difference bg-amber-200/10 fixed duration-75"
+		style={`${tracker.elementStyles}z-index: ${zIndex};`}
 	>
 	</div>
 
 	{#if showParent && tracker.parentRect}
 		<div
-			class="follower-p bg-rose-300/10 origin-top-left inline-block border-1 border-primary-200 top-0 text-accent absolute duration-75"
-			style={tracker.parentStyles}
+			class="follower-p bg-rose-300/10 origin-top-left inline-block border-1 border-primary-200 top-0 text-accent fixed duration-75"
+			style={`${tracker.parentStyles}z-index: ${zIndex};`}
 		>
 		</div>
 	{/if}
 {/if}
 
 <style>
-	.follower-p {
-		/* box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.5); */
-		/* outline: 99999px solid rgba(0, 0, 0, 0.25); */
-		/* box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.65); */
-	}
+	/* .follower-p { */
+	/* box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.5); */
+	/* outline: 99999px solid rgba(0, 0, 0, 0.25); */
+	/* box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.65); */
+	/* } */
 </style>

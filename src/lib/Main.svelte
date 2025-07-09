@@ -6,6 +6,7 @@
 	} from "@/lib/store/index.svelte";
 
 	import SvgManager from "@/lib/modules/SvgManager/index.svelte";
+	import { Tooltip } from "bits-ui";
 	import SelectorManager from "./components/SelectorManager.svelte";
 	import DebugToolbar from "./modules/DebugToolbar/index.svelte";
 	import EventsManager from "./modules/EventsManager/index.svelte";
@@ -22,22 +23,24 @@
 
 <EventsManager />
 <main class="amg-root relative">
-	{#if uiStore.isActive}
-		<SvgManager style="z-index: 1" />
+	<Tooltip.Provider delayDuration={0} disableHoverableContent={true}>
+		{#if uiStore.isActive}
+			<SvgManager style="z-index: 1" />
 
-		<SelectorManager
-			enabled={uiStore.isActive}
-			maxTrackers={10}
-			autoCleanup={true}
-		/>
+			<SelectorManager
+				enabled={uiStore.isActive}
+				maxTrackers={10}
+				autoCleanup={true}
+			/>
 
-		<DebugToolbar
-			showPerformance={true}
-			showMemory={true}
-			showMessages={true}
-		/>
-		<Toolbar />
-	{/if}
+			<DebugToolbar
+				showPerformance={true}
+				showMemory={true}
+				showMessages={true}
+			/>
+			<Toolbar />
+		{/if}
+	</Tooltip.Provider>
 </main>
 
 <style>

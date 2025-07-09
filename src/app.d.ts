@@ -58,7 +58,7 @@ declare global {
 			scroll: {
 				scrollX: number;
 				scrollY: number;
-			},
+			};
 			window: {
 				innerHeight: number;
 				innerWidth: number;
@@ -91,8 +91,8 @@ declare global {
 			};
 		}
 
-		interface Lines {
-			type: string;
+		interface Line {
+			type?: string;
 			x1: number;
 			y1: number;
 			x2: number;
@@ -122,6 +122,7 @@ declare global {
 			| "MODE_CHANGE"
 			| "SCREENSHOT"
 			| "VIEWPORT_RESIZE"
+			| "KEYDOWN"
 			| "*";
 
 		type MessageRecipients = "popup" | "content" | "background" | "all";

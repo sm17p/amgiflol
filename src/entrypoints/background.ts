@@ -1,15 +1,7 @@
-import { dataUrltoBlob } from "@/utils/data-urls";
-
 export default defineBackground(() => {
 	console.log("Hello background!", { id: browser.runtime.id });
 	browser.runtime.onMessage.addListener(async (event, sender) => {
 		if (event.type === "SCREENSHOT" && sender.tab) {
-			console.log(
-				"🚀 ~ browser.runtime.onMessage.addListener ~ event:",
-				event.type,
-				event,
-				sender.tab?.id,
-			);
 			captureHandler(sender.tab);
 		}
 	});
@@ -22,9 +14,9 @@ export default defineBackground(() => {
 	// 	},
 	// );
 	// See https://developer.chrome.com/docs/extensions/develop/concepts/activeTab#invoking-activeTab
-	(browser.action ?? browser.browserAction).onClicked.addListener(
-		captureHandler,
-	);
+	// (browser.action ?? browser.browserAction).onClicked.addListener(
+	// 	captureHandler,
+	// );
 });
 
 async function captureHandler(tab: Browser.tabs.Tab) {

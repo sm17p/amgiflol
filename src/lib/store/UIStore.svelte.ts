@@ -1,5 +1,5 @@
+import { createMessageHandler, sendMessage } from "@/lib/core/MessageBus";
 import { browser } from "wxt/browser";
-import { sendMessage } from "@/lib/core/MessageBus";
 
 export class UIStore implements App.UIStore {
 	isActive = $state(false);
@@ -13,7 +13,7 @@ export class UIStore implements App.UIStore {
 	});
 	svg = $state({
 		// TODO: Why error?
-		mode: "mode" as App.Mode,
+		mode: "inspect" as App.Mode,
 		showDistances: true,
 		showGrid: false,
 		showRulers: true,
@@ -24,6 +24,56 @@ export class UIStore implements App.UIStore {
 		isVisible: true,
 		position: { x: 20, y: 20 },
 	});
+
+	constructor() {
+		$effect(() => {
+			const cleanup = createMessageHandler("KEYDOWN", this.handleKeyDown);
+			return cleanup;
+		});
+	}
+
+	handleKeyDown = (event: KeyboardEvent, message: App.Message<KeyboardEvent>) => {
+		switch (event.key) {
+			case "i":
+			case "I":
+				if (event.ctrlKey || event.metaKey) {
+					this.toggleActive("content");
+				}
+				break;
+			case "1":
+				if (event.ctrlKey || event.metaKey) {
+					this.setMode("inspect");
+				}
+				break;
+			// case "2":
+			// 	if (event.ctrlKey || event.metaKey) {
+			// 		event.preventDefault();
+			// 		uiStore.setMode("select");
+			// 	}
+			// 	break;
+			// case "3":
+			// 	if (event.ctrlKey || event.metaKey) {
+			// 		event.preventDefault();
+			// 		uiStore.setMode("measure");
+			// 	}
+			// 	break;
+			case "r":
+			case "R":
+				if (event.ctrlKey || event.metaKey) {
+					this.toggleRulers();
+				}
+				break;
+			case "d":
+			case "D":
+				if (event.ctrlKey || event.metaKey) {
+					this.toggleDistances();
+				}
+				break;
+			case "#":
+				this.toggleGridlines();
+				break;
+		}
+	}
 
 	toggleToolbar() {
 		this.toolbar.isVisible = !this.toolbar.isVisible;
@@ -57,6 +107,10 @@ export class UIStore implements App.UIStore {
 
 	setMode(mode: App.Mode) {
 		this.svg.mode = mode;
+	}
+
+	toggleGridlines() {
+		this.svg.showGrid = !this.svg.showGrid;
 	}
 
 	toggleDistances() {
@@ -100,7 +154,7 @@ export class UIStore implements App.UIStore {
 			const uiStore = this.snapshot();
 			await browser.storage?.local.set({
 				uiStore,
-				...active
+				...active,
 			});
 		} catch (error) {
 			console.error("Failed to sync inspector state to storage:", error);
@@ -109,9 +163,9 @@ export class UIStore implements App.UIStore {
 
 	private broadcastStateChange() {
 		sendMessage("EXTENSION_TOGGLE", {
-				isActive: this.isActive,
-				timestamp: Date.now(),
-			}, "popup");
+			isActive: this.isActive,
+			timestamp: Date.now(),
+		}, "popup");
 	}
 
 	async loadFromStorage() {

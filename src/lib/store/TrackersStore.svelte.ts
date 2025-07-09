@@ -1,4 +1,5 @@
 import { SvelteMap } from "svelte/reactivity";
+import { createMessageHandler } from "../core/MessageBus";
 import { TrackerState } from "./TrackerState.svelte";
 
 export class TrackersStore {
@@ -8,6 +9,38 @@ export class TrackersStore {
 	current = $state<TrackerState>();
 	private _selectedTracker = $state<string | null>(null);
 	private _hoveredTracker = $state<string | null>(null);
+
+	constructor() {
+		$effect(() => {
+			const cleanup = createMessageHandler("KEYDOWN", this.handleKeyDown);
+			return cleanup;
+		});
+	}
+
+	handleKeyDown = (
+		event: KeyboardEvent,
+		message: App.Message<KeyboardEvent>,
+	) => {
+		switch (event.key) {
+			case "c":
+			case "C":
+				if (
+					event.ctrlKey || (event.metaKey && event.shiftKey)
+				) {
+					this.clearAllTrackers();
+				}
+				break;
+			case "@":
+				if (event.shiftKey) {
+					this.toggleCurrent();
+				}
+				break;
+		}
+	};
+
+	toggleCurrent() {
+		this.current?.toggleLock();
+	}
 
 	get trackers() {
 		return this._trackers;
@@ -27,10 +60,11 @@ export class TrackersStore {
 		);
 	}
 
-	get lockedTrackers() {
-		return Array.from(this._trackers.values()).filter(
-			(tracker) => tracker.isLocked,
-		);
+	get lockedTrackers(): App.TrackerState[] {
+		// return Array.from(this._trackers.values()).filter(
+		// 	(tracker) => tracker.isLocked,
+		// );
+		return [];
 	}
 
 	createTracker(

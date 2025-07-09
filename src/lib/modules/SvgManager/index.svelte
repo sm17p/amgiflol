@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { TrackersStore, UIStore } from "@/lib/store/index.svelte";
-
 	import Measurements from "@/lib/components/Measurements.svelte";
 	import Ruler from "@/lib/components/Ruler.svelte";
+	import { TrackersStore, UIStore } from "@/lib/store/index.svelte";
 	import { type SvelteHTMLElements } from "svelte/elements";
+
 	type SVGElement = SvelteHTMLElements["svg"];
 
 	interface Props extends SVGElement {
@@ -14,7 +14,7 @@
 
 	let tracker = $derived(trackersStore.current);
 
-	let props = $props();
+	let props: Props = $props();
 </script>
 
 <svg class="hidden">
@@ -153,33 +153,12 @@
 	</defs>
 </svg>
 
-<svg class="fixed inset-0 w-screen h-screen pointer-events-none">
-	<!-- <text
-		class="text-amber-400"
-		x={500}
-		y={500}
-		font-family="Inter, system-ui, sans-serif"
-		dominant-baseline="middle"
-		font-size="36"
-		fill="blue"
-		filter="url(#filter)"
-		>
-		Filter
-	</text> -->
-	<!-- <circle
-		class="mix-blend-difference"
-		r="30"
-		cx="500"
-		cy="500"
-		fill="oklch(76.8% 0.233 130.85)"
-	/> -->
-	<Ruler />
-</svg>
-
 <svg
 	class="fixed inset-0 w-screen h-screen pointer-events-none"
 	{...props}
 >
+	<Ruler />
+
 	<Measurements
 		gridSize={8}
 		color="#3b82f6"
@@ -189,7 +168,7 @@
 	{#if uiStore.svg.showDistances && tracker?.parentRect &&
 			tracker.lines}
 		<g filter="url(#outline)">
-			{#each tracker.lines as line}
+			{#each [...tracker.lockedLines, ...tracker.lines] as line}
 				<line
 					class="avgLine text-lime-300"
 					x1={line.x1}
@@ -198,23 +177,25 @@
 					y2={line.y2}
 					stroke-dasharray={line.distance < 0 ? "4,4" : "none"}
 					stroke={line.color}
-					stroke-width="2"
+					stroke-width={line.distance < 0 ? 0.5 : 2}
 				/>
-				<text
-					class="font-bold tracking-wide"
-					x={line.type === "top" || line.type === "bottom"
-						? line.x1 + 15
-						: (line.x1 + line.x2) / 2}
-					y={line.type === "left" || line.type === "right"
-						? line.y1 - 15
-						: (line.y1 + line.y2) / 2}
-					font-family="Inter, system-ui, sans-serif"
-					dominant-baseline="middle"
-					fill={line.color}
-					font-size="12"
-				>
-					{Math.abs(line.distance)} px
-				</text>
+				{#if line.type}
+					<text
+						class="font-bold tracking-wide"
+						x={line.type === "top" || line.type === "bottom"
+							? line.x1 + 15
+							: (line.x1 + line.x2) / 2}
+						y={line.type === "left" || line.type === "right"
+							? line.y1 - 15
+							: (line.y1 + line.y2) / 2}
+						font-family="Inter, system-ui, sans-serif"
+						dominant-baseline="middle"
+						fill={line.color}
+						font-size="12"
+					>
+						{Math.abs(line.distance)} px
+					</text>
+				{/if}
 			{/each}
 		</g>
 	{/if}

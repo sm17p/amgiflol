@@ -34,76 +34,11 @@
 			alt: event.altKey,
 		});
 
-		switch (event.key) {
-			case "i":
-			case "I":
-				if (event.ctrlKey || event.metaKey) {
-					event.preventDefault();
-					uiStore.toggleActive("content");
-				}
-				break;
-			case "1":
-				if (event.ctrlKey || event.metaKey) {
-					event.preventDefault();
-					uiStore.setMode("inspect");
-				}
-				break;
-			case "2":
-				if (event.ctrlKey || event.metaKey) {
-					event.preventDefault();
-					uiStore.setMode("select");
-				}
-				break;
-			case "3":
-				if (event.ctrlKey || event.metaKey) {
-					event.preventDefault();
-					uiStore.setMode("measure");
-				}
-				break;
-			case "r":
-			case "R":
-				if (event.ctrlKey || event.metaKey) {
-					event.preventDefault();
-					uiStore.toggleRulers();
-				}
-				break;
-			case "d":
-			case "D":
-				if (event.ctrlKey || event.metaKey) {
-					event.preventDefault();
-					uiStore.toggleDistances();
-				}
-				break;
-			case "c":
-			case "C":
-				if (
-					event.ctrlKey || (event.metaKey && event.shiftKey)
-				) {
-					event.preventDefault();
-					trackersStore.clearAllTrackers();
-				}
-				break;
-			case "l":
-			case "L":
-				if (
-					event.ctrlKey || (event.metaKey && event.shiftKey)
-				) {
-					event.preventDefault();
-					if (trackersStore.current) {
-						trackersStore.current.isLocked = !trackersStore
-							.current.isLocked;
-					}
-				}
-				break;
-			case "@":
-				if (event.shiftKey)
-				{
-					event.preventDefault();
-					if (trackersStore.current) {
-						trackersStore.current.isLocked = !trackersStore
-							.current.isLocked;
-					}
-				}
+		if (
+			event?.currentTarget instanceof Document &&
+			event?.currentTarget?.body === event.target
+		) {
+			sendMessage("KEYDOWN", event, "content");
 		}
 	}
 
@@ -134,7 +69,10 @@
 		const toggleHandler = createMessageHandler(
 			"EXTENSION_TOGGLE",
 			(payload: any, message) => {
-				if (payload.isActive !== uiStore.isActive && message.source !== "content") {
+				if (
+					payload.isActive !== uiStore.isActive &&
+					message.source !== "content"
+				) {
 					uiStore.toggleActive(message.source);
 				}
 			},

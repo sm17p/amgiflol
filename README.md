@@ -10,12 +10,12 @@ This extension is built with a modular architecture using wxt, Svelte 5, TypeScr
 2. Screenshot
 
 ### Installation
-``` bash
-    pnpm i
-    pnpm build:firefox
-    pnpm zip:firefox 
-```
 
+```bash
+pnpm i
+pnpm build:firefox
+pnpm zip:firefox
+```
 
 ```
 amgiflol/

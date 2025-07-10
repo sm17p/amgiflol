@@ -2,18 +2,12 @@
 	import { elementInspector } from "@/lib/core/ElementInspector";
 	import {
 		createMessageHandler,
-		messageBus,
 		sendMessage,
 	} from "@/lib/core/MessageBus";
-	import {
-		MetaDataStore,
-		TrackersStore,
-		UIStore,
-	} from "@/lib/store/index.svelte";
+	import { MetaDataStore, UIStore } from "@/lib/store/index.svelte";
 	import { onMount } from "svelte";
 
 	const metadataStore = getContext<MetaDataStore>("metadataStore");
-	const trackersStore = getContext<TrackersStore>("trackersStore");
 	const uiStore = getContext<UIStore>("uiStore");
 
 	let isInitialized = $state(false);
@@ -36,7 +30,9 @@
 
 		if (
 			event?.currentTarget instanceof Document &&
-			event?.currentTarget?.body === event.target
+				event?.currentTarget?.body === event.target ||
+			(event.target instanceof HTMLElement &&
+				elementInspector.isExtensionElement(event.target))
 		) {
 			sendMessage("KEYDOWN", event, "content");
 		}
@@ -78,15 +74,6 @@
 			},
 		);
 
-		const stateChangeHandler = createMessageHandler(
-			"INSPECTOR_STATE_CHANGE",
-			(payload: any) => {
-				if (payload.state) {
-					Object.assign(uiStore.svg, payload.state);
-				}
-			},
-		);
-
 		const zoomHandler = createMessageHandler(
 			"ZOOM_CHANGE",
 			(payload: any) => {
@@ -99,7 +86,6 @@
 
 		unsubscribers.push(
 			toggleHandler,
-			stateChangeHandler,
 			zoomHandler,
 		);
 	}

@@ -124,14 +124,14 @@ export class TrackerState implements App.TrackerState {
 	private findParent(node?: HTMLElement | null): HTMLElement | undefined {
 		let curr = node;
 		let parent = node?.parentElement;
+		// console.log("###################");
+
 		while (this.areSameSize(curr, parent)) {
-			if (parent?.style.display === "contents") {
-				parent = curr?.parentElement?.parentElement;
-			} else {
-				curr = parent;
-				parent = curr?.parentElement;
-			}
+			parent = parent?.parentElement;
 		}
+
+		// console.log("🚀 ~ TrackerState ~ findParent ~ parent:", curr, parent);
+		// console.log("###################");
 
 		return parent ? parent : undefined;
 	}
@@ -140,12 +140,17 @@ export class TrackerState implements App.TrackerState {
 		node?: HTMLElement | null,
 		parent?: HTMLElement | null,
 	) {
+		// console.log("🚀 ~ TrackerState ~ sameWidth:", node, parent);
+
 		if (node == null || parent == null) {
 			return false;
 		}
 
-		const sameWidth = node.clientWidth === parent.clientWidth;
-		const sameHeight = node.clientHeight === parent.clientHeight;
+		const sameWidth = node.offsetWidth === parent.offsetWidth;
+		const sameHeight = node.offsetHeight === parent.offsetHeight;
+
+		// console.log("🚀 ~ TrackerState ~ sameWidth:", parent.offsetWidth, node.offsetWidth, sameWidth);
+		// console.log("🚀 ~ TrackerState ~ sameHeight:", parent.offsetHeight, node.offsetHeight, sameHeight);
 
 		// display: contents element are 0 x 0
 		return sameWidth && sameHeight || parent.style.display === "contents";

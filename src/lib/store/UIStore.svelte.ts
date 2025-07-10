@@ -1,4 +1,5 @@
 import { createMessageHandler, sendMessage } from "@/lib/core/MessageBus";
+import { watch } from "runed";
 import { browser } from "wxt/browser";
 
 export class UIStore implements App.UIStore {
@@ -8,7 +9,7 @@ export class UIStore implements App.UIStore {
 	});
 	sidePanel = $state({
 		isVisible: false,
-		width: 300,
+		width: 360,
 		selectedTab: "properties",
 	});
 	svg = $state({
@@ -16,13 +17,18 @@ export class UIStore implements App.UIStore {
 		mode: "inspect" as App.Mode,
 		showDistances: true,
 		showGrid: false,
-		showRulers: true,
+		showRuler: false,
 		zoomLevel: 1,
 	});
 	// TODO: why explicit type declaration needed over here?
 	toolbar = $state<App.UIStore["toolbar"]>({
+		autoMove: false,
+		autoHide: false,
 		isVisible: true,
 		position: { x: 20, y: 20 },
+		settings: {
+			open: false,
+		},
 	});
 
 	constructor() {
@@ -30,16 +36,35 @@ export class UIStore implements App.UIStore {
 			const cleanup = createMessageHandler("KEYDOWN", this.handleKeyDown);
 			return cleanup;
 		});
+
+		watch(
+			() => [
+				this.svg.showDistances,
+				this.svg.showRuler,
+				this.svg.showGrid,
+				this.toolbar.settings.open,
+				this.sidePanel.isVisible,
+			],
+			() => {
+				this.syncToStorage("content");
+			},
+			{
+				lazy: true,
+			},
+		);
 	}
 
-	handleKeyDown = (event: KeyboardEvent, message: App.Message<KeyboardEvent>) => {
+	handleKeyDown = (
+		event: KeyboardEvent,
+		message: App.Message<KeyboardEvent>,
+	) => {
 		switch (event.key) {
-			case "i":
-			case "I":
-				if (event.ctrlKey || event.metaKey) {
-					this.toggleActive("content");
-				}
-				break;
+			// case "i":
+			// case "I":
+			// 	if (event.ctrlKey || event.metaKey) {
+			// 		this.toggleActive("content");
+			// 	}
+			// 	break;
 			case "1":
 				if (event.ctrlKey || event.metaKey) {
 					this.setMode("inspect");
@@ -57,23 +82,35 @@ export class UIStore implements App.UIStore {
 			// 		uiStore.setMode("measure");
 			// 	}
 			// 	break;
-			case "r":
-			case "R":
-				if (event.ctrlKey || event.metaKey) {
-					this.toggleRulers();
-				}
-				break;
-			case "d":
-			case "D":
-				if (event.ctrlKey || event.metaKey) {
-					this.toggleDistances();
-				}
-				break;
+			// case "d":
+			// case "D":
+			// 	if (event.ctrlKey || event.metaKey) {
+			// 		this.toggleDistances();
+			// 	}
+			// 	break;
+			// case "r":
+			// case "R":
+			// 	if (event.ctrlKey || event.metaKey) {
+			// 		this.toggleRulers();
+			// 	}
+			// 	break;
 			case "#":
 				this.toggleGridlines();
 				break;
+			case "$":
+				this.toggleRulers();
+				break;
+			case "%":
+				this.toggleDistances();
+				break;
+			case "8":
+				this.toggleSidePanel();
+				break;
+			case "0":
+				this.toggleToolbarSettings();
+				break;
 		}
-	}
+	};
 
 	toggleToolbar() {
 		this.toolbar.isVisible = !this.toolbar.isVisible;
@@ -90,6 +127,10 @@ export class UIStore implements App.UIStore {
 
 	toggleSidePanel() {
 		this.sidePanel.isVisible = !this.sidePanel.isVisible;
+	}
+
+	toggleToolbarSettings() {
+		this.toolbar.settings.open = !this.toolbar.settings.open;
 	}
 
 	setSidePanelTab(tab: string) {
@@ -118,7 +159,7 @@ export class UIStore implements App.UIStore {
 	}
 
 	toggleRulers() {
-		this.svg.showRulers = !this.svg.showRulers;
+		this.svg.showRuler = !this.svg.showRuler;
 	}
 
 	setZoomLevel(zoom: number) {

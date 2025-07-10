@@ -48,13 +48,6 @@
 	let performanceInterval: NodeJS.Timeout;
 	let memoryInterval: NodeJS.Timeout;
 
-	function getPositionStyles() {
-		const baseStyles =
-			"position: fixed; z-index: 10001; font-family: Inter, system-ui, sans-serif;";
-
-		return `${baseStyles} top: 10px; right: 10px;`;
-	}
-
 	function toggleCollapse() {
 		isCollapsed = !isCollapsed;
 	}
@@ -159,11 +152,8 @@
 			memoryInterval = setInterval(updateMemoryData, 2000);
 		}
 
-		const messageTypes: Array<
-			App.MessageType
-		> = [
+		const messageTypes: Array<App.MessageType> = [
 			"EXTENSION_TOGGLE",
-			"INSPECTOR_STATE_CHANGE",
 			"ELEMENT_SELECT",
 			"ELEMENT_HOVER",
 			"TRACKER_CREATE",
@@ -174,7 +164,10 @@
 			"SETTINGS_CHANGE",
 			"ZOOM_CHANGE",
 			"MODE_CHANGE",
+			"SCREENSHOT",
 			"VIEWPORT_RESIZE",
+			"KEYDOWN",
+			"*",
 		];
 
 		const messageUnsubscribers = messageTypes.map((type) =>

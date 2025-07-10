@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { Label, Switch } from "bits-ui";
-	import { browser } from "wxt/browser";
-	import "./app.css";
 	import {
 		createMessageHandler,
 		sendMessage,
 	} from "@/lib/core/MessageBus";
+	import { Label, Switch } from "bits-ui";
+	import { browser } from "wxt/browser";
+	import "./app.css";
 
 	let isLoading = $state(false);
 	let errorMessage = $state("");
@@ -111,7 +111,7 @@
 				checked={isActive}
 			>
 				<Switch.Thumb
-					class="bg-neutral-500 data-[state=unchecked]:shadow-mini dark:border-netural-700/30 dark:bg-white dark:shadow-popover pointer-events-none block size-[30px] shrink-0 rounded-full transition-transform data-[state=checked]:translate-x-6 data-[state=unchecked]:translate-x-0 dark:border dark:data-[state=unchecked]:border"
+					class="bg-neutral-500 data-[state=unchecked]:shadow-sm dark:border-netural-700/30 dark:bg-white dark:shadow-popover pointer-events-none block size-[30px] shrink-0 rounded-full transition-transform data-[state=checked]:translate-x-6 data-[state=unchecked]:translate-x-0 dark:border dark:data-[state=unchecked]:border"
 				/>
 			</Switch.Root>
 		</div>

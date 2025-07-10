@@ -1,14 +1,13 @@
-import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "wxt";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
-	srcDir: "src",
-	outDir: "dist",
 	manifest: {
 		permissions: ["activeTab", "downloads", "storage"],
 	},
-	modules: ["@wxt-dev/module-svelte"],
+	modules: ["@wxt-dev/module-svelte", "@wxt-dev/unocss"],
+	outDir: "dist",
+	srcDir: "src",
 	svelte: {
 		vite: {
 			compilerOptions: {
@@ -16,9 +15,6 @@ export default defineConfig({
 			},
 		},
 	},
-	vite: () => ({
-		plugins: [tailwindcss()],
-	}),
 	webExt: {
 		openConsole: true,
 		openDevtools: true,

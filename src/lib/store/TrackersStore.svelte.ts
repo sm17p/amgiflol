@@ -71,7 +71,7 @@ export class TrackersStore {
 		_element: HTMLElement,
 		_elementInfo: App.ElementInfo,
 	): string {
-		const tracker: App.TrackerState = new TrackerState({
+		const tracker = new TrackerState({
 			isLocked: false,
 			isVisible: true,
 		});
@@ -80,7 +80,7 @@ export class TrackersStore {
 	}
 
 	createCurrentTracker() {
-		const tracker: App.TrackerState = new TrackerState({
+		const tracker = new TrackerState({
 			isLocked: false,
 			isVisible: true,
 		});

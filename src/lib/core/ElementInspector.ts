@@ -21,8 +21,8 @@ export class ElementInspector {
 
 		return {
 			tagName: element.tagName.toLowerCase(),
-			id: element.id || "",
-			classes: Array.from(element.classList),
+			id: element.id ?? "",
+			classes: Array.from(element.classList).sort(),
 			dimensions: this.extractDimensions(element, rect),
 			computedStyles: this.extractComputedStyles(computedStyle),
 			attributes: this.extractAttributes(element),
@@ -50,9 +50,7 @@ export class ElementInspector {
 		if (!element) return false;
 
 		return (
-			element.closest("[data-wxt-integrated]") !== null ||
-			element.id?.startsWith("amgiflol-") ||
-			element.className?.includes("amgiflol")
+			element.closest("[data-wxt-shadow-root]") !== null
 		);
 	}
 

@@ -37,19 +37,19 @@
 </script>
 
 {#if tracker}
-	<div
-		class="follower origin-top-left inline-block border-1 border-primary-200 top-0 text-accent mix-blend-difference bg-amber-200/10 fixed duration-75"
-		style={`${tracker.elementStyles}z-index: ${zIndex};`}
-	>
-	</div>
-
 	{#if showParent && tracker.parentRect}
 		<div
-			class="follower-p bg-rose-300/10 origin-top-left inline-block border-1 border-primary-200 top-0 text-accent fixed duration-75"
+			class="follower-p bg-rose-300/10 origin-top-left inline-block border-1 border-zinc-700 top-0 fixed duration-75"
 			style={`${tracker.parentStyles}z-index: ${zIndex};`}
 		>
 		</div>
 	{/if}
+
+	<div
+		class="follower origin-top-left inline-block border-1 border-zinc-700 top-0 mix-blend-difference bg-lime-700/10 fixed duration-75"
+		style={`${tracker.elementStyles}z-index: ${zIndex};`}
+	>
+	</div>
 {/if}
 
 <style>

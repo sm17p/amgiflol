@@ -6,8 +6,7 @@
 
 	type SVGElement = SvelteHTMLElements["svg"];
 
-	interface Props extends SVGElement {
-	}
+	interface Props extends SVGElement {}
 
 	const trackersStore = getContext<TrackersStore>("trackersStore");
 	const uiStore = getContext<UIStore>("uiStore");
@@ -153,24 +152,15 @@
 	</defs>
 </svg>
 
-<svg
-	class="fixed inset-0 w-screen h-screen pointer-events-none"
-	{...props}
->
+<svg class="fixed inset-0 w-screen h-screen pointer-events-none" {...props}>
 	<Ruler />
-
-	<Measurements
-		gridSize={8}
-		color="#3b82f6"
-		zIndex={1}
-	/>
-
-	{#if uiStore.svg.showDistances && tracker?.parentRect &&
+	<Measurements gridSize={8} color="#3b82f6" zIndex={10000000001} />
+	{#if 		uiStore.svg.showDistances && tracker?.parentRect &&
 			tracker.lines}
 		<g filter="url(#outline)">
 			{#each [...tracker.lockedLines, ...tracker.lines] as line}
 				<line
-					class="avgLine text-lime-300"
+					class="text-lime-300"
 					x1={line.x1}
 					y1={line.y1}
 					x2={line.x2}
@@ -200,6 +190,3 @@
 		</g>
 	{/if}
 </svg>
-
-<style>
-</style>

@@ -1,3 +1,8 @@
+import { type AttributifyNames } from "@unocss/preset-attributify";
+
+type Prefix = "amg-"; // change it to your prefix
+type AttributifyAttributes = Partial<Record<AttributifyNames<Prefix>, string>>;
+
 declare global {
 	namespace App {
 		interface ElementInfo {
@@ -73,16 +78,21 @@ declare global {
 				mode: Mode;
 				showDistances: boolean;
 				showGrid: boolean;
-				showRulers: boolean;
+				showRuler: boolean;
 				zoomLevel: number;
 			};
 			debugToolbar: {
 				isVisible: boolean;
 			};
 			toolbar: {
+				autoHide: boolean;
+				autoMove: boolean;
 				isVisible: boolean;
 				position: { x: number; y: number };
 				activeFeature?: string;
+				settings: {
+					open: boolean;
+				};
 			};
 			sidePanel: {
 				isVisible: boolean;
@@ -109,7 +119,6 @@ declare global {
 
 		type MessageType =
 			| "EXTENSION_TOGGLE"
-			| "INSPECTOR_STATE_CHANGE"
 			| "ELEMENT_SELECT"
 			| "ELEMENT_HOVER"
 			| "TRACKER_CREATE"
@@ -155,6 +164,15 @@ declare global {
 			size: { width: number; height: number };
 		}
 	}
+
+	namespace svelteHTML {
+		interface HTMLAttributes extends AttributifyAttributes {}
+	}
 }
+
+// // This is a bit hacky but works for most cases
+// declare module '*' {
+//   interface ComponentProps extends AttributifyAttributes {}
+// }
 
 export {};

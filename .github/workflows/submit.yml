@@ -1,0 +1,175 @@
+name: Submit for Review
+on:
+    workflow_dispatch:
+        inputs:
+            dryRun:
+                default: false
+                type: boolean
+                description: Skip submission and perform a dry run
+
+jobs:
+    changeset:
+        name: Version with Changeset
+        runs-on: ubuntu-24.04
+        outputs:
+            hasChangesets: ${{ steps.changeset-check.outputs.hasChangesets }}
+            newVersion: ${{ steps.version.outputs.newVersion }}
+            currentVersion: ${{ steps.current-version.outputs.currentVersion }}
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - uses: pnpm/action-setup@v4
+              name: Install pnpm
+              with:
+                  run_install: false
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: "pnpm"
+
+            - name: Configure Git
+              run: |
+                  git config user.email "github-actions@users.noreply.github.com"
+                  git config user.name "GitHub Actions"
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Check for changesets
+              id: changeset-check
+              run: |
+                  if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v README)" ]; then
+                    echo "hasChangesets=false" >> "$GITHUB_OUTPUT"
+                    echo "⚠️ No changesets found. Skipping version bump."
+                  else
+                    echo "hasChangesets=true" >> "$GITHUB_OUTPUT"
+                    echo "✅ Changesets found. Proceeding with version bump."
+                  fi
+
+            - name: Version packages
+              if: steps.changeset-check.outputs.hasChangesets == 'true'
+              id: version
+              run: |
+                  pnpm changeset version
+                  NEW_VERSION=$(node -p "require('./package.json').version")
+                  echo "newVersion=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+                  echo "📦 New version: $NEW_VERSION"
+
+            - name: Get current version (if no changesets)
+              if: steps.changeset-check.outputs.hasChangesets == 'false'
+              id: current-version
+              run: |
+                  CURRENT_VERSION=$(node -p "require('./package.json').version")
+                  echo "currentVersion=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+                  echo "📦 Current version: $CURRENT_VERSION"
+
+            - name: Commit and Push (with version bump)
+              if: ${{ !inputs.dryRun && steps.changeset-check.outputs.hasChangesets == 'true' }}
+              run: |
+                  git add .
+                  git commit -m "chore(release): v$NEW_VERSION"
+                  git tag v$NEW_VERSION
+                  git push
+                  git push --tags
+              env:
+                  NEW_VERSION: ${{ steps.version.outputs.newVersion }}
+
+    submit:
+        name: Submit
+        runs-on: ubuntu-24.04
+        needs: [changeset]
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - uses: pnpm/action-setup@v4
+              name: Install pnpm
+              with:
+                  run_install: false
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 24
+                  cache: "pnpm"
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Build and Zip
+              run: |
+                  pnpm run zip:all
+
+            - name: Upload Artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  path: dist/*.zip
+                  if-no-files-found: error
+                  include-hidden-files: true
+
+            - name: Create GitHub Release (with version bump)
+              if: ${{ !inputs.dryRun && needs.changeset.outputs.hasChangesets == 'true' }}
+              uses: softprops/action-gh-release@v1
+              with:
+                  tag_name: v${{ needs.changeset.outputs.newVersion }}
+                  name: Release v${{ needs.changeset.outputs.newVersion }}
+                  body: |
+                      ## Changes
+
+                      Check the [CHANGELOG.md](./CHANGELOG.md) for detailed changes.
+
+                      ## Extension Files
+                      - Chrome: `amgiflol-${{ needs.changeset.outputs.newVersion }}-chrome.zip`
+                      - Firefox: `amgiflol-${{ needs.changeset.outputs.newVersion }}-firefox.zip`
+                  files: |
+                      dist/*-chrome.zip
+                      dist/*-firefox.zip
+                  draft: false
+                  prerelease: false
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Create GitHub Release (no version bump)
+              if: ${{ !inputs.dryRun && needs.changeset.outputs.hasChangesets == 'false' }}
+              uses: softprops/action-gh-release@v1
+              with:
+                  tag_name: v${{ needs.changeset.outputs.currentVersion }}-build-${{ github.run_number }}
+                  name: Build v${{ needs.changeset.outputs.currentVersion }}-build-${{ github.run_number }}
+                  body: |
+                      ## Build Release
+
+                      This is a build release without version changes.
+
+                      ## Extension Files
+                      - Chrome: `amgiflol-${{ needs.changeset.outputs.currentVersion }}-chrome.zip`
+                      - Firefox: `amgiflol-${{ needs.changeset.outputs.currentVersion }}-firefox.zip`
+                  files: |
+                      dist/*-chrome.zip
+                      dist/*-firefox.zip
+                  draft: false
+                  prerelease: true
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Submit to stores
+              run: |
+                  pnpm wxt submit \
+                    --chrome-zip dist/*-chrome.zip \
+                    --firefox-zip dist/*-firefox.zip --firefox-sources-zip dist/*-sources.zip
+              env:
+                  DRY_RUN: ${{ inputs.dryRun }}
+                  CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+                  CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+                  CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+                  CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+                  FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
+                  FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
+                  FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
+                  EDGE_PRODUCT_ID: ${{ secrets.EDGE_PRODUCT_ID }}
+                  EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+                  EDGE_CLIENT_SECRET: ${{ secrets.EDGE_CLIENT_SECRET }}
+                  EDGE_ACCESS_TOKEN_URL: ${{ secrets.EDGE_ACCESS_TOKEN_URL }}

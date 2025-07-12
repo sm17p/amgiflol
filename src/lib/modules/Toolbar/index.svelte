@@ -11,14 +11,17 @@
 	} from "@/lib/store/index.svelte";
 	import {
 		Camera,
+		ChevronsLeftRightEllipsis,
 		Grid3x3,
 		LockKeyhole,
 		LockKeyholeOpen,
-		Skull,
+		PanelRightOpen,
+		Ruler,
 		SquareDashedMousePointer,
 	} from "@lucide/svelte";
-	import { Separator, Toolbar } from "bits-ui";
+	import { Separator } from "bits-ui";
 	import { onDestroy, onMount } from "svelte";
+	import ToolbarAction from "./ToolbarAction.svelte";
 	import ToolbarSettings from "./ToolbarSettings.svelte";
 
 	let myValue = $state("select");
@@ -41,20 +44,14 @@
 
 	let {
 		autoMove = true,
-		position = "top-left",
 		offsetX = 20,
 		offsetY = 20,
-		hideDelay = 3000,
 	}: ToolbarProps = $props();
 
 	let toolbarElement = $state<HTMLElement>();
-	let isVisible = $state(true);
-	let isDragging = $state(false);
-	let isCollapsed = $state(false);
 	let hideTimeout: NodeJS.Timeout | null = null;
 
 	let toolbarPosition = $state({ x: offsetX, y: offsetY });
-	let dragOffset = $state({ x: 0, y: 0 });
 
 	const trackers = trackersStore;
 
@@ -93,7 +90,7 @@
 			icon: "📐",
 			label: "Rulers",
 			shortcut: "Ctrl+R",
-			active: uiStore.svg.showRulers,
+			active: uiStore.svg.showRuler,
 			action: () => uiStore.toggleRulers(),
 		},
 		{
@@ -122,9 +119,15 @@
 		},
 	]);
 
-	function capture(event: MouseEvent) {
-		event.stopImmediatePropagation();
-		sendMessage("SCREENSHOT", undefined, "background");
+	async function capture(pressed: boolean) {
+		// event?.stopImmediatePropagation();
+		uiStore.toggleToolbar();
+		setTimeout(() => {
+			sendMessage("SCREENSHOT", undefined, "background");
+		}, 1);
+		setTimeout(() => {
+			uiStore.toggleToolbar();
+		}, 400);
 	}
 
 	function updatePosition() {
@@ -152,19 +155,21 @@
 			const availablePositions = [
 				{ x: edgeBuffer, y: edgeBuffer },
 				{
-					x: windowDimensions.width - toolbar.width -
+					x: metadataStore.window.innerWidth - toolbar.width -
 						edgeBuffer,
 					y: edgeBuffer,
 				},
 				{
 					x: edgeBuffer,
-					y: windowDimensions.height - toolbar.height -
+					y: metadataStore.window.innerHeight -
+						toolbar.height -
 						edgeBuffer,
 				},
 				{
-					x: windowDimensions.width - toolbar.width -
+					x: metadataStore.window.innerWidth - toolbar.width -
 						edgeBuffer,
-					y: windowDimensions.height - toolbar.height -
+					y: metadataStore.window.innerHeight -
+						toolbar.height -
 						edgeBuffer,
 				},
 			];
@@ -199,14 +204,16 @@
 			edgeBuffer,
 			Math.min(
 				newX,
-				windowDimensions.width - toolbar.width - edgeBuffer,
+				metadataStore.window.innerWidth - toolbar.width -
+					edgeBuffer,
 			),
 		);
 		newY = Math.max(
 			edgeBuffer,
 			Math.min(
 				newY,
-				windowDimensions.height - toolbar.height - edgeBuffer,
+				metadataStore.window.innerHeight - toolbar.height -
+					edgeBuffer,
 			),
 		);
 
@@ -216,76 +223,30 @@
 		}
 	}
 
-	function handleKeyboard(event: KeyboardEvent) {
-		if (!uiStore.isActive) return;
-
-		const { ctrlKey, metaKey, shiftKey, key } = event;
-		const modifier = ctrlKey || metaKey;
-
-		if (modifier) {
-			switch (key) {
-				case "1":
-					event.preventDefault();
-					uiStore.setMode("inspect");
-					break;
-				case "2":
-					event.preventDefault();
-					uiStore.setMode("select");
-					break;
-				case "3":
-					event.preventDefault();
-					uiStore.setMode("measure");
-					break;
-				case "r":
-				case "R":
-					event.preventDefault();
-					uiStore.toggleRulers();
-					break;
-				case "d":
-				case "D":
-					event.preventDefault();
-					uiStore.toggleDistances();
-					break;
-				case "l":
-				case "L":
-					event.preventDefault();
-					// toggleAllTrackers();
-					break;
-				case "c":
-				case "C":
-					if (shiftKey) {
-						event.preventDefault();
-						trackers.clearAllTrackers();
-					}
-					break;
-			}
+	function handleKeyDown(
+		event: KeyboardEvent,
+		message: App.Message<KeyboardEvent>,
+	) {
+		switch (event.key) {
+			case "9":
+				capture(true);
+				break;
 		}
 	}
 
 	$effect(() => {
-		if (autoMove && uiStore.isActive) {
-			updatePosition();
-		}
+		const cleanup = createMessageHandler("KEYDOWN", handleKeyDown);
+		return cleanup;
 	});
 
 	onMount(() => {
-		windowDimensions.width = window.innerWidth;
-		windowDimensions.height = window.innerHeight;
-
 		const handleResize = () => {
-			windowDimensions.width = window.innerWidth;
-			windowDimensions.height = window.innerHeight;
 			updatePosition();
 		};
 
 		const positionInterval = setInterval(updatePosition, 100);
 
-		window.addEventListener("resize", handleResize);
-		document.addEventListener("keydown", handleKeyboard);
-
 		return () => {
-			window.removeEventListener("resize", handleResize);
-			document.removeEventListener("keydown", handleKeyboard);
 			clearInterval(positionInterval);
 			if (hideTimeout) clearTimeout(hideTimeout);
 		};
@@ -297,76 +258,69 @@
 </script>
 
 {#if uiStore.toolbar.isVisible}
-	<Toolbar.Root
-		class="bg-white fixed bottom-5 shadow-lg inline-flex h-12 items-center justify-center origin-left cursor-pointer rounded-lg p-1 transition-all duration-300"
-		style="transform: translateX(calc(50vw - 50%)); z-index: 100001"
+	<div
+		class="fixed shadow-lg bottom-3 inline-flex h-12 items-center justify-center origin-left gap-x-0.5 bg-white cursor-pointer rounded-lg p-1 transition-all duration-150 pointer-events-initial"
+		style="--spacing: 4px; z-index: 10000000003; transform: translateX(calc(50vw - 50%))"
 	>
-		<Toolbar.Group
-			value="select"
-			type="single"
-			class="flex items-center gap-x-0.5"
+		<ToolbarAction
+			disabled
+			pressed={uiStore.svg.mode === "inspect"}
+			label="Inspector Mode"
+			shortcut="1"
 		>
-			<Toolbar.GroupItem
-				aria-label="toggle bold"
-				value="select"
-				class="rounded-sm text-neutral-900 hover:bg-lime-200 hover:text-lime-500 active:bg-lime-700 data-[state=on]:bg-lime-700 data-[state=on]:text-white/80 inline-flex size-10 items-center justify-center transition-all active:scale-[0.98]"
+			<SquareDashedMousePointer absoluteStrokeWidth class="size-5" />
+		</ToolbarAction>
+		{#if trackers.current}
+			<ToolbarAction
+				bind:pressed={trackers.current.isLocked}
+				label="Lock Inspector"
+				shortcut="@"
 			>
-				<SquareDashedMousePointer class="size-5" />
-				<span
-					class="text-xs duration-75 absolute translate-y-3 translate-x-3.5"
-				>1</span>
-			</Toolbar.GroupItem>
-			{#if myValue === "select"}
-				<Toolbar.Button
-					aria-label="align left"
-					onclick={trackers.current?.toggleLock}
-					class="rounded-sm text-neutral-900 hover:bg-lime-200 hover:text-lime-500 active:bg-lime-700 data-[state=on]:bg-lime-700 data-[state=on]:text-white/80 inline-flex size-10 items-center justify-center transition-all active:scale-[0.98]"
-				>
-					{@const 				Icon = trackers.current?.isLocked
-					? LockKeyhole
-					: LockKeyholeOpen}
-					<Icon class="size-5" />
-					<span
-						class="text-xs duration-75 absolute translate-y-3 translate-x-3.5"
-					>@</span>
-				</Toolbar.Button>
-				<Toolbar.Button
-					aria-label="align left"
-					value="right"
-					class="rounded-sm text-neutral-900 hover:bg-lime-200 hover:text-lime-500 active:bg-lime-700 data-[state=on]:bg-lime-700 data-[state=on]:text-white/80 inline-flex size-10 items-center justify-center transition-all active:scale-[0.98]"
-				>
-					<Grid3x3 class="size-6" />
-				</Toolbar.Button>
-				<Separator.Root
-					class="bg-neutral-200 -my-1 mx-1 w-[1px] self-stretch"
-				/>
-			{/if}
-			<Toolbar.GroupItem
-				aria-label="toggle italic"
-				value="italic"
-				class="rounded-sm text-neutral-900 hover:bg-lime-200 hover:text-lime-500 active:bg-lime-700 data-[state=on]:bg-lime-700 data-[state=on]:text-white/80 inline-flex size-10 items-center justify-center transition-all active:scale-[0.98]"
-			>
-				<Skull class="size-6" />
-			</Toolbar.GroupItem>
-		</Toolbar.Group>
-		<Separator.Root
-			class="bg-neutral-200 -my-1 mx-1 w-[1px] self-stretch"
-		/>
-		<span onclickcapture={capture}>
-			<Toolbar.Button
-				aria-label="toggle strikethrough"
-				value="strikethrough"
-				class="rounded-sm text-neutral-900 hover:bg-lime-200 hover:text-lime-500 active:bg-lime-700 data-[state=on]:bg-lime-700 data-[state=on]:text-white/80 inline-flex size-10 items-center justify-center transition-all active:scale-[0.98]"
-			>
-				<Camera absoluteStrokeWidth class="size-6" />
-				<span
-					class="text-xs duration-75 absolute translate-y-3 translate-x-3.5"
-				>9</span>
-			</Toolbar.Button>
-		</span>
-		<Separator.Root
-			class="bg-neutral-200 -my-1 mx-1 w-[1px] self-stretch"
-		/>
-		<Toolbar.Button><ToolbarSettings /></Toolbar.Button>
-	</Toolbar.Root>
+				{@const 			Icon = trackers.current?.isLocked
+				? LockKeyhole
+				: LockKeyholeOpen}
+				<Icon absoluteStrokeWidth class="size-6" />
+			</ToolbarAction>
+		{/if}
+		<ToolbarAction
+			bind:pressed={uiStore.svg.showGrid}
+			label="Show Grid Lines"
+			shortcut="#"
+		>
+			<Grid3x3 absoluteStrokeWidth class="size-6" />
+		</ToolbarAction>
+		<ToolbarAction
+			bind:pressed={uiStore.svg.showRuler}
+			label="Show Ruler"
+			shortcut="$"
+		>
+			<Ruler absoluteStrokeWidth class="size-6" />
+		</ToolbarAction>
+		<ToolbarAction
+			bind:pressed={uiStore.svg.showDistances}
+			label="Show Distances"
+			shortcut="%"
+		>
+			<ChevronsLeftRightEllipsis absoluteStrokeWidth class="size-6" />
+		</ToolbarAction>
+		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
+		<ToolbarAction
+			bind:pressed={uiStore.sidePanel.isVisible}
+			label="Show Side Panel"
+			shortcut="8"
+		>
+			<PanelRightOpen absoluteStrokeWidth class="size-6" />
+		</ToolbarAction>
+		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
+		<ToolbarAction
+			pressed={false}
+			label="Screenshot"
+			onPressedChange={capture}
+			shortcut="9"
+		>
+			<Camera absoluteStrokeWidth class="size-6" />
+		</ToolbarAction>
+		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
+		<ToolbarSettings />
+	</div>
 {/if}

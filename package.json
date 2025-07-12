@@ -2,10 +2,11 @@
 	"name": "amgiflol",
 	"description": "Figma-like Web Inspector for designers",
 	"private": true,
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"type": "module",
 	"scripts": {
 		"build": "wxt build --mv3",
+		"build:all": "pnpm build && pnpm build:firefox",
 		"build:firefox": "wxt build -b firefox --mv3",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"dev": "wxt --mv3",
@@ -15,7 +16,8 @@
 		"postinstall": "wxt prepare",
 		"wxt": "wxt",
 		"zip": "wxt zip",
-		"zip:firefox": "wxt zip -b firefox"
+		"zip:all": "pnpm zip && pnpm zip:firefox",
+		"zip:firefox": "wxt zip -b firefox --mv3"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.29.5",

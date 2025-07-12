@@ -3,7 +3,7 @@ import { mount, unmount } from "svelte";
 import "virtual:uno.css";
 
 export default defineContentScript({
-	matches: ["<all_urls>"],
+	matches: ["https://*/*", "http://*/*"],
 	cssInjectionMode: "ui",
 	async main(ctx) {
 		const ui = await createShadowRootUi(ctx, {

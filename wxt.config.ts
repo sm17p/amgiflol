@@ -3,7 +3,12 @@ import { defineConfig } from "wxt";
 // See https://wxt.dev/api/config.html
 export default defineConfig({
 	manifest: {
-		permissions: ["activeTab", "downloads", "storage"],
+		browser_specific_settings: {
+			gecko: {
+				"id": "amgiflol@sm17p.me",
+			},
+		},
+		permissions: ["activeTab", "clipboardWrite", "downloads", "storage"],
 	},
 	modules: ["@wxt-dev/module-svelte", "@wxt-dev/unocss"],
 	outDir: "dist",
@@ -29,8 +34,7 @@ export default defineConfig({
 	},
 	zip: {
 		excludeSources: [
-			"ARCHITECTURE.md",
-			"DESIGN.md",
+			"tmp/*",
 		],
 	},
 });

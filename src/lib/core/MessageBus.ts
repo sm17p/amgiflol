@@ -1,5 +1,7 @@
 import { browser } from "wxt/browser";
 
+let popupProtocols = new Set(["chrome-extension:", "moz-extension:"]);
+
 class MessageBus {
 	private static instance: MessageBus;
 	private handlers: Map<App.MessageType | "*", Set<App.MessageHandler>> =
@@ -172,7 +174,7 @@ class MessageBus {
 			return "background";
 		}
 
-		if (window.location.protocol === "chrome-extension:") {
+		if (popupProtocols.has(window.location.protocol)) {
 			return "popup";
 		}
 

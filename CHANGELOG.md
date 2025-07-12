@@ -1,5 +1,11 @@
 # amgiflol
 
+## 0.1.1
+
+### Patch Changes
+
+- extenstion activation/deactivation in firefox
+
 ## 0.1.0
 
 ### Minor Changes

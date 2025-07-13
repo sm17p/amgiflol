@@ -3,7 +3,7 @@ import { googleAnalytics4 } from "@wxt-dev/analytics/providers/google-analytics-
 
 export default defineAppConfig({
 	analytics: {
-		debug: true,
+		debug: import.meta.env.DEV,
 		providers: [
 			googleAnalytics4({
 				apiSecret: import.meta.env.WXT_GA_API_SECRET,

@@ -1,5 +1,4 @@
 export default defineBackground(() => {
-	console.log("Hello background!", { id: browser.runtime.id });
 	browser.runtime.onMessage.addListener(async (event, sender) => {
 		if (event.type === "SCREENSHOT" && sender.tab) {
 			captureHandler(sender.tab);

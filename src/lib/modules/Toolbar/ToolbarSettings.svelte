@@ -45,7 +45,7 @@
 							<DropdownMenu.GroupHeading>
 								<h4 class="m-0 ml-1 grid grid-cols-[0px_1fr]">
 									<span></span>
-									<span class="flex justify-between gap-3">
+									<span class="min-w-[250px] flex justify-between items-center gap-3 font-inherit">
 										<Switch
 											bind:checked={uiStore
 												.toolbar
@@ -67,7 +67,7 @@
 								>
 									<span></span>
 									<span
-										class="flex justify-between items-center gap-3"
+										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
 											key="auto-hide-toolbar"
@@ -81,7 +81,7 @@
 								>
 									<span></span>
 									<span
-										class="flex justify-between items-center gap-3"
+										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
 											key="auto-move-toolbar"
@@ -95,7 +95,7 @@
 								>
 									<span></span>
 									<span
-										class="flex justify-between items-center gap-3"
+										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
 											key="auto-move-sidepanel"
@@ -109,7 +109,7 @@
 								>
 									<span></span>
 									<span
-										class="flex justify-between items-center gap-3"
+										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
 											key="multiple-trackers"
@@ -123,7 +123,7 @@
 								>
 									<span></span>
 									<span
-										class="flex justify-between items-center gap-3"
+										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
 											key="neighbour-distances"
@@ -137,7 +137,7 @@
 								>
 									<span></span>
 									<span
-										class="flex justify-between items-center gap-3"
+										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
 											key="onscreeen-measurement-lines"
@@ -151,7 +151,7 @@
 								>
 									<span></span>
 									<span
-										class="flex justify-between items-center gap-3"
+										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
 											key="parent-traversal"
@@ -165,7 +165,7 @@
 								>
 									<span></span>
 									<span
-										class="flex justify-between items-center gap-3"
+										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
 											key="sibling-traversal"
@@ -179,7 +179,7 @@
 								>
 									<span></span>
 									<span
-										class="flex justify-between items-center gap-3"
+										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
 											key="viewport-resizer"
@@ -214,7 +214,7 @@
 							{ checked },
 						)}
 									<span></span>
-									<span class="flex justify-between gap-3">
+									<span class="min-w-[250px] flex justify-between items-center gap-3">
 										<Switch
 											checked={checked}
 											disabled
@@ -233,7 +233,7 @@
 							{ checked },
 						)}
 									<span></span>
-									<span class="flex justify-between gap-3">
+									<span class="min-w-[250px] flex justify-between items-center gap-3">
 										<Switch
 											checked={checked}
 											disabled

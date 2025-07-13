@@ -120,44 +120,10 @@ export class TrackerState implements App.TrackerState {
 		}
 
 		this.element = target;
-		this.parentElement = this.findParent(target);
+		this.parentElement = elementInspector.moveUp(target);
 		this.updateTrackerPosition();
 	}
 
-	private findParent(node?: HTMLElement | null): HTMLElement | undefined {
-		let curr = node;
-		let parent = node?.parentElement;
-		// console.log("###################");
-
-		while (this.areSameSize(curr, parent)) {
-			parent = parent?.parentElement;
-		}
-
-		// console.log("🚀 ~ TrackerState ~ findParent ~ parent:", curr, parent);
-		// console.log("###################");
-
-		return parent ? parent : undefined;
-	}
-
-	private areSameSize(
-		node?: HTMLElement | null,
-		parent?: HTMLElement | null,
-	) {
-		// console.log("🚀 ~ TrackerState ~ sameWidth:", node, parent);
-
-		if (node == null || parent == null) {
-			return false;
-		}
-
-		const sameWidth = node.offsetWidth === parent.offsetWidth;
-		const sameHeight = node.offsetHeight === parent.offsetHeight;
-
-		// console.log("🚀 ~ TrackerState ~ sameWidth:", parent.offsetWidth, node.offsetWidth, sameWidth);
-		// console.log("🚀 ~ TrackerState ~ sameHeight:", parent.offsetHeight, node.offsetHeight, sameHeight);
-
-		// display: contents element are 0 x 0
-		return sameWidth && sameHeight || parent.style.display === "contents";
-	}
 
 	private getId() {
 		return `tracker-${Date.now()}-${

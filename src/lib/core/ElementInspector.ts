@@ -29,10 +29,15 @@ export class ElementInspector {
 		};
 	}
 
-	public findParentElement(element: HTMLElement): HTMLElement | null {
+	public moveUp(element?: HTMLElement | null): HTMLElement | undefined {
 		let current = element;
-		let parent = element.parentElement;
+		let parent = element?.parentElement;
 		let safetyCounter = 20;
+
+		while (this.areSameSize(current, parent) && safetyCounter > 0) {
+			parent = parent?.parentElement;
+			safetyCounter--;
+		}
 
 		while (parent && safetyCounter > 0) {
 			if (!this.areSameSize(current, parent)) {
@@ -43,7 +48,7 @@ export class ElementInspector {
 			safetyCounter--;
 		}
 
-		return parent;
+		return parent ? parent : undefined;
 	}
 
 	public isExtensionElement(element: HTMLElement): boolean {
@@ -226,14 +231,15 @@ export class ElementInspector {
 		return `${top} ${right} ${bottom} ${left}`;
 	}
 
-	private areSameSize(element: Element, parent: Element): boolean {
-		const elementRect = element.getBoundingClientRect();
-		const parentRect = parent.getBoundingClientRect();
+	public areSameSize(element?: HTMLElement | null, parent?: HTMLElement | null): boolean {
+		if (element == null || parent == null) {
+			return false;
+		}
 
-		const widthDiff = Math.abs(elementRect.width - parentRect.width);
-		const heightDiff = Math.abs(elementRect.height - parentRect.height);
+		const widthDiff = Math.abs(element.offsetWidth - parent.offsetWidth);
+		const heightDiff = Math.abs(element.offsetHeight - parent.offsetHeight);
 
-		return widthDiff < 2 && heightDiff < 2;
+		return widthDiff < 2 && heightDiff < 2 || parent.style.display === "contents";
 	}
 
 	private greatestCommonDivisor(a: number, b: number): number {
@@ -241,4 +247,4 @@ export class ElementInspector {
 	}
 }
 
-export const elementInspector = ElementInspector.getInstance();
+export const elementInspector: ElementInspector = ElementInspector.getInstance();

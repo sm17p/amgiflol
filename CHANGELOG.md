@@ -1,5 +1,15 @@
 # amgiflol
 
+## 0.2.0
+
+### Minor Changes
+
+- c8314a9: Adds new voting feature
+
+### Patch Changes
+
+- dcc0bd6: Add analytics module
+
 ## 0.1.1
 
 ### Patch Changes

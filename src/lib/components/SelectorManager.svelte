@@ -22,11 +22,11 @@
 		<Tracker
 			trackerId={tracker.id}
 			showParent={true}
-			zIndex={10000000002}
+			zIndex={1000000002}
 		/>
 	{/each}
 	<Tracker
 		showParent={true}
-		zIndex={10000000003}
+		zIndex={1000000003}
 	/>
 {/if}

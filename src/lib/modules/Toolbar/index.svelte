@@ -260,7 +260,7 @@
 {#if uiStore.toolbar.isVisible}
 	<div
 		class="fixed shadow-lg bottom-3 inline-flex h-12 items-center justify-center origin-left gap-x-0.5 bg-white cursor-pointer rounded-lg p-1 transition-all duration-150 pointer-events-initial"
-		style="--spacing: 4px; z-index: 10000000003; transform: translateX(calc(50vw - 50%))"
+		style="--spacing: 4px; z-index: 1000000006; transform: translateX(calc(50vw - 50%))"
 	>
 		<ToolbarAction
 			disabled

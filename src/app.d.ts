@@ -1,7 +1,13 @@
 import { type AttributifyNames } from "@unocss/preset-attributify";
+import { Component } from "svelte";
 
 type Prefix = "amg-"; // change it to your prefix
 type AttributifyAttributes = Partial<Record<AttributifyNames<Prefix>, string>>;
+
+
+// declare module "svelte" {
+// 	interface Component<Props extends AttributifyAttributes, Exports extends Record<string, any> = {}, Bindings extends keyof Props | "" = string> {}
+// }
 
 declare global {
 	namespace App {
@@ -170,9 +176,5 @@ declare global {
 	}
 }
 
-// // This is a bit hacky but works for most cases
-// declare module '*' {
-//   interface ComponentProps extends AttributifyAttributes {}
-// }
 
 export {};

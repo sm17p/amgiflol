@@ -10,7 +10,11 @@ export default defineConfig({
 		},
 		permissions: ["activeTab", "clipboardWrite", "downloads", "storage"],
 	},
-	modules: ["@wxt-dev/module-svelte", "@wxt-dev/unocss"],
+	modules: [
+		"@wxt-dev/module-svelte",
+		"@wxt-dev/unocss",
+		"@wxt-dev/analytics/module",
+	],
 	outDir: "dist",
 	srcDir: "src",
 	svelte: {

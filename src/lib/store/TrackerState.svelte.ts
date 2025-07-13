@@ -87,6 +87,9 @@ export class TrackerState implements App.TrackerState {
 	}
 
 	public toggleLock() {
+		analytics.track("toggle_inspector_lock", {
+			value: this.isLocked.toString(),
+		});
 		this.isLocked = !this.isLocked;
 	}
 

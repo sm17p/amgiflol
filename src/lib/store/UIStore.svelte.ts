@@ -152,14 +152,23 @@ export class UIStore implements App.UIStore {
 
 	toggleGridlines() {
 		this.svg.showGrid = !this.svg.showGrid;
+		analytics.track("toggle_gridlines", {
+			value: this.svg.showGrid.toString(),
+		});
 	}
 
 	toggleDistances() {
 		this.svg.showDistances = !this.svg.showDistances;
+		analytics.track("toggle_distances", {
+			value: this.svg.showDistances.toString(),
+		});
 	}
 
 	toggleRulers() {
 		this.svg.showRuler = !this.svg.showRuler;
+		analytics.track("toggle_ruler", {
+			value: this.svg.showRuler.toString(),
+		});
 	}
 
 	setZoomLevel(zoom: number) {

@@ -5,18 +5,14 @@ export default defineBackground(() => {
 			captureHandler(sender.tab);
 		}
 	});
-	// (browser.action ?? browser.browserAction).onClicked.addListener(
-	// 	async (tab) => {
-	// 		console.log("browser action triggered,", tab);
-	// 		if (tab.id) {
-	// 			await browser.tabs.sendMessage(tab.id, { type: "MOUNT_UI" });
-	// 		}
-	// 	},
-	// );
-	// See https://developer.chrome.com/docs/extensions/develop/concepts/activeTab#invoking-activeTab
-	// (browser.action ?? browser.browserAction).onClicked.addListener(
-	// 	captureHandler,
-	// );
+
+	browser.runtime.onInstalled.addListener(async ({ reason }) => {
+		console.log(
+			`Extension installed, reason: ${reason}, browser: ${import.meta.env.BROWSER}`,
+		);
+
+		analytics.setEnabled(true);
+	});
 });
 
 async function captureHandler(tab: Browser.tabs.Tab) {

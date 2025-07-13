@@ -30,8 +30,7 @@
 >
 	<Tooltip.Provider delayDuration={0} disableHoverableContent={false}>
 		{#if uiStore.isActive}
-			<SvgManager style="z-index: 10000000001" />
-
+			<SvgManager style="z-index: 1000000004" />
 			<SelectorManager
 				enabled={uiStore.isActive}
 				maxTrackers={10}

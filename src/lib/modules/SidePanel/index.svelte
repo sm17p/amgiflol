@@ -45,7 +45,7 @@
 			x,
 			duration: 150,
 		}}
-		style={`width:${uiStore.sidePanel.width}px; z-index: 10000000003;`}
+		style={`width:${uiStore.sidePanel.width}px; z-index: 1000000005;`}
 	>
 		<div class="px-4 pb-4 space-y-4">
 			<header class="border-b bg-white border-zinc-200 pb-3 sticky pt-4">

@@ -44,6 +44,7 @@
 	"packageManager": "pnpm@10.12.3+sha512.467df2c586056165580ad6dfb54ceaad94c5a30f80893ebdec5a44c5aa73c205ae4a5bb9d5ed6bb84ea7c249ece786642bbb49d06a307df218d03da41c317417",
 	"dependencies": {
 		"@lucide/svelte": "^0.525.0",
+		"@wxt-dev/analytics": "^0.5.0",
 		"bits-ui": "^2.8.10"
 	}
 }

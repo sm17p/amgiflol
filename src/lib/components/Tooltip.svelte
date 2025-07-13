@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Tooltip } from "bits-ui";
-	import { Snippet } from "svelte";
-	import { fade, fly } from "svelte/transition";
+	import { type Snippet } from "svelte";
+	import { fade } from "svelte/transition";
 
 	interface Props {
 		children: Snippet;
@@ -11,7 +11,10 @@
 	let { children, label }: Props = $props();
 </script>
 
-<Tooltip.Root disableCloseOnTriggerClick disableHoverableContent>
+<Tooltip.Root 
+	disableCloseOnTriggerClick 
+	disableHoverableContent
+>
 	<Tooltip.Trigger disabled={label === undefined}>
 		{@render children?.()}
 	</Tooltip.Trigger>

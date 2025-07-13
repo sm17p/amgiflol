@@ -5,6 +5,7 @@
 	import { Cog } from "@lucide/svelte";
 	import { DropdownMenu } from "bits-ui";
 	import { fly } from "svelte/transition";
+	import UpvoteAction from "./UpvoteAction.svelte";
 
 	const uiStore = getContext<UIStore>("uiStore");
 </script>
@@ -39,7 +40,161 @@
 					<div {...props} transition:fly={{ y: -10, duration: 200 }}>
 						<DropdownMenu.Group
 							class="grid grid-cols-1 gap-y-1"
-							aria-label="Behaviour"
+							aria-label="Feature Voting"
+						>
+							<DropdownMenu.GroupHeading>
+								<h4 class="m-0 ml-1 grid grid-cols-[0px_1fr]">
+									<span></span>
+									<span class="flex justify-between gap-3">
+										<Switch
+											bind:checked={uiStore
+												.toolbar
+												.featureVotingVisible}
+											labelText="Feature Voting"
+										/>
+									</span>
+								</h4>
+							</DropdownMenu.GroupHeading>
+
+							{#if 						uiStore.toolbar
+							.featureVotingVisible}
+								<DropdownMenu.Separator
+									class="-ml-1 -mr-1 block h-px bg-zinc-200"
+								/>
+								<DropdownMenu.Item
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									closeOnSelect={false}
+								>
+									<span></span>
+									<span
+										class="flex justify-between items-center gap-3"
+									>
+										<UpvoteAction
+											key="auto-hide-toolbar"
+											label="Auto-Hide Toolbar"
+										/>
+									</span>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									closeOnSelect={false}
+								>
+									<span></span>
+									<span
+										class="flex justify-between items-center gap-3"
+									>
+										<UpvoteAction
+											key="auto-move-toolbar"
+											label="Auto-Move Toolbar"
+										/>
+									</span>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									closeOnSelect={false}
+								>
+									<span></span>
+									<span
+										class="flex justify-between items-center gap-3"
+									>
+										<UpvoteAction
+											key="auto-move-sidepanel"
+											label="Auto-Move Sidepanel"
+										/>
+									</span>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									closeOnSelect={false}
+								>
+									<span></span>
+									<span
+										class="flex justify-between items-center gap-3"
+									>
+										<UpvoteAction
+											key="multiple-trackers"
+											label="Multiple Trackers"
+										/>
+									</span>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									closeOnSelect={false}
+								>
+									<span></span>
+									<span
+										class="flex justify-between items-center gap-3"
+									>
+										<UpvoteAction
+											key="neighbour-distances"
+											label="Neighbour Distances"
+										/>
+									</span>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									closeOnSelect={false}
+								>
+									<span></span>
+									<span
+										class="flex justify-between items-center gap-3"
+									>
+										<UpvoteAction
+											key="onscreeen-measurement-lines"
+											label="Onscreen Measurement Lines"
+										/>
+									</span>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									closeOnSelect={false}
+								>
+									<span></span>
+									<span
+										class="flex justify-between items-center gap-3"
+									>
+										<UpvoteAction
+											key="parent-traversal"
+											label="Parent Traversal"
+										/>
+									</span>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									closeOnSelect={false}
+								>
+									<span></span>
+									<span
+										class="flex justify-between items-center gap-3"
+									>
+										<UpvoteAction
+											key="sibling-traversal"
+											label="Sibling Traversal"
+										/>
+									</span>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									closeOnSelect={false}
+								>
+									<span></span>
+									<span
+										class="flex justify-between items-center gap-3"
+									>
+										<UpvoteAction
+											key="viewport-resizer"
+											label="Viewport Resizer"
+										/>
+									</span>
+								</DropdownMenu.Item>
+							{/if}
+						</DropdownMenu.Group>
+						<DropdownMenu.Separator
+							class="my-1 -ml-1 -mr-1 block h-px bg-zinc-200"
+						/>
+						<DropdownMenu.Group
+							class="grid grid-cols-1 gap-y-1"
+							aria-label="Toolbar Behaviour"
 						>
 							<DropdownMenu.GroupHeading>
 								<h4 class="m-0 ml-1">
@@ -50,8 +205,9 @@
 								class="-ml-1 -mr-1 block h-px bg-zinc-200"
 							/>
 							<DropdownMenu.CheckboxItem
-								class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0"
+								class="hover:not-data-[disabled]:bg-lime-200 hover:not-data-[disabled]:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 								bind:checked={uiStore.toolbar.autoMove}
+								disabled
 								closeOnSelect={false}
 							>
 								{#snippet children(
@@ -60,15 +216,15 @@
 									<span></span>
 									<span class="flex justify-between gap-3">
 										<Switch
-											labelText="Auto-Move"
 											checked={checked}
+											disabled
+											labelText="Auto-Move"
 										/>
 									</span>
 								{/snippet}
 							</DropdownMenu.CheckboxItem>
-
 							<DropdownMenu.CheckboxItem
-								class="hover:bg-lime-200 border-1 border-transparent rounded-lg hover:border-lime-900 grid grid-cols-[0px_1fr] pl-1"
+								class="hover:not-data-[disabled]:bg-lime-200 hover:not-data-[disabled]:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 								bind:checked={uiStore.toolbar.autoHide}
 								disabled
 								closeOnSelect={false}

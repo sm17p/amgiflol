@@ -24,6 +24,7 @@ export class UIStore implements App.UIStore {
 	toolbar = $state<App.UIStore["toolbar"]>({
 		autoMove: false,
 		autoHide: false,
+		featureVotingVisible: true,
 		isVisible: true,
 		position: { x: 20, y: 20 },
 		settings: {

@@ -11,8 +11,8 @@
 	let { children, label }: Props = $props();
 </script>
 
-<Tooltip.Root 
-	disableCloseOnTriggerClick 
+<Tooltip.Root
+	disableCloseOnTriggerClick
 	disableHoverableContent
 >
 	<Tooltip.Trigger disabled={label === undefined}>

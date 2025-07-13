@@ -28,6 +28,7 @@
 			alt: event.altKey,
 		});
 
+		// Disable shortcuts when typing
 		if (
 			event?.currentTarget instanceof Document &&
 				event?.currentTarget?.body === event.target ||

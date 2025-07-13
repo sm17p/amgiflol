@@ -12,21 +12,23 @@
 		ref = $bindable(null),
 		labelText,
 		class: classes,
+		style = "",
 		...restProps
 	}: WithoutChildrenOrChild<Switch.RootProps> & {
 		labelText: string;
 	} = $props();
 </script>
 
-<Label.Root for={id}>{labelText}</Label.Root>
+<Label.Root class="cursor-inherit" for={id}>{labelText}</Label.Root>
 <Switch.Root
 	bind:checked
 	bind:ref
 	{id}
-	class="h-full aspect-ratio-video focus-visible:ring-white focus-visible:ring-offset data-[state=checked]:bg-lime-700 data-[state=unchecked]:bg-neutral-700 data-[state=unchecked]:shadow-inner dark:data-[state=checked]:bg-white focus-visible:outline-hidden peer inline-flex cursor-pointer items-center rounded-full px-[3px] transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+	class="parent h-full p-0.5 aspect-ratio-video focus-visible:ring-white focus-visible:ring-offset data-[state=checked]:bg-lime-700 data-[state=unchecked]:bg-neutral-700 data-[state=unchecked]:shadow-inner dark:data-[state=checked]:bg-white focus-visible:outline-hidden inline-flex cursor-pointer items-center rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+	style={`container-type: size;${style}`}
 	{...restProps}
 >
 	<Switch.Thumb
-		class="bg-neutral-500 data-[state=unchecked]:shadow-xs pointer-events-none block rounded-full transition-transform data-[state=checked]:translate-x-6 data-[state=unchecked]:translate-x-0 dark:border dark:data-[state=unchecked]:border"
+		class="parent-active:scale-[0.85] bg-white h-full aspect-1 data-[state=unchecked]:shadow-md pointer-events-none block rounded-full transition-transform data-[state=checked]:translate-x-[calc(100cqw-100%)] data-[state=unchecked]:-translate-x-0 dark:border dark:data-[state=unchecked]:border"
 	/>
 </Switch.Root>

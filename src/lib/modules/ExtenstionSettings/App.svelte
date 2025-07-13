@@ -25,6 +25,8 @@
 
 	async function mount() {
 		try {
+			analytics.page(import.meta.env.ENTRYPOINT);
+
 			const [tab] = await browser.tabs.query({
 				active: true,
 				currentWindow: true,

@@ -4,7 +4,6 @@ import { Component } from "svelte";
 type Prefix = "amg-"; // change it to your prefix
 type AttributifyAttributes = Partial<Record<AttributifyNames<Prefix>, string>>;
 
-
 // declare module "svelte" {
 // 	interface Component<Props extends AttributifyAttributes, Exports extends Record<string, any> = {}, Bindings extends keyof Props | "" = string> {}
 // }
@@ -94,6 +93,7 @@ declare global {
 				autoHide: boolean;
 				autoMove: boolean;
 				isVisible: boolean;
+				featureVotingVisible: boolean;
 				position: { x: number; y: number };
 				activeFeature?: string;
 				settings: {
@@ -175,6 +175,5 @@ declare global {
 		interface HTMLAttributes extends AttributifyAttributes {}
 	}
 }
-
 
 export {};

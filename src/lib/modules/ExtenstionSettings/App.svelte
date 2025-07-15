@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { useAppConfig } from "#imports";
 	import {
 		createMessageHandler,
 		sendMessage,
@@ -6,6 +7,8 @@
 	import { Label, Switch } from "bits-ui";
 	import { browser } from "wxt/browser";
 	import "./app.css";
+
+	const appConfig = useAppConfig();
 
 	let isLoading = $state(false);
 	let errorMessage = $state("");
@@ -129,5 +132,6 @@
 				{successMessage}
 			</div>
 		{/if}
+		<footer class="text-end">v{appConfig.version}</footer>
 	</div>
 </main>

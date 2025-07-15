@@ -1,5 +1,6 @@
 // <srcDir>/app.config.ts
 import { googleAnalytics4 } from "@wxt-dev/analytics/providers/google-analytics-4";
+import pkg from "../package.json";
 
 export default defineAppConfig({
 	analytics: {
@@ -20,4 +21,5 @@ export default defineAppConfig({
 			init: () => ({}),
 		}),
 	},
+	version: pkg.version.toString(),
 });

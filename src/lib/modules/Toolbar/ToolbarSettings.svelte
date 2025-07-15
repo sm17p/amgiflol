@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Switch from "@/lib/components/Switch.svelte";
-	import { createMessageHandler } from "@/lib/core/MessageBus";
 	import { UIStore } from "@/lib/store/index.svelte";
 	import { Cog } from "@lucide/svelte";
 	import { DropdownMenu } from "bits-ui";
@@ -8,6 +7,8 @@
 	import UpvoteAction from "./UpvoteAction.svelte";
 
 	const uiStore = getContext<UIStore>("uiStore");
+	// https://github.com/sm17p/amgiflol/issues/5
+	const disableForFirefox = import.meta.env.FIREFOX;
 </script>
 
 <!-- class="rounded-2xl bg-background-alt flex h-10 items-center gap-1" -->
@@ -52,6 +53,7 @@
 											bind:checked={uiStore
 												.toolbar
 												.featureVotingVisible}
+											disabled={disableForFirefox}
 											labelText="Feature Voting"
 										/>
 									</span>
@@ -72,6 +74,7 @@
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
+											disabled={disableForFirefox}
 											key="auto-hide-toolbar"
 											label="Auto-Hide Toolbar"
 										/>
@@ -86,6 +89,7 @@
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
+											disabled={disableForFirefox}
 											key="auto-move-toolbar"
 											label="Auto-Move Toolbar"
 										/>
@@ -100,6 +104,7 @@
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
+											disabled={disableForFirefox}
 											key="auto-move-sidepanel"
 											label="Auto-Move Sidepanel"
 										/>
@@ -114,6 +119,7 @@
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
+											disabled={disableForFirefox}
 											key="multiple-trackers"
 											label="Multiple Trackers"
 										/>
@@ -128,6 +134,7 @@
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
+											disabled={disableForFirefox}
 											key="neighbour-distances"
 											label="Neighbour Distances"
 										/>
@@ -142,6 +149,7 @@
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
+											disabled={disableForFirefox}
 											key="onscreeen-measurement-lines"
 											label="Onscreen Measurement Lines"
 										/>
@@ -156,6 +164,7 @@
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
+											disabled={disableForFirefox}
 											key="parent-traversal"
 											label="Parent Traversal"
 										/>
@@ -170,6 +179,7 @@
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
+											disabled={disableForFirefox}
 											key="sibling-traversal"
 											label="Sibling Traversal"
 										/>
@@ -184,6 +194,7 @@
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<UpvoteAction
+											disabled={disableForFirefox}
 											key="viewport-resizer"
 											label="Viewport Resizer"
 										/>

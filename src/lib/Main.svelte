@@ -55,7 +55,7 @@
 
 	:global(html:has(main.active)) {
 		pointer-events: none;
-		/* font-size: 16px !important; */
+		font-size: 16px !important;
 
 		:global(body) {
 			position: fixed;

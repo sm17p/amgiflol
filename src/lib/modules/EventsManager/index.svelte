@@ -4,6 +4,7 @@
 		createMessageHandler,
 		sendMessage,
 	} from "@/lib/core/MessageBus";
+	// import { documentAttachment } from "@/lib/store/CssVariableBlocker.svelte";
 	import { MetaDataStore, UIStore } from "@/lib/store/index.svelte";
 	import { onMount } from "svelte";
 
@@ -112,6 +113,7 @@
 	});
 </script>
 
+<!-- {@attach documentAttachment()} -->
 <svelte:document
 	onmousemove={handleMouseMove}
 	onkeydown={handleKeyDown}

@@ -176,4 +176,10 @@ declare global {
 	}
 }
 
+declare module "wxt/utils/define-app-config" {
+	export interface WxtAppConfig {
+		version: string;
+	}
+}
+
 export {};

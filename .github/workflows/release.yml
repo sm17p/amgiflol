@@ -1,0 +1,208 @@
+# .github/workflows/release.yml
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+  # Manual workflow dispatch for releases
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Action to perform"
+        required: true
+        default: "build"
+        type: choice
+        options:
+          - build
+          - release
+          - submit
+      dryRun:
+        description: "Perform dry run (no actual submission)"
+        default: false
+        type: boolean
+
+jobs:
+  changeset-check:
+    permissions:
+      contents: write
+      pull-requests: write
+    name: Version with Changeset
+    runs-on: ubuntu-24.04-arm
+    if: |
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch'
+    outputs:
+      hasChangesets: ${{ steps.changeset-check.outputs.hasChangesets }}
+      newVersion: ${{ steps.changeset-check.outputs.newVersion }}
+      currentVersion: ${{ steps.changeset-check.outputs.currentVersion }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - name: Configure Git
+        run: |
+          git config user.email "github-actions@users.noreply.github.com"
+          git config user.name "GitHub Actions"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check for changesets
+        id: changeset-check
+        run: |
+          if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v README)" ]; then
+            echo "hasChangesets=false" >> "$GITHUB_OUTPUT"
+            echo "⚠️ No changesets found. Skipping version bump."
+          else
+            echo "hasChangesets=true" >> "$GITHUB_OUTPUT"
+            echo "✅ Changesets found. Proceeding with version bump."
+          fi
+
+      - name: Version packages
+        if: steps.changeset-check.outputs.hasChangesets == 'true'
+        id: version
+        run: |
+          pnpm changeset version
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "newVersion=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          echo "📦 New version: $NEW_VERSION"
+
+      - name: Get current version (if no changesets)
+        if: steps.changeset-check.outputs.hasChangesets == 'false'
+        id: current-version
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "currentVersion=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "📦 Current version: $CURRENT_VERSION"
+
+      # Only auto-commit on push to main
+      - name: Commit and Push (with version bump)
+        if: ${{ github.event_name == 'push' && steps.changeset-check.outputs.hasChangesets == 'true' }}
+        run: |
+          git add .
+          git commit -m "chore(release): v$NEW_VERSION"
+          git tag v$NEW_VERSION
+          git push
+          git push --tags
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.newVersion }}
+
+#   release:
+#     needs: check-comment
+#     if: needs.check-comment.outputs.should_release == 'true'
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Get PR details
+#         id: pr
+#         uses: actions/github-script@v7
+#         with:
+#           script: |
+#             const { data: pr } = await github.rest.pulls.get({
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               pull_number: context.issue.number
+#             });
+
+#             core.setOutput('ref', pr.head.ref);
+#             core.setOutput('sha', pr.head.sha);
+
+#       - name: Checkout PR branch
+#         uses: actions/checkout@v4
+#         with:
+#           ref: ${{ steps.pr.outputs.ref }}
+#           token: ${{ secrets.GITHUB_TOKEN }}
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '18'
+#           cache: 'npm'
+#           registry-url: 'https://registry.npmjs.org'
+
+#       - name: Install dependencies
+#         run: npm ci
+
+#       - name: Run final checks
+#         run: |
+#           npm run lint
+#           npm run build
+#           npm test
+
+#       - name: Configure Git
+#         run: |
+#           git config user.name "github-actions[bot]"
+#           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+#       - name: Version bump
+#         run: |
+#           npm version ${{ needs.check-comment.outputs.release_type }} --no-git-tag-version
+#           echo "NEW_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+#       - name: Update changelog
+#         run: |
+#           # You can add changelog generation here
+#           # Example: npx conventional-changelog -p angular -i CHANGELOG.md -s
+#           echo "# Changelog updated for v${{ env.NEW_VERSION }}" >> CHANGELOG.md
+
+#       - name: Commit changes
+#         run: |
+#           git add package.json package-lock.json CHANGELOG.md
+#           git commit -m "chore: release v${{ env.NEW_VERSION }}"
+#           git tag "v${{ env.NEW_VERSION }}"
+
+#       - name: Push changes
+#         run: |
+#           git push origin ${{ steps.pr.outputs.ref }}
+#           git push origin "v${{ env.NEW_VERSION }}"
+
+#       - name: Create GitHub Release
+#         uses: actions/github-script@v7
+#         with:
+#           script: |
+#             const { data: release } = await github.rest.repos.createRelease({
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               tag_name: `v${{ env.NEW_VERSION }}`,
+#               name: `Release v${{ env.NEW_VERSION }}`,
+#               body: `## What's Changed\n\nReleased via PR #${{ github.event.issue.number }}`,
+#               draft: false,
+#               prerelease: false
+#             });
+
+#             await github.rest.issues.createComment({
+#               issue_number: context.issue.number,
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               body: `🎉 Release v${{ env.NEW_VERSION }} created successfully!\n\n[View Release](${release.html_url})`
+#             });
+
+#       - name: Publish to npm
+#         if: env.NPM_TOKEN != ''
+#         run: npm publish
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+#       - name: Merge PR automatically
+#         uses: actions/github-script@v7
+#         with:
+#           script: |
+#             await github.rest.pulls.merge({
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               pull_number: context.issue.number,
+#               commit_title: `Release v${{ env.NEW_VERSION }}`,
+#               merge_method: 'squash'
+#             });

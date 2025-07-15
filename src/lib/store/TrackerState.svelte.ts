@@ -46,7 +46,7 @@ export class TrackerState implements App.TrackerState {
 			() => [
 				this.isLocked,
 			],
-			([locked]) => {
+			([_locked]) => {
 				this.updateLockedLines();
 			},
 			{
@@ -60,7 +60,7 @@ export class TrackerState implements App.TrackerState {
 				metadataStoreStore.scroll.scrollY,
 				this.isLocked,
 			],
-			([x, y, locked]) => {
+			([_x, _y, locked]) => {
 				if (locked) {
 					this.updateTrackerPosition();
 				}
@@ -123,7 +123,6 @@ export class TrackerState implements App.TrackerState {
 		this.parentElement = elementInspector.moveUp(target);
 		this.updateTrackerPosition();
 	}
-
 
 	private getId() {
 		return `tracker-${Date.now()}-${

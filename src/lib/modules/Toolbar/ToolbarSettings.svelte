@@ -45,7 +45,9 @@
 							<DropdownMenu.GroupHeading>
 								<h4 class="m-0 ml-1 grid grid-cols-[0px_1fr]">
 									<span></span>
-									<span class="min-w-[250px] flex justify-between items-center gap-3 font-inherit">
+									<span
+										class="min-w-[250px] flex justify-between items-center gap-3 font-inherit"
+									>
 										<Switch
 											bind:checked={uiStore
 												.toolbar
@@ -214,7 +216,9 @@
 							{ checked },
 						)}
 									<span></span>
-									<span class="min-w-[250px] flex justify-between items-center gap-3">
+									<span
+										class="min-w-[250px] flex justify-between items-center gap-3"
+									>
 										<Switch
 											checked={checked}
 											disabled
@@ -233,7 +237,9 @@
 							{ checked },
 						)}
 									<span></span>
-									<span class="min-w-[250px] flex justify-between items-center gap-3">
+									<span
+										class="min-w-[250px] flex justify-between items-center gap-3"
+									>
 										<Switch
 											checked={checked}
 											disabled

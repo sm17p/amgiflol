@@ -18,6 +18,9 @@
 		"svelte.scriptIndent": true,
 		"svelte.styleIndent": true
 	},
+	"yaml": {
+		"indentWidth": 2
+	},
 	"excludes": [
 		"**/node_modules",
 		"**/*-lock.json",

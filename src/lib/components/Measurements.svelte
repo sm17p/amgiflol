@@ -178,7 +178,13 @@
 	</defs>
 
 	{#if uiStore.svg.showGrid}
-		<rect width="100%" height="100%" fill="url(#grid)" />
+		<rect
+			class="anim"
+			width="100%"
+			height="100%"
+			fill="url(#grid)"
+			style={`--x: ${metadataStore.mouse.x}; --y:${metadataStore.mouse.y}`}
+		/>
 	{/if}
 
 	{#if showMeasurements}
@@ -310,6 +316,72 @@
 {/if}
 
 <style>
+	/* .anim {
+		--x: 0;
+		--y: 0;
+		--sin-x: sin(var(--x));
+		--cos-y: cos(var(--y)); 
+		transition: transform 0.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+		transform: scale(1) skewX(calc(--cos-y * 180deg)) 
+	                      skewY(calc(--sin-x * 3600deg)); */
+	/* animation: glitch-loop-1 0.5s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55) alternate-reverse; */
+	/* transform-origin: center; */
+	/* } */
+
+	@keyframes glitch-loop-1 {
+		0% {
+			transform: scale(1) skewX(0deg) skewY(60deg);
+		}
+		25% {
+			transform: scale(1) skewX(60deg) skewY(-60deg);
+		}
+		50% {
+			transform: scale(1) skewX(-60deg) skewY(60deg);
+		}
+		75% {
+			transform: scale(1) skewX(60deg) skewY(-60deg);
+		}
+		100% {
+			transform: scale(1) skewX(0deg) skewY(60deg);
+		}
+	}
+
+	@keyframes glitch-loop-2 {
+		0% {
+			transform: scale(1) skewX(0deg);
+		}
+		25% {
+			transform: scale(1) skewX(90deg);
+		}
+		50% {
+			transform: scale(1) skewX(-90deg);
+		}
+		75% {
+			transform: scale(1) skewX(90deg);
+		}
+		100% {
+			transform: scale(1) skewX(0deg);
+		}
+	}
+
+	@keyframes glitch-loop-3 {
+		0% {
+			transform: scale(1) skewY(0deg);
+		}
+		25% {
+			transform: scale(1) skewY(90deg);
+		}
+		50% {
+			transform: scale(1) skewY(-90deg);
+		}
+		75% {
+			transform: scale(1) skewY(90deg);
+		}
+		100% {
+			transform: scale(1) skewY(0deg);
+		}
+	}
+
 	.measurement-text {
 		background: rgba(255, 255, 255, 0.9);
 		padding: 2px 4px;

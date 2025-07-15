@@ -6,7 +6,7 @@ export default defineConfig({
 		browser_specific_settings: {
 			gecko: {
 				"id": "amgiflol@sm17p.me",
-				"strict_min_version": "132.0"
+				"strict_min_version": "132.0",
 			},
 		},
 		permissions: ["activeTab", "clipboardWrite", "downloads", "storage"],

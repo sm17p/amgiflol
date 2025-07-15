@@ -231,7 +231,10 @@ export class ElementInspector {
 		return `${top} ${right} ${bottom} ${left}`;
 	}
 
-	public areSameSize(element?: HTMLElement | null, parent?: HTMLElement | null): boolean {
+	public areSameSize(
+		element?: HTMLElement | null,
+		parent?: HTMLElement | null,
+	): boolean {
 		if (element == null || parent == null) {
 			return false;
 		}
@@ -239,7 +242,8 @@ export class ElementInspector {
 		const widthDiff = Math.abs(element.offsetWidth - parent.offsetWidth);
 		const heightDiff = Math.abs(element.offsetHeight - parent.offsetHeight);
 
-		return widthDiff < 2 && heightDiff < 2 || parent.style.display === "contents";
+		return widthDiff < 2 && heightDiff < 2 ||
+			parent.style.display === "contents";
 	}
 
 	private greatestCommonDivisor(a: number, b: number): number {
@@ -247,4 +251,5 @@ export class ElementInspector {
 	}
 }
 
-export const elementInspector: ElementInspector = ElementInspector.getInstance();
+export const elementInspector: ElementInspector = ElementInspector
+	.getInstance();

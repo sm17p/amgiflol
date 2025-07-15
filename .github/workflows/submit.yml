@@ -1,175 +1,336 @@
-name: Submit for Review
+name: PR Commands
 on:
-    workflow_dispatch:
-        inputs:
-            dryRun:
-                default: false
-                type: boolean
-                description: Skip submission and perform a dry run
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+  # Manual workflow dispatch for releases
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Action to perform"
+        required: true
+        default: "build"
+        type: choice
+        options:
+          - build
+          - release
+          - submit
+      dryRun:
+        description: "Perform dry run (no actual submission)"
+        default: false
+        type: boolean
+
+  # Comment-triggered releases
+  issue_comment:
+    types: [created]
 
 jobs:
-    changeset:
-        name: Version with Changeset
-        runs-on: ubuntu-24.04
-        outputs:
-            hasChangesets: ${{ steps.changeset-check.outputs.hasChangesets }}
-            newVersion: ${{ steps.version.outputs.newVersion }}
-            currentVersion: ${{ steps.current-version.outputs.currentVersion }}
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
+  # Check if comment triggers a release
+  check_comment:
+    name: Check Release Comment
+    runs-on: ubuntu-24.04-arm
+    if: github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '/release')
+    outputs:
+      should_release: ${{ steps.check.outputs.should_release }}
+    steps:
+      - name: Check if comment author has permission
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const { data: collaborator } = await github.rest.repos.getCollaboratorPermissionLevel({
+              owner,
+              repo,
+              username: context.actor
+            });
 
-            - uses: pnpm/action-setup@v4
-              name: Install pnpm
-              with:
-                  run_install: false
+            const hasPermission = ['admin', 'write'].includes(collaborator.permission);
+            console.log(`User ${context.actor} has permission: ${hasPermission}`);
 
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 24
-                  cache: "pnpm"
+            if (hasPermission) {
+              core.setOutput('should_release', 'true');
+              // Add reaction to comment
+              await github.rest.reactions.createForIssueComment({
+                owner,
+                repo,
+                comment_id: context.payload.comment.id,
+                content: 'rocket'
+              });
+            } else {
+              core.setOutput('should_release', 'false');
+              // Add reaction to comment
+              await github.rest.reactions.createForIssueComment({
+                owner,
+                repo,
+                comment_id: context.payload.comment.id,
+                content: 'confused'
+              });
+            }
 
-            - name: Configure Git
-              run: |
-                  git config user.email "github-actions@users.noreply.github.com"
-                  git config user.name "GitHub Actions"
+  changeset:
+    permissions:
+      contents: write
+      pull-requests: write
+    name: Version with Changeset
+    runs-on: ubuntu-24.04-arm
+    if: |
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch'
+    outputs:
+      hasChangesets: ${{ steps.changeset-check.outputs.hasChangesets }}
+      newVersion: ${{ steps.version.outputs.newVersion }}
+      currentVersion: ${{ steps.current-version.outputs.currentVersion }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # For PR comments, checkout the PR branch
+          ref: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request.head.ref || github.ref }}
 
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
 
-            - name: Check for changesets
-              id: changeset-check
-              run: |
-                  if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v README)" ]; then
-                    echo "hasChangesets=false" >> "$GITHUB_OUTPUT"
-                    echo "⚠️ No changesets found. Skipping version bump."
-                  else
-                    echo "hasChangesets=true" >> "$GITHUB_OUTPUT"
-                    echo "✅ Changesets found. Proceeding with version bump."
-                  fi
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
 
-            - name: Version packages
-              if: steps.changeset-check.outputs.hasChangesets == 'true'
-              id: version
-              run: |
-                  pnpm changeset version
-                  NEW_VERSION=$(node -p "require('./package.json').version")
-                  echo "newVersion=$NEW_VERSION" >> "$GITHUB_OUTPUT"
-                  echo "📦 New version: $NEW_VERSION"
+      - name: Configure Git
+        run: |
+          git config user.email "github-actions@users.noreply.github.com"
+          git config user.name "GitHub Actions"
 
-            - name: Get current version (if no changesets)
-              if: steps.changeset-check.outputs.hasChangesets == 'false'
-              id: current-version
-              run: |
-                  CURRENT_VERSION=$(node -p "require('./package.json').version")
-                  echo "currentVersion=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
-                  echo "📦 Current version: $CURRENT_VERSION"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-            - name: Commit and Push (with version bump)
-              if: ${{ !inputs.dryRun && steps.changeset-check.outputs.hasChangesets == 'true' }}
-              run: |
-                  git add .
-                  git commit -m "chore(release): v$NEW_VERSION"
-                  git tag v$NEW_VERSION
-                  git push
-                  git push --tags
-              env:
-                  NEW_VERSION: ${{ steps.version.outputs.newVersion }}
+      - name: Check for changesets
+        id: changeset-check
+        run: |
+          if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v README)" ]; then
+            echo "hasChangesets=false" >> "$GITHUB_OUTPUT"
+            echo "⚠️ No changesets found. Skipping version bump."
+          else
+            echo "hasChangesets=true" >> "$GITHUB_OUTPUT"
+            echo "✅ Changesets found. Proceeding with version bump."
+          fi
 
-    submit:
-        name: Submit
-        runs-on: ubuntu-24.04
-        needs: [changeset]
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
-                  token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Version packages
+        if: steps.changeset-check.outputs.hasChangesets == 'true'
+        id: version
+        run: |
+          pnpm changeset version
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "newVersion=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          echo "📦 New version: $NEW_VERSION"
 
-            - uses: pnpm/action-setup@v4
-              name: Install pnpm
-              with:
-                  run_install: false
+      - name: Get current version (if no changesets)
+        if: steps.changeset-check.outputs.hasChangesets == 'false'
+        id: current-version
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "currentVersion=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+          echo "📦 Current version: $CURRENT_VERSION"
 
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 24
-                  cache: "pnpm"
+      # Only auto-commit on push to main
+      - name: Commit and Push (with version bump)
+        if: ${{ github.event_name == 'push' && steps.changeset-check.outputs.hasChangesets == 'true' }}
+        run: |
+          git add .
+          git commit -m "chore(release): v$NEW_VERSION"
+          git tag v$NEW_VERSION
+          git push
+          git push --tags
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.newVersion }}
 
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+  build:
+    name: Build
+    runs-on: ubuntu-24.04-arm
+    needs: [changeset]
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' && needs.check_comment.outputs.should_release == 'true')
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request.head.ref || github.ref }}
 
-            - name: Build and Zip
-              run: |
-                  pnpm run zip:all
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
 
-            - name: Upload Artifacts
-              uses: actions/upload-artifact@v4
-              with:
-                  path: dist/*.zip
-                  if-no-files-found: error
-                  include-hidden-files: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
 
-            - name: Create GitHub Release (with version bump)
-              if: ${{ !inputs.dryRun && needs.changeset.outputs.hasChangesets == 'true' }}
-              uses: softprops/action-gh-release@v1
-              with:
-                  tag_name: v${{ needs.changeset.outputs.newVersion }}
-                  name: Release v${{ needs.changeset.outputs.newVersion }}
-                  body: |
-                      ## Changes
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-                      Check the [CHANGELOG.md](./CHANGELOG.md) for detailed changes.
+      - name: Build and Zip
+        run: |
+          pnpm run zip:all
 
-                      ## Extension Files
-                      - Chrome: `amgiflol-${{ needs.changeset.outputs.newVersion }}-chrome.zip`
-                      - Firefox: `amgiflol-${{ needs.changeset.outputs.newVersion }}-firefox.zip`
-                  files: |
-                      dist/*-chrome.zip
-                      dist/*-firefox.zip
-                  draft: false
-                  prerelease: false
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-build-${{ github.run_number }}
+          path: dist/*.zip
+          if-no-files-found: error
+          include-hidden-files: true
 
-            - name: Create GitHub Release (no version bump)
-              if: ${{ !inputs.dryRun && needs.changeset.outputs.hasChangesets == 'false' }}
-              uses: softprops/action-gh-release@v1
-              with:
-                  tag_name: v${{ needs.changeset.outputs.currentVersion }}-build-${{ github.run_number }}
-                  name: Build v${{ needs.changeset.outputs.currentVersion }}-build-${{ github.run_number }}
-                  body: |
-                      ## Build Release
+  release:
+    name: Create Release
+    runs-on: ubuntu-24.04-arm
+    needs: [changeset, build]
+    if: |
+      (github.event_name == 'workflow_dispatch' && inputs.action == 'release') ||
+      (github.event_name == 'issue_comment' && needs.check_comment.outputs.should_release == 'true')
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: extension-build-${{ github.run_number }}
+          path: dist/
 
-                      This is a build release without version changes.
+      - name: Create GitHub Release (with version bump)
+        if: ${{ needs.changeset.outputs.hasChangesets == 'true' }}
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ needs.changeset.outputs.newVersion }}
+          name: Release v${{ needs.changeset.outputs.newVersion }}
+          body: |
+            ## Changes
 
-                      ## Extension Files
-                      - Chrome: `amgiflol-${{ needs.changeset.outputs.currentVersion }}-chrome.zip`
-                      - Firefox: `amgiflol-${{ needs.changeset.outputs.currentVersion }}-firefox.zip`
-                  files: |
-                      dist/*-chrome.zip
-                      dist/*-firefox.zip
-                  draft: false
-                  prerelease: true
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            Check the [CHANGELOG.md](./CHANGELOG.md) for detailed changes.
 
-            - name: Submit to stores
-              run: |
-                  pnpm wxt submit \
-                    --chrome-zip dist/*-chrome.zip \
-                    --firefox-zip dist/*-firefox.zip --firefox-sources-zip dist/*-sources.zip
-              env:
-                  DRY_RUN: ${{ inputs.dryRun }}
-                  CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
-                  CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
-                  CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
-                  CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
-                  FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
-                  FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
-                  FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
-                  EDGE_PRODUCT_ID: ${{ secrets.EDGE_PRODUCT_ID }}
-                  EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
-                  EDGE_CLIENT_SECRET: ${{ secrets.EDGE_CLIENT_SECRET }}
-                  EDGE_ACCESS_TOKEN_URL: ${{ secrets.EDGE_ACCESS_TOKEN_URL }}
+            ## Extension Files
+            - Chrome: `amgiflol-${{ needs.changeset.outputs.newVersion }}-chrome.zip`
+            - Firefox: `amgiflol-${{ needs.changeset.outputs.newVersion }}-firefox.zip`
+          files: |
+            dist/*-chrome.zip
+            dist/*-firefox.zip
+          draft: false
+          prerelease: false
+
+      - name: Create GitHub Release (no version bump)
+        if: ${{ needs.changeset.outputs.hasChangesets == 'false' }}
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ needs.changeset.outputs.currentVersion }}-build-${{ github.run_number }}
+          name: Build v${{ needs.changeset.outputs.currentVersion }}-build-${{ github.run_number }}
+          body: |
+            ## Build Release
+
+            This is a build release without version changes.
+
+            ## Extension Files
+            - Chrome: `amgiflol-${{ needs.changeset.outputs.currentVersion }}-chrome.zip`
+            - Firefox: `amgiflol-${{ needs.changeset.outputs.currentVersion }}-firefox.zip`
+          files: |
+            dist/*-chrome.zip
+            dist/*-firefox.zip
+          draft: false
+          prerelease: true
+
+      - name: Comment on PR (if triggered by comment)
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const hasChangesets = '${{ needs.changeset.outputs.hasChangesets }}' === 'true';
+            const version = hasChangesets ? '${{ needs.changeset.outputs.newVersion }}' : '${{ needs.changeset.outputs.currentVersion }}';
+            const releaseUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/releases/tag/v${version}${hasChangesets ? '' : '-build-' + context.runNumber}`;
+
+            let body = '## 🚀 Release Created Successfully!\n\n';
+            body += `📦 **Version**: \`v${version}${hasChangesets ? '' : '-build-' + context.runNumber}\`\n`;
+            body += `🔗 **Release URL**: ${releaseUrl}\n\n`;
+
+            if (hasChangesets) {
+              body += `✅ **Full release** with version bump and changelog updates\n`;
+            } else {
+              body += `⚠️ **Build release** without version changes (marked as prerelease)\n`;
+            }
+
+            body += `\n📁 **Extension files are attached to the release**\n`;
+            body += `- Chrome: \`amgiflol-${version}-chrome.zip\`\n`;
+            body += `- Firefox: \`amgiflol-${version}-firefox.zip\``;
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+  submit:
+    name: Submit to Stores
+    runs-on: ubuntu-24.04-arm
+    needs: [changeset, build, release]
+    if: |
+      (github.event_name == 'workflow_dispatch' && inputs.action == 'submit') ||
+      (github.event_name == 'issue_comment' && needs.check_comment.outputs.should_release == 'true')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: extension-build-${{ github.run_number }}
+          path: dist/
+
+      - name: Submit to stores
+        run: |
+          pnpm wxt submit \
+            --chrome-zip dist/*-chrome.zip \
+            --firefox-zip dist/*-firefox.zip --firefox-sources-zip dist/*-sources.zip
+        env:
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dryRun || false }}
+          CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+          CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          FIREFOX_EXTENSION_ID: ${{ secrets.FIREFOX_EXTENSION_ID }}
+          FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
+          FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
+          EDGE_PRODUCT_ID: ${{ secrets.EDGE_PRODUCT_ID }}
+          EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
+          EDGE_CLIENT_SECRET: ${{ secrets.EDGE_CLIENT_SECRET }}
+          EDGE_ACCESS_TOKEN_URL: ${{ secrets.EDGE_ACCESS_TOKEN_URL }}
+
+      - name: Comment on PR with submission result
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const dryRun = '${{ github.event_name == 'workflow_dispatch' && inputs.dryRun || false }}' === 'true';
+
+            let body = '## 📤 Store Submission ';
+            body += dryRun ? 'Dry Run Complete' : 'Complete';
+            body += '\n\n';
+
+            if (dryRun) {
+              body += '🔍 **Dry run mode** - No actual submission performed\n';
+              body += '✅ All validation checks passed\n';
+              body += '📋 Ready for actual submission when you\'re ready\n\n';
+              body += '> Run the workflow again without dry run to submit to stores.';
+            } else {
+              body += '✅ **Extension submitted to stores successfully!**\n\n';
+              body += '📱 **Submitted to**:\n';
+              body += '- Chrome Web Store\n';
+              body += '- Firefox Add-ons (AMO)\n';
+              body += '- Microsoft Edge Add-ons\n\n';
+              body += '> Store reviews typically take 1-3 business days. You\'ll receive email notifications about the review status.';
+            }
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });

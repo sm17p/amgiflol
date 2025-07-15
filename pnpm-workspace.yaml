@@ -1,5 +1,5 @@
 onlyBuiltDependencies:
-    - "@tailwindcss/oxide"
-    - dprint
-    - esbuild
-    - spawn-sync
+  - "@tailwindcss/oxide"
+  - dprint
+  - esbuild
+  - spawn-sync

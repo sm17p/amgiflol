@@ -57,7 +57,7 @@ export class UIStore implements App.UIStore {
 
 	handleKeyDown = (
 		event: KeyboardEvent,
-		message: App.Message<KeyboardEvent>,
+		_message: App.Message<KeyboardEvent>,
 	) => {
 		switch (event.key) {
 			// case "i":

@@ -1,5 +1,12 @@
 # amgiflol
 
+## 0.2.2
+
+### Patch Changes
+
+- 72526be: disable voting for firefox for time being
+- d56bb46: add voting for color and animation debugging, and tooltips to help with voting
+
 ## 0.2.1
 
 ### Patch Changes

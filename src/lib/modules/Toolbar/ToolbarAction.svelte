@@ -20,7 +20,7 @@
 
 <Tooltip {label}>
 	<Toggle.Root
-		aria-label={label ?? ""}
+		aria-label={disabled ? "Coming soon..." : label ?? ""}
 		{disabled}
 		bind:pressed
 		{onPressedChange}

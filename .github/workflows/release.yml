@@ -33,8 +33,6 @@ jobs:
       github.event_name == 'workflow_dispatch'
     outputs:
       hasChangesets: ${{ steps.changeset-check.outputs.hasChangesets }}
-      newVersion: ${{ steps.version.outputs.newVersion }}
-      currentVersion: ${{ steps.current-version.outputs.currentVersion }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -80,10 +78,8 @@ jobs:
 
       - name: Get current version (if no changesets)
         if: steps.changeset-check.outputs.hasChangesets == 'false'
-        id: current-version
         run: |
           CURRENT_VERSION=$(node -p "require('./package.json').version")
-          echo "currentVersion=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
           echo "📦 Current version: $CURRENT_VERSION"
 
       - name: Commit and Push (with version bump)
@@ -104,7 +100,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+          ref: 'main'
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
@@ -123,24 +120,34 @@ jobs:
         run: |
           pnpm run zip:all
 
+      - name: Get Version
+        id: version
+        run: |
+          pnpm changeset version
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "newVersion=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          echo "📦 New version: $NEW_VERSION"
+
       - name: Create GitHub Release (with version bump)
         if: ${{ needs.changeset_check.outputs.hasChangesets == 'true' }}
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ needs.changeset_check.outputs.newVersion }}
-          name: amgiflol@${{ needs.changeset_check.outputs.newVersion }}
+          tag_name: v${{ steps.version.outputs.newVersion }}
+          name: amgiflol@${{ steps.version.outputs.newVersion }}
           body_path: CHANGELOG.md
           files: |
             dist/*.zip
           draft: false
           prerelease: false
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.newVersion }}
 
       - name: Create GitHub Release (no version bump)
         if: ${{ needs.changeset_check.outputs.hasChangesets == 'false' }}
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ needs.changeset_check.outputs.currentVersion }}
-          name: amgiflol@${{ needs.changeset_check.outputs.currentVersion }}
+          tag_name: v${{ steps.version.outputs.newVersion }}
+          name: amgiflol@${{ steps.version.outputs.newVersion }}
           body_path: CHANGELOG.md
           files: |
             dist/*.zip

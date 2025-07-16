@@ -1,14 +1,16 @@
 <script lang="ts">
 	import Switch from "@/lib/components/Switch.svelte";
+	import Tooltip from "@/lib/components/Tooltip.svelte";
 	import { UIStore } from "@/lib/store/index.svelte";
-	import { Cog } from "@lucide/svelte";
+	import { CircleQuestionMark, Cog } from "@lucide/svelte";
 	import { DropdownMenu } from "bits-ui";
 	import { fly } from "svelte/transition";
 	import UpvoteAction from "./UpvoteAction.svelte";
 
 	const uiStore = getContext<UIStore>("uiStore");
 	// https://github.com/sm17p/amgiflol/issues/5
-	const disableForFirefox = import.meta.env.FIREFOX;
+	const disableForFirefox = !import.meta.env.DEV &&
+		import.meta.env.FIREFOX;
 </script>
 
 <!-- class="rounded-2xl bg-background-alt flex h-10 items-center gap-1" -->
@@ -44,7 +46,7 @@
 							aria-label="Feature Voting"
 						>
 							<DropdownMenu.GroupHeading>
-								<h4 class="m-0 ml-1 grid grid-cols-[0px_1fr]">
+								<h4 class="m-0 ml-1 grid grid-cols-[24px_1fr]">
 									<span></span>
 									<span
 										class="min-w-[250px] flex justify-between items-center gap-3 font-inherit"
@@ -59,146 +61,191 @@
 									</span>
 								</h4>
 							</DropdownMenu.GroupHeading>
-
 							{#if 						uiStore.toolbar
 							.featureVotingVisible}
 								<DropdownMenu.Separator
 									class="-ml-1 -mr-1 block h-px bg-zinc-200"
 								/>
 								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 									closeOnSelect={false}
 								>
-									<span></span>
-									<span
-										class="min-w-[250px] flex justify-between items-center gap-3"
+									<Tooltip
+										label="Debug on screen css animations, keyframes & transition functions"
+										side="left"
+										sideOffset={12}
 									>
-										<UpvoteAction
-											disabled={disableForFirefox}
-											key="auto-hide-toolbar"
-											label="Auto-Hide Toolbar"
-										/>
-									</span>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
+									<UpvoteAction
+										disabled={disableForFirefox}
+										key="animation-debugger"
+										label="Animation Debugger"
+									/>
 								</DropdownMenu.Item>
 								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 									closeOnSelect={false}
 								>
 									<span></span>
-									<span
-										class="min-w-[250px] flex justify-between items-center gap-3"
-									>
-										<UpvoteAction
-											disabled={disableForFirefox}
-											key="auto-move-toolbar"
-											label="Auto-Move Toolbar"
-										/>
-									</span>
+									<UpvoteAction
+										disabled={disableForFirefox}
+										key="auto-hide-toolbar"
+										label="Auto-Hide Toolbar"
+									/>
 								</DropdownMenu.Item>
 								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 									closeOnSelect={false}
 								>
-									<span></span>
-									<span
-										class="min-w-[250px] flex justify-between items-center gap-3"
+									<Tooltip
+										label="Toolbar will switch position when mouse is in the bottom half of the screen."
+										side="left"
+										sideOffset={12}
 									>
-										<UpvoteAction
-											disabled={disableForFirefox}
-											key="auto-move-sidepanel"
-											label="Auto-Move Sidepanel"
-										/>
-									</span>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
+									<UpvoteAction
+										disabled={disableForFirefox}
+										key="auto-move-toolbar"
+										label="Auto-Move Toolbar"
+									/>
 								</DropdownMenu.Item>
 								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 									closeOnSelect={false}
 								>
-									<span></span>
-									<span
-										class="min-w-[250px] flex justify-between items-center gap-3"
+									<Tooltip
+										label="Side panel will switch position when mouse is in the right half of the screen."
+										side="left"
+										sideOffset={12}
 									>
-										<UpvoteAction
-											disabled={disableForFirefox}
-											key="multiple-trackers"
-											label="Multiple Trackers"
-										/>
-									</span>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
+									<UpvoteAction
+										disabled={disableForFirefox}
+										key="auto-move-side-panel"
+										label="Auto-Move Side-panel"
+									/>
 								</DropdownMenu.Item>
 								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 									closeOnSelect={false}
 								>
-									<span></span>
-									<span
-										class="min-w-[250px] flex justify-between items-center gap-3"
+									<Tooltip
+										label="Import white-listed colours and highlight blacklisted"
+										side="left"
+										sideOffset={12}
 									>
-										<UpvoteAction
-											disabled={disableForFirefox}
-											key="neighbour-distances"
-											label="Neighbour Distances"
-										/>
-									</span>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
+									<UpvoteAction
+										disabled={disableForFirefox}
+										key="color-debugger"
+										label="Color Debugger"
+									/>
 								</DropdownMenu.Item>
 								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 									closeOnSelect={false}
 								>
-									<span></span>
-									<span
-										class="min-w-[250px] flex justify-between items-center gap-3"
+									<Tooltip
+										label="Lock a selection and start a new inspector session"
+										side="left"
+										sideOffset={12}
 									>
-										<UpvoteAction
-											disabled={disableForFirefox}
-											key="onscreeen-measurement-lines"
-											label="Onscreen Measurement Lines"
-										/>
-									</span>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
+									<UpvoteAction
+										disabled={disableForFirefox}
+										key="multiple-trackers"
+										label="Multi Inspect"
+									/>
 								</DropdownMenu.Item>
 								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 									closeOnSelect={false}
 								>
-									<span></span>
-									<span
-										class="min-w-[250px] flex justify-between items-center gap-3"
+									<Tooltip
+										label="Current inspect target will display distances from sibling elements as well."
+										side="left"
+										sideOffset={12}
 									>
-										<UpvoteAction
-											disabled={disableForFirefox}
-											key="parent-traversal"
-											label="Parent Traversal"
-										/>
-									</span>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
+									<UpvoteAction
+										disabled={disableForFirefox}
+										key="neighbour-distances"
+										label="Neighbour Distances"
+									/>
 								</DropdownMenu.Item>
 								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 									closeOnSelect={false}
 								>
-									<span></span>
-									<span
-										class="min-w-[250px] flex justify-between items-center gap-3"
+									<Tooltip
+										label="Draw static lines on screen"
+										side="left"
+										sideOffset={12}
 									>
-										<UpvoteAction
-											disabled={disableForFirefox}
-											key="sibling-traversal"
-											label="Sibling Traversal"
-										/>
-									</span>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
+									<UpvoteAction
+										disabled={disableForFirefox}
+										key="on-screen-measurement-lines"
+										label="On-screen Measurement Lines"
+									/>
 								</DropdownMenu.Item>
 								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 									closeOnSelect={false}
 								>
-									<span></span>
-									<span
-										class="min-w-[250px] flex justify-between items-center gap-3"
+									<Tooltip
+										label="The inspector displays measurements from the source node to its parent (the target node). This allows the target node to change its position by traversing up and down the source node's layer."
+										side="left"
+										sideOffset={12}
 									>
-										<UpvoteAction
-											disabled={disableForFirefox}
-											key="viewport-resizer"
-											label="Viewport Resizer"
-										/>
-									</span>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
+									<UpvoteAction
+										disabled={disableForFirefox}
+										key="parent-traversal"
+										label="Parent-Child Traversal"
+									/>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									closeOnSelect={false}
+								>
+									<Tooltip
+										label="Resizable window with mobile & desktop size presets"
+										side="left"
+										sideOffset={12}
+									>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
+									<UpvoteAction
+										disabled={disableForFirefox}
+										key="responsive-mode"
+										label="Responsive Mode"
+									/>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item
+									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+									closeOnSelect={false}
+								>
+									<Tooltip
+										label="The inspector displays measurements from the source node to its parent (the target node). This will allow target node to change adjacent to source element's positioning within the same layer. (Sibling Traversal)"
+										side="left"
+										sideOffset={12}
+									>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
+									<UpvoteAction
+										disabled={disableForFirefox}
+										key="sibling-traversal"
+										label="Sibling Traversal"
+									/>
 								</DropdownMenu.Item>
 							{/if}
 						</DropdownMenu.Group>
@@ -210,7 +257,7 @@
 							aria-label="Toolbar Behaviour"
 						>
 							<DropdownMenu.GroupHeading>
-								<h4 class="m-0 ml-1">
+								<h4 class="m-0 ml-5">
 									Toolbar Behaviour
 								</h4>
 							</DropdownMenu.GroupHeading>
@@ -218,7 +265,7 @@
 								class="-ml-1 -mr-1 block h-px bg-zinc-200"
 							/>
 							<DropdownMenu.CheckboxItem
-								class="hover:not-data-[disabled]:bg-lime-200 hover:not-data-[disabled]:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+								class="hover:not-data-[disabled]:bg-lime-200 hover:not-data-[disabled]:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 								bind:checked={uiStore.toolbar.autoMove}
 								disabled
 								closeOnSelect={false}
@@ -239,7 +286,7 @@
 								{/snippet}
 							</DropdownMenu.CheckboxItem>
 							<DropdownMenu.CheckboxItem
-								class="hover:not-data-[disabled]:bg-lime-200 hover:not-data-[disabled]:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[0px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+								class="hover:not-data-[disabled]:bg-lime-200 hover:not-data-[disabled]:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 								bind:checked={uiStore.toolbar.autoHide}
 								disabled
 								closeOnSelect={false}

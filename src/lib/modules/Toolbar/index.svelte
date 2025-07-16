@@ -120,6 +120,7 @@
 	]);
 
 	async function capture(pressed: boolean) {
+		if (!import.meta.env.DEV && import.meta.env.FIREFOX) return;
 		// event?.stopImmediatePropagation();
 		uiStore.toggleToolbar();
 		setTimeout(() => {
@@ -313,6 +314,7 @@
 		</ToolbarAction>
 		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
 		<ToolbarAction
+			disabled={!import.meta.env.DEV && import.meta.env.FIREFOX}
 			pressed={false}
 			label="Screenshot"
 			onPressedChange={capture}

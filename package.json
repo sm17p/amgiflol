@@ -1,8 +1,11 @@
 {
 	"name": "amgiflol",
-	"description": "Figma-like Web Inspector for designers",
+	"description": "Figma-like Layout Inspector For Web",
+	"author": "Sm17p smitp.contact@gmail.com",
 	"private": true,
 	"version": "0.2.2",
+	"homepage": "https://github.com/sm17p/amgiflol",
+	"repository": "https://github.com/sm17p/amgiflol",
 	"type": "module",
 	"scripts": {
 		"build": "wxt build --mv3",

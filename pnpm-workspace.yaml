@@ -3,3 +3,6 @@ onlyBuiltDependencies:
   - dprint
   - esbuild
   - spawn-sync
+
+patchedDependencies:
+  "@wxt-dev/analytics": patches/@wxt-dev__analytics.patch

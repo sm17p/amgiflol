@@ -1,0 +1,66 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 072e97256f2de943d43d9e620bd9cba0b146d52f..8b193f09894b73db527e32249a1da63a1f586401 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1,18 +1,45 @@
+ import { UAParser } from 'ua-parser-js';
+ 
+ const ANALYTICS_PORT = "@wxt-dev/analytics";
++function isBackgroundScript() {
++  if (!chrome || !chrome.runtime || !chrome.runtime.getManifest || !location.protocol.endsWith('extension:')) {
++    return false;
++  }
++
++  const { background, background_page: backgroundPageWXT, manifest_version } = chrome.runtime.getManifest();
++  const backgroundPageManifest = background && background.page;
++
++  const backgoundPageorScriptsCheck =
++    location.pathname === '/_generated_background_page.html' ||
++    (backgroundPageManifest && location.pathname.endsWith(backgroundPageManifest)) ||
++    (backgroundPageWXT && location.pathname.endsWith(backgroundPageWXT));
++
++  if (manifest_version === 3) {
++    try {
++      return self instanceof ServiceWorkerGlobalScope && 
++        background && background.service_worker !== undefined && location.pathname.endsWith(background.service_worker);
++    } catch (e) {
++      return backgoundPageorScriptsCheck;
++    }
++  }
++
++  return backgoundPageorScriptsCheck;
++}
++
+ function createAnalytics(config) {
+-  if (typeof chrome === "undefined" || !chrome?.runtime?.id)
+-    throw Error(
+-      "Cannot use WXT analytics in contexts without access to the browser.runtime APIs"
++  if (!chrome || !chrome.runtime || !chrome.runtime.id) {
++    throw new Error(
++      'Cannot use WXT analytics in contexts without access to the browser.runtime APIs'
+     );
++  }
+   if (config == null) {
+     console.warn(
+       "[@wxt-dev/analytics] Config not provided to createAnalytics. If you're using WXT, add the 'analytics' property to '<srcDir>/app.config.ts'."
+     );
+   }
+-  if (location.pathname === "/background.js")
+-    return createBackgroundAnalytics(config);
++
++  if (isBackgroundScript()) return createBackgroundAnalytics(config);
++
+   return createFrontendAnalytics();
+ }
+ function createBackgroundAnalytics(config) {
+@@ -50,8 +77,8 @@ function createBackgroundAnalytics(config) {
+           version: config?.version ?? manifest.version_name ?? manifest.version,
+           wxtMode: import.meta.env.MODE,
+           wxtBrowser: import.meta.env.BROWSER,
+-          arch: platform.arch,
+-          os: platform.os,
++          arch: platform?.arch,
++          os: platform?.os,
+           browser: userAgent.browser.name,
+           browserVersion: userAgent.browser.version,
+           ...await userProperties

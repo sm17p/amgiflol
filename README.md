@@ -8,7 +8,7 @@ Any individual or web development teams including front-end developers, UI/UX de
 
 ## Usage Note
 
-I'm building this tool to act as an active visual debugger which is intended to be used at the end of a feature development cycle, since this is what I struggle with most of the time.
+I'm building this tool to act as an active visual debugger, since it is what I struggle with the most. It's intended to be used at the end of a feature development or during the development cycle.
 
 1. This tool won't automatically point out alignment or style mismatch with your designs.
 2. Use during development or design audit cycle to get things right as early as possible.

@@ -32,5 +32,21 @@ jobs:
       - name: Run svelte-echeck
         run: pnpm check
 
-      - name: Run build
-        run: pnpm build:all
+      - name: Package all
+        run: pnpm zip:all
+
+      - name: Dry-Run Submit to stores
+        run: |
+          pnpm wxt submit --dry-run \
+            --chrome-zip .output/*-chrome.zip \
+            --firefox-zip .output/*-firefox.zip --firefox-sources-zip .output/*-sources.zip
+        env:
+          CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          CHROME_EXTENSION_ID: ${{ vars.CHROME_EXTENSION_ID }}
+          CHROME_PUBLISH_TARGET: ${{ vars.CHROME_PUBLISH_TARGET }}
+          CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          FIREFOX_CHANNEL: ${{ vars.FIREFOX_CHANNEL }}
+          FIREFOX_EXTENSION_ID: ${{ vars.FIREFOX_EXTENSION_ID }}
+          FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
+          FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}

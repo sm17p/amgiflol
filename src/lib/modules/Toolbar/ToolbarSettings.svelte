@@ -9,7 +9,8 @@
 
 	const uiStore = getContext<UIStore>("uiStore");
 	// https://github.com/sm17p/amgiflol/issues/5
-	const disableForFirefox = !import.meta.env.DEV &&
+	// oxlint-disable-next-line no-constant-binary-expression
+	const disableForFirefox = false && !import.meta.env.DEV &&
 		import.meta.env.FIREFOX;
 </script>
 

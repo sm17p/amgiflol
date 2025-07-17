@@ -1,5 +1,11 @@
 # amgiflol
 
+## 0.2.4
+
+### Patch Changes
+
+- 214e9d0: fix: re-enable capture mode for firefox
+
 ## 0.2.3
 
 ### Patch Changes

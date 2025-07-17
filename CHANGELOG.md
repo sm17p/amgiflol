@@ -1,5 +1,12 @@
 # amgiflol
 
+## 0.2.3
+
+### Patch Changes
+
+- 0bcb5b4: manifest detailing per browser
+- 274e12f: patch analytics and enable voting for firefox
+
 ## 0.2.2
 
 ### Patch Changes

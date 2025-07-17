@@ -27,25 +27,25 @@ async function captureHandler(tab: Browser.tabs.Tab) {
 	}
 }
 
-async function downloadImage(dataUrl: string): Promise<void> {
+async function downloadImage(dataUrl: string): Promise<number> {
 	const filename = `Screenshot-${
 		new Date().toISOString().replaceAll(":", "-")
 	}.png`;
+
 	console.log(`Downloading image: ${filename}`, { dataUrl });
 
-	if (import.meta.env.MANIFEST_VERSION === 3) {
-		// There are known issues with download images in background scripts: https://issues.chromium.org/issues/40774955
-		// But this works well enough for small screenshots
-		await browser.downloads.download({
-			url: dataUrl,
+	if (import.meta.env.FIREFOX || import.meta.env.MANIFEST_VERSION === 2) {
+		const blob = dataUrltoBlob(dataUrl);
+		const objectUrl = URL.createObjectURL(blob);
+		return browser.downloads.download({
+			url: objectUrl,
 			filename,
 		});
 	} else {
-		// Use "createObjectURL" for MV2
-		const blob = dataUrltoBlob(dataUrl);
-		const objectUrl = URL.createObjectURL(blob);
-		await browser.downloads.download({
-			url: objectUrl,
+		// There are known issues with download images in background scripts: https://issues.chromium.org/issues/40774955
+		// But this works well enough for small screenshots
+		return browser.downloads.download({
+			url: dataUrl,
 			filename,
 		});
 	}

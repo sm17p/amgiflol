@@ -1,3 +1,5 @@
+allowUnusedPatches: true
+
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"
   - dprint

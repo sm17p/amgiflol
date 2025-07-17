@@ -55,6 +55,9 @@
 
 	const trackers = trackersStore;
 
+// oxlint-disable-next-line no-constant-binary-expression
+	const disableFirefox = false && !import.meta.env.DEV && import.meta.env.FIREFOX
+
 	let windowDimensions = $state({ width: 0, height: 0 });
 
 	const tools = $derived([
@@ -120,7 +123,7 @@
 	]);
 
 	async function capture(pressed: boolean) {
-		if (!import.meta.env.DEV && import.meta.env.FIREFOX) return;
+		if (disableFirefox) return;
 		// event?.stopImmediatePropagation();
 		uiStore.toggleToolbar();
 		setTimeout(() => {
@@ -314,7 +317,7 @@
 		</ToolbarAction>
 		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
 		<ToolbarAction
-			disabled={!import.meta.env.DEV && import.meta.env.FIREFOX}
+			disabled={disableFirefox}
 			pressed={false}
 			label="Screenshot"
 			onPressedChange={capture}

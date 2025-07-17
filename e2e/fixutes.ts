@@ -1,4 +1,9 @@
-import { type BrowserContext, chromium, firefox, test as base } from "@playwright/test";
+import {
+	type BrowserContext,
+	chromium,
+	firefox,
+	test as base,
+} from "@playwright/test";
 import path from "path";
 
 const pathToExtension = path.resolve("dist/firefox-mv3");

@@ -26,6 +26,7 @@ I'm building this tool to act as an active visual debugger, since it is what I s
 - **Side Panel**: Detailed element properties, computed styles, attributes
 - **Toolbar**: Floating interface with auto-positioning
 - **Visual Overlays**: Highlight elements and parent relationships
+- **Feature Voting**: Vote for your features to be developed
 
 ## Roadmap
 

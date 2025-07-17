@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ToolbarAction from "@/lib/components/ToolbarAction.svelte";
 	import {
 		createMessageHandler,
 		messageBus,
@@ -18,10 +19,10 @@
 		PanelRightOpen,
 		Ruler,
 		SquareDashedMousePointer,
+		TextCursor,
 	} from "@lucide/svelte";
 	import { Separator } from "bits-ui";
 	import { onDestroy, onMount } from "svelte";
-	import ToolbarAction from "./ToolbarAction.svelte";
 	import ToolbarSettings from "./ToolbarSettings.svelte";
 
 	let myValue = $state("select");
@@ -51,12 +52,10 @@
 	let toolbarElement = $state<HTMLElement>();
 	let hideTimeout: NodeJS.Timeout | null = null;
 
-	let toolbarPosition = $state({ x: offsetX, y: offsetY });
-
 	const trackers = trackersStore;
 
-// oxlint-disable-next-line no-constant-binary-expression
-	const disableFirefox = false && !import.meta.env.DEV && import.meta.env.FIREFOX
+	let toolbarPosition = $state({ x: offsetX, y: offsetY });
+	let designModePressed = $state(false);
 
 	let windowDimensions = $state({ width: 0, height: 0 });
 
@@ -123,7 +122,6 @@
 	]);
 
 	async function capture(pressed: boolean) {
-		if (disableFirefox) return;
 		// event?.stopImmediatePropagation();
 		uiStore.toggleToolbar();
 		setTimeout(() => {
@@ -159,7 +157,8 @@
 			const availablePositions = [
 				{ x: edgeBuffer, y: edgeBuffer },
 				{
-					x: metadataStore.window.innerWidth - toolbar.width -
+					x: metadataStore.window.innerWidth -
+						toolbar.width -
 						edgeBuffer,
 					y: edgeBuffer,
 				},
@@ -170,7 +169,8 @@
 						edgeBuffer,
 				},
 				{
-					x: metadataStore.window.innerWidth - toolbar.width -
+					x: metadataStore.window.innerWidth -
+						toolbar.width -
 						edgeBuffer,
 					y: metadataStore.window.innerHeight -
 						toolbar.height -
@@ -227,11 +227,19 @@
 		}
 	}
 
+	function designMode(_pressed: boolean) {
+		designModePressed = !designModePressed;
+		document.designMode = designModePressed ? "on" : "off";
+	}
+
 	function handleKeyDown(
 		event: KeyboardEvent,
 		message: App.Message<KeyboardEvent>,
 	) {
 		switch (event.key) {
+			case "7":
+				designMode(true);
+				break;
 			case "9":
 				capture(true);
 				break;
@@ -309,6 +317,15 @@
 		</ToolbarAction>
 		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
 		<ToolbarAction
+			pressed={designModePressed}
+			onPressedChange={designMode}
+			label="Design Mode: Edit any text on the document"
+			shortcut="7"
+		>
+			<TextCursor absoluteStrokeWidth class="size-4" />
+		</ToolbarAction>
+		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
+		<ToolbarAction
 			bind:pressed={uiStore.sidePanel.isVisible}
 			label="Show Side Panel"
 			shortcut="8"
@@ -317,7 +334,6 @@
 		</ToolbarAction>
 		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
 		<ToolbarAction
-			disabled={disableFirefox}
 			pressed={false}
 			label="Screenshot"
 			onPressedChange={capture}

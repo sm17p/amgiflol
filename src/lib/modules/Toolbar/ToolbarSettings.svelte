@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Switch from "@/lib/components/Switch.svelte";
 	import Tooltip from "@/lib/components/Tooltip.svelte";
+	import UpvoteAction from "@/lib/components/UpvoteAction.svelte";
 	import { UIStore } from "@/lib/store/index.svelte";
 	import { CircleQuestionMark, Cog } from "@lucide/svelte";
 	import { DropdownMenu } from "bits-ui";
 	import { fly } from "svelte/transition";
-	import UpvoteAction from "./UpvoteAction.svelte";
 
 	const uiStore = getContext<UIStore>("uiStore");
 	// https://github.com/sm17p/amgiflol/issues/5
@@ -258,9 +258,7 @@
 							aria-label="Toolbar Behaviour"
 						>
 							<DropdownMenu.GroupHeading>
-								<h4 class="m-0 ml-5">
-									Toolbar Behaviour
-								</h4>
+								<h4 class="m-0 ml-5">Toolbar Behaviour</h4>
 							</DropdownMenu.GroupHeading>
 							<DropdownMenu.Separator
 								class="-ml-1 -mr-1 block h-px bg-zinc-200"
@@ -279,7 +277,7 @@
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<Switch
-											checked={checked}
+											{checked}
 											disabled
 											labelText="Auto-Move"
 										/>
@@ -300,7 +298,7 @@
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<Switch
-											checked={checked}
+											{checked}
 											disabled
 											labelText="Always visible"
 										/>

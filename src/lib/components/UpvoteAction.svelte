@@ -1,19 +1,14 @@
 <script lang="ts">
+	import { UpvoteState } from "@/lib/store/UpvoteState.svelte";
 	import { ArrowBigUp } from "@lucide/svelte";
 	import { Label, Toggle, useId } from "bits-ui";
 	import { type ToggleRootProps } from "bits-ui";
-	import { UpvoteState } from "./upvote-state.svelte";
 	interface Props extends ToggleRootProps {
 		key: string;
 		label: string;
 	}
 
-	let {
-		id = useId(),
-		key,
-		label,
-		...props
-	}: Props = $props();
+	let { id = useId(), key, label, ...props }: Props = $props();
 
 	let upvoteState = new UpvoteState(key);
 </script>

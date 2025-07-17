@@ -64,6 +64,7 @@ export default defineConfig({
 		chromiumPort: 57540,
 		chromiumArgs: ["--user-data-dir=./.wxt/chrome-data"],
 		keepProfileChanges: true,
+		// firefoxArgs: ["--user-data-dir=./.wxt/firefox-data"],
 		startUrls: [
 			"https://wxt.dev/guide/essentials/entrypoints.html",
 			"https://wxt.dev/examples.html",

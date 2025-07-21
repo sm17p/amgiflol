@@ -1,3 +1,5 @@
+import { booleanToVote } from "@/utils/tracking";
+
 export class UpvoteState {
 	private key: string;
 	public pressed = $state(false);
@@ -25,7 +27,7 @@ export class UpvoteState {
 		this.pressed = newState;
 		analytics.track("vote", {
 			label: this.key,
-			value: this.pressed.toString(),
+			value: booleanToVote(this.pressed),
 		});
 		this.upvoteStore.setValue(newState);
 	}

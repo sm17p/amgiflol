@@ -3,6 +3,7 @@ import { createMessageHandler } from "@/lib/core/MessageBus";
 import { watch } from "runed";
 import { getContext } from "svelte";
 import { MetaDataStore } from "./MetaDataStore.svelte";
+import { booleanToVote } from "@/utils/tracking";
 
 export class TrackerState implements App.TrackerState {
 	id: string;
@@ -89,7 +90,7 @@ export class TrackerState implements App.TrackerState {
 	public toggleLock() {
 		this.isLocked = !this.isLocked;
 		analytics.track("toggle_inspector_lock", {
-			value: this.isLocked.toString(),
+			value: booleanToVote(this.isLocked),
 		});
 	}
 

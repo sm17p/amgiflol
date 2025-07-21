@@ -1,4 +1,5 @@
 import { createMessageHandler, sendMessage } from "@/lib/core/MessageBus";
+import { booleanToVote } from "@/utils/tracking";
 import { watch } from "runed";
 import { browser } from "wxt/browser";
 
@@ -154,21 +155,21 @@ export class UIStore implements App.UIStore {
 	toggleGridlines() {
 		this.svg.showGrid = !this.svg.showGrid;
 		analytics.track("toggle_gridlines", {
-			value: this.svg.showGrid.toString(),
+			value: booleanToVote(this.svg.showGrid),
 		});
 	}
 
 	toggleDistances() {
 		this.svg.showDistances = !this.svg.showDistances;
 		analytics.track("toggle_distances", {
-			value: this.svg.showDistances.toString(),
+			value: booleanToVote(this.svg.showDistances),
 		});
 	}
 
 	toggleRulers() {
 		this.svg.showRuler = !this.svg.showRuler;
 		analytics.track("toggle_ruler", {
-			value: this.svg.showRuler.toString(),
+			value: booleanToVote(this.svg.showRuler),
 		});
 	}
 

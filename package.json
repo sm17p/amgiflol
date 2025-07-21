@@ -3,7 +3,7 @@
 	"description": "Figma-like Layout Inspector For Web",
 	"author": "Sm17p smitp.contact@gmail.com",
 	"private": true,
-	"version": "0.2.4",
+	"version": "0.2.5",
 	"homepage": "https://github.com/sm17p/amgiflol",
 	"repository": "https://github.com/sm17p/amgiflol",
 	"type": "module",

@@ -1,5 +1,12 @@
 # amgiflol
 
+## 0.2.5
+
+### Patch Changes
+
+- efedc80: Add design mode shortcut
+- 14aaacd: voting value in numeral string
+
 ## 0.2.4
 
 ### Patch Changes

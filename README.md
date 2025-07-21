@@ -2,16 +2,19 @@
 
 A browser extension that helps with design audit. Match web layouts with Figma designs through real-time element inspection, measurements, and visual overlays.
 
+- [Google Chrome](https://chromewebstore.google.com/detail/amgiflol/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl/) 
+- [Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/amgiflol/)
+
 ## Target Audience
 
 Any individual or web development teams including front-end developers, UI/UX designers, QA engineers, and product managers.
 
 ## Usage Note
 
-I'm building this tool to act as an active visual debugger, since it is what I struggle with the most. It's intended to be used at the end of a feature development or during the development cycle.
+Personally, I'm building this tool to act as an active visual debugger, since it is what I struggle with the most. 
 
-1. This tool won't automatically point out alignment or style mismatch with your designs.
-2. Use during development or design audit cycle to get things right as early as possible.
+1. For others, it's intended to be used as an audit tool at the end or during development. Use it to reason about the layout like you would in a prototyping tool like Figma, or Adobe XD.
+2. This tool won't automatically point out alignment or style mismatch with your designs.
 3. You may find some shortcuts not implemented or upto the industry standard.
 4. **This tool doesn't require you to login into any of your fav prototyping tool.**
 
@@ -27,21 +30,18 @@ I'm building this tool to act as an active visual debugger, since it is what I s
 - **Toolbar**: Floating interface with auto-positioning
 - **Visual Overlays**: Highlight elements and parent relationships
 - **Feature Voting**: Vote for your features to be developed
+- **Design Mode**: Edit text on screen
 
 ## Roadmap
-
-### 🔄 Current Development
-
-- **Feature Voting System**: User-driven feature prioritization
-- **Enhanced Measurements**: Area calculations, angle measurements
-- **Multiple Trackers**: Track multiple elements simultaneously
 
 ### 🚀 Planned Features
 
 - **Auto-Hide/Move**: Smart UI positioning to avoid interference
-- **Neighbor Analysis**: Automatic sibling/parent distance detection
+- **Neighbour Analysis**: Automatic sibling/parent distance detection
 - **Viewport Tools**: Responsive design testing utilities
 - **Parent/Sibling Traversal**: Navigate element hierarchy
+- **Enhanced Measurements**: Area calculations, angle measurements
+- **Multiple Trackers**: Track multiple elements simultaneously
 
 ## Quick Setup
 
@@ -58,8 +58,7 @@ pnpm zip:firefox      # Create distribution package for firefox
 ## Development
 
 ### State Management
-
-- **Reactive Stores**: Svelte 5 runes for optimal performance
+- **Reactive Stores**: Svelte 5 runes
 - **Cross-Context Communication**: Typed message bus system
 - **Storage Sync**: Browser storage integration with per-domain settings
 

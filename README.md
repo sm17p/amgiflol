@@ -2,7 +2,7 @@
 
 A browser extension that helps with design audit. Match web layouts with Figma designs through real-time element inspection, measurements, and visual overlays.
 
-- [Google Chrome](https://chromewebstore.google.com/detail/amgiflol/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl/) 
+- [Google Chrome](https://chromewebstore.google.com/detail/amgiflol/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl/)
 - [Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/amgiflol/)
 
 ## Target Audience
@@ -11,7 +11,7 @@ Any individual or web development teams including front-end developers, UI/UX de
 
 ## Usage Note
 
-Personally, I'm building this tool to act as an active visual debugger, since it is what I struggle with the most. 
+Personally, I'm building this tool to act as an active visual debugger, since it is what I struggle with the most.
 
 1. For others, it's intended to be used as an audit tool at the end or during development. Use it to reason about the layout like you would in a prototyping tool like Figma, or Adobe XD.
 2. This tool won't automatically point out alignment or style mismatch with your designs.
@@ -58,6 +58,7 @@ pnpm zip:firefox      # Create distribution package for firefox
 ## Development
 
 ### State Management
+
 - **Reactive Stores**: Svelte 5 runes
 - **Cross-Context Communication**: Typed message bus system
 - **Storage Sync**: Browser storage integration with per-domain settings

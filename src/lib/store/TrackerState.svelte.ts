@@ -1,9 +1,9 @@
 import { elementInspector } from "@/lib/core/ElementInspector";
 import { createMessageHandler } from "@/lib/core/MessageBus";
+import { booleanToVote } from "@/utils/tracking";
 import { watch } from "runed";
 import { getContext } from "svelte";
 import { MetaDataStore } from "./MetaDataStore.svelte";
-import { booleanToVote } from "@/utils/tracking";
 
 export class TrackerState implements App.TrackerState {
 	id: string;

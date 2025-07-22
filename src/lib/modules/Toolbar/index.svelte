@@ -23,6 +23,7 @@
 	} from "@lucide/svelte";
 	import { Separator } from "bits-ui";
 	import { onDestroy, onMount } from "svelte";
+	import { fly } from "svelte/transition";
 	import ToolbarSettings from "./ToolbarSettings.svelte";
 
 	let myValue = $state("select");
@@ -126,10 +127,10 @@
 		uiStore.toggleToolbar();
 		setTimeout(() => {
 			sendMessage("SCREENSHOT", undefined, "background");
-		}, 1);
-		setTimeout(() => {
-			uiStore.toggleToolbar();
-		}, 400);
+			setTimeout(() => {
+				uiStore.toggleToolbar();
+			}, 100);
+		}, 350);
 	}
 
 	function updatePosition() {
@@ -246,6 +247,18 @@
 		}
 	}
 
+	function onmouseenterToolbar() {
+		if (uiStore.toolbar.autoHide) {
+			uiStore.makeToolbarVisible(true);
+		}
+	}
+
+	function onmouseleaveToolbar() {
+		if (uiStore.toolbar.autoHide) {
+			uiStore.makeToolbarVisible(false);
+		}
+	}
+
 	$effect(() => {
 		const cleanup = createMessageHandler("KEYDOWN", handleKeyDown);
 		return cleanup;
@@ -269,79 +282,99 @@
 	});
 </script>
 
-{#if uiStore.toolbar.isVisible}
-	<div
-		class="fixed shadow-lg bottom-3 inline-flex h-12 items-center justify-center origin-left gap-x-0.5 bg-white cursor-pointer rounded-lg p-1 transition-all duration-150 pointer-events-initial"
-		style="--spacing: 4px; z-index: 1000000006; transform: translateX(calc(50vw - 50%))"
-	>
-		<ToolbarAction
-			disabled
-			pressed={uiStore.svg.mode === "inspect"}
-			label="Inspector Mode"
-			shortcut="1"
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<section
+	onmouseenter={onmouseenterToolbar}
+	onmouseleave={onmouseleaveToolbar}
+	class={["fixed p-3 bottom-0 pointer-events-initial h-18 w-full", {
+		"bottom-0": true,
+		"top-0": false,
+	}]}
+	style="--spacing: 4px; z-index: 1000000006"
+>
+	{#if uiStore.toolbar.isVisible}
+		<div
+			transition:fly={{ duration: 300 }}
+			class="shadow-lg inline-flex items-center justify-center origin-left gap-x-0.5 bg-white cursor-pointer rounded-lg p-1 transition-transform duration-150"
+			style="transform: translateX(calc(50vw - 50%))"
 		>
-			<SquareDashedMousePointer absoluteStrokeWidth class="size-5" />
-		</ToolbarAction>
-		{#if trackers.current}
 			<ToolbarAction
-				bind:pressed={trackers.current.isLocked}
-				label="Lock Inspector"
-				shortcut="@"
+				disabled
+				pressed={uiStore.svg.mode === "inspect"}
+				label="Inspector Mode"
+				shortcut="1"
 			>
-				{@const 			Icon = trackers.current?.isLocked
-				? LockKeyhole
-				: LockKeyholeOpen}
-				<Icon absoluteStrokeWidth class="size-6" />
+				<SquareDashedMousePointer absoluteStrokeWidth class="size-5" />
 			</ToolbarAction>
-		{/if}
-		<ToolbarAction
-			bind:pressed={uiStore.svg.showGrid}
-			label="Show Grid Lines"
-			shortcut="#"
-		>
-			<Grid3x3 absoluteStrokeWidth class="size-6" />
-		</ToolbarAction>
-		<ToolbarAction
-			bind:pressed={uiStore.svg.showRuler}
-			label="Show Ruler"
-			shortcut="$"
-		>
-			<Ruler absoluteStrokeWidth class="size-6" />
-		</ToolbarAction>
-		<ToolbarAction
-			bind:pressed={uiStore.svg.showDistances}
-			label="Show Distances"
-			shortcut="%"
-		>
-			<ChevronsLeftRightEllipsis absoluteStrokeWidth class="size-6" />
-		</ToolbarAction>
-		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
-		<ToolbarAction
-			pressed={designModePressed}
-			onPressedChange={designMode}
-			label="Design Mode: Edit any text on the document"
-			shortcut="7"
-		>
-			<TextCursor absoluteStrokeWidth class="size-4" />
-		</ToolbarAction>
-		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
-		<ToolbarAction
-			bind:pressed={uiStore.sidePanel.isVisible}
-			label="Show Side Panel"
-			shortcut="8"
-		>
-			<PanelRightOpen absoluteStrokeWidth class="size-6" />
-		</ToolbarAction>
-		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
-		<ToolbarAction
-			pressed={false}
-			label="Screenshot"
-			onPressedChange={capture}
-			shortcut="9"
-		>
-			<Camera absoluteStrokeWidth class="size-6" />
-		</ToolbarAction>
-		<Separator.Root class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch" />
-		<ToolbarSettings />
-	</div>
-{/if}
+			{#if trackers.current}
+				<ToolbarAction
+					bind:pressed={trackers.current.isLocked}
+					label="Lock Inspector"
+					shortcut="@"
+				>
+					{@const 				Icon = trackers.current?.isLocked
+					? LockKeyhole
+					: LockKeyholeOpen}
+					<Icon absoluteStrokeWidth class="size-6" />
+				</ToolbarAction>
+			{/if}
+			<ToolbarAction
+				bind:pressed={uiStore.svg.showGrid}
+				label="Show Grid Lines"
+				shortcut="#"
+			>
+				<Grid3x3 absoluteStrokeWidth class="size-6" />
+			</ToolbarAction>
+			<ToolbarAction
+				bind:pressed={uiStore.svg.showRuler}
+				label="Show Ruler"
+				shortcut="$"
+			>
+				<Ruler absoluteStrokeWidth class="size-6" />
+			</ToolbarAction>
+			<ToolbarAction
+				bind:pressed={uiStore.svg.showDistances}
+				label="Show Distances"
+				shortcut="%"
+			>
+				<ChevronsLeftRightEllipsis absoluteStrokeWidth class="size-6" />
+			</ToolbarAction>
+			<Separator.Root
+				class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"
+			/>
+			<ToolbarAction
+				pressed={designModePressed}
+				onPressedChange={designMode}
+				label="Design Mode: Edit any text on the document"
+				shortcut="7"
+			>
+				<TextCursor absoluteStrokeWidth class="size-4" />
+			</ToolbarAction>
+			<Separator.Root
+				class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"
+			/>
+			<ToolbarAction
+				bind:pressed={uiStore.sidePanel.isVisible}
+				label="Show Side Panel"
+				shortcut="8"
+			>
+				<PanelRightOpen absoluteStrokeWidth class="size-6" />
+			</ToolbarAction>
+			<Separator.Root
+				class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"
+			/>
+			<ToolbarAction
+				pressed={false}
+				label="Screenshot"
+				onPressedChange={capture}
+				shortcut="9"
+			>
+				<Camera absoluteStrokeWidth class="size-6" />
+			</ToolbarAction>
+			<Separator.Root
+				class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"
+			/>
+			<ToolbarSettings />
+		</div>
+	{/if}
+</section>

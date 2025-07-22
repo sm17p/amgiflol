@@ -9,8 +9,30 @@
 	const uiStore = getContext<UIStore>("uiStore");
 	const trackersStore = getContext<TrackersStore>("trackersStore");
 
-	// let halfPoint = $derived(metadataStore.window.innerWidth / 2);
-	// let mouseLeft = $derived(metadataStore.mouse.x < halfPoint);
+	let panelInLeftHalfState = $state(false);
+
+	$effect.pre(() => {
+		if (
+			trackersStore?.current && !trackersStore.current.isLocked &&
+			uiStore.sidePanel.isVisible &&
+			uiStore.sidePanel.autoMove &&
+			trackersStore.current.boundingRect
+		) {
+			const { left, right } = trackersStore.current.boundingRect;
+
+			let boxSize = right - left;
+
+			const meanX = (left + right) / 2;
+			const halfPointX = metadataStore.window.innerWidth / 2;
+
+			if (boxSize > halfPointX) {
+				panelInLeftHalfState =
+					metadataStore.mouse.x > halfPointX;
+			} else {
+				panelInLeftHalfState = meanX >= halfPointX;
+			}
+		}
+	});
 
 	function copyToClipboard(text: string) {
 		navigator.clipboard
@@ -25,11 +47,11 @@
 </script>
 
 {#if trackersStore?.current && uiStore.sidePanel.isVisible}
-	<!-- {#if mouseLeft} -->
-	<!-- {@render SidePanel(trackersStore.current, !mouseLeft, 200)} -->
-	<!-- {:else} -->
-	{@render SidePanel(trackersStore.current, false, 200)}
-	<!-- {/if} -->
+	{#if panelInLeftHalfState}
+		{@render SidePanel(trackersStore.current, true, -200)}
+	{:else}
+		{@render SidePanel(trackersStore.current, false, 200)}
+	{/if}
 {/if}
 
 {#snippet SidePanel(tracker: TrackerState, left: boolean, x: number)}
@@ -37,7 +59,7 @@
 		class={[
 			"fixed top-0 bg-white border border-zinc-200 rounded-lg shadow-xl translate-y-1/10 h-[80vh] overflow-auto pointer-events-initial",
 			{
-				"left-5": left,
+				"left-2": left,
 				"right-2": !left,
 			},
 		]}

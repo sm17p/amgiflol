@@ -309,7 +309,11 @@
 			{#if trackers.current}
 				<ToolbarAction
 					bind:pressed={trackers.current.isLocked}
-					label="Lock Inspector"
+					label={`${
+						trackers.current.isLocked
+							? "Unlock"
+							: "Lock"
+					} Inspector`}
 					shortcut="@"
 				>
 					{@const 				Icon = trackers.current?.isLocked

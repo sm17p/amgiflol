@@ -106,23 +106,6 @@
 									closeOnSelect={false}
 								>
 									<Tooltip
-										label="Side panel will switch position when mouse is in the right half of the screen."
-										side="left"
-										sideOffset={12}
-									>
-										<CircleQuestionMark class="size-4" />
-									</Tooltip>
-									<UpvoteAction
-										disabled={disableForFirefox}
-										key="auto-move-side-panel"
-										label="Auto-Move Side-panel"
-									/>
-								</DropdownMenu.Item>
-								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
-									closeOnSelect={false}
-								>
-									<Tooltip
 										label="Import white-listed colours and highlight blacklisted"
 										side="left"
 										sideOffset={12}
@@ -247,7 +230,40 @@
 							aria-label="Toolbar Behaviour"
 						>
 							<DropdownMenu.GroupHeading>
-								<h4 class="m-0 ml-5">Toolbar Behaviour</h4>
+								<h4 class="m-0 ml-5">Side-panel</h4>
+							</DropdownMenu.GroupHeading>
+							<DropdownMenu.Separator
+								class="-ml-1 -mr-1 block h-px bg-zinc-200"
+							/>
+							<DropdownMenu.CheckboxItem
+								class="hover:not-data-[disabled]:bg-lime-200 hover:not-data-[disabled]:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
+								bind:checked={uiStore.sidePanel.autoMove}
+								closeOnSelect={false}
+							>
+								{#snippet children(
+							{ checked },
+						)}
+									<span></span>
+									<span
+										class="min-w-[250px] flex justify-between items-center gap-3"
+									>
+										<Switch
+											{checked}
+											labelText="Auto-Move"
+										/>
+									</span>
+								{/snippet}
+							</DropdownMenu.CheckboxItem>
+						</DropdownMenu.Group>
+						<DropdownMenu.Separator
+							class="my-1 -ml-1 -mr-1 block h-px bg-zinc-200"
+						/>
+						<DropdownMenu.Group
+							class="grid grid-cols-1 gap-y-1"
+							aria-label="Toolbar Behaviour"
+						>
+							<DropdownMenu.GroupHeading>
+								<h4 class="m-0 ml-5">Toolbar</h4>
 							</DropdownMenu.GroupHeading>
 							<DropdownMenu.Separator
 								class="-ml-1 -mr-1 block h-px bg-zinc-200"

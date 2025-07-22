@@ -101,6 +101,7 @@ declare global {
 				};
 			};
 			sidePanel: {
+				autoMove: boolean;
 				isVisible: boolean;
 				width: number;
 				selectedTab: string;

@@ -9,6 +9,7 @@ export class UIStore implements App.UIStore {
 		isVisible: import.meta.env.DEV,
 	});
 	sidePanel = $state({
+		autoMove: false,
 		isVisible: false,
 		width: 360,
 		selectedTab: "properties",
@@ -47,6 +48,7 @@ export class UIStore implements App.UIStore {
 				this.toolbar.settings.open,
 				this.toolbar.autoHide,
 				this.toolbar.autoMove,
+				this.sidePanel.autoMove,
 				this.sidePanel.isVisible,
 			],
 			() => {
@@ -249,6 +251,10 @@ export class UIStore implements App.UIStore {
 				this.sidePanel = result.uiStore.sidePanel;
 				this.svg = result.uiStore.svg;
 				this.toolbar = result.uiStore.toolbar;
+				// Handle store breaking change
+				if (result.uiStore.sidePanel.autoMove === undefined) {
+					this.sidePanel.autoMove = false;
+				}
 			}
 		} catch (error) {
 			console.error(

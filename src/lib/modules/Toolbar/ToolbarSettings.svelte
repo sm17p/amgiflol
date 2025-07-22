@@ -32,7 +32,7 @@
 		</kbd>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content
-		class="dd-content bg-white p-1 rounded-lg outline-none"
+		class="bg-white p-1 rounded-lg shadow-lg outline-none"
 		align="start"
 		sideOffset={12}
 		forceMount
@@ -82,17 +82,6 @@
 										disabled={disableForFirefox}
 										key="animation-debugger"
 										label="Animation Debugger"
-									/>
-								</DropdownMenu.Item>
-								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
-									closeOnSelect={false}
-								>
-									<span></span>
-									<UpvoteAction
-										disabled={disableForFirefox}
-										key="auto-hide-toolbar"
-										label="Auto-Hide Toolbar"
 									/>
 								</DropdownMenu.Item>
 								<DropdownMenu.Item
@@ -287,7 +276,6 @@
 							<DropdownMenu.CheckboxItem
 								class="hover:not-data-[disabled]:bg-lime-200 hover:not-data-[disabled]:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 								bind:checked={uiStore.toolbar.autoHide}
-								disabled
 								closeOnSelect={false}
 							>
 								{#snippet children(
@@ -299,8 +287,7 @@
 									>
 										<Switch
 											{checked}
-											disabled
-											labelText="Always visible"
+											labelText="Auto-Hide"
 										/>
 									</span>
 								{/snippet}

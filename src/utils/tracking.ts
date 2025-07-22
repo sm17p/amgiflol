@@ -1,3 +1,3 @@
 export function booleanToVote(value: boolean): string {
-    return value ? "1" : "-1";
+	return value ? "1" : "-1";
 }

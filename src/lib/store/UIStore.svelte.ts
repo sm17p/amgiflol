@@ -45,6 +45,8 @@ export class UIStore implements App.UIStore {
 				this.svg.showRuler,
 				this.svg.showGrid,
 				this.toolbar.settings.open,
+				this.toolbar.autoHide,
+				this.toolbar.autoMove,
 				this.sidePanel.isVisible,
 			],
 			() => {
@@ -127,6 +129,10 @@ export class UIStore implements App.UIStore {
 		this.toolbar.activeFeature = feature;
 	}
 
+	toggleAutoHide() {
+		this.toolbar.autoHide = !this.toolbar.autoHide;
+	}
+
 	toggleSidePanel() {
 		this.sidePanel.isVisible = !this.sidePanel.isVisible;
 	}
@@ -175,6 +181,10 @@ export class UIStore implements App.UIStore {
 
 	setZoomLevel(zoom: number) {
 		this.svg.zoomLevel = Math.max(0.1, Math.min(5, zoom));
+	}
+
+	makeToolbarVisible(visible: boolean) {
+		this.toolbar.isVisible = visible;
 	}
 
 	async toggleActive(from: App.Message["source"]) {

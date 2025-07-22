@@ -1,5 +1,11 @@
 # amgiflol
 
+## 0.2.6
+
+### Patch Changes
+
+- afdd1e8: auto-hide toolbar
+
 ## 0.2.5
 
 ### Patch Changes

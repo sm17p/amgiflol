@@ -1,5 +1,11 @@
 # amgiflol
 
+## 0.2.7
+
+### Patch Changes
+
+- b5bc179: auto-move sidepanel
+
 ## 0.2.6
 
 ### Patch Changes

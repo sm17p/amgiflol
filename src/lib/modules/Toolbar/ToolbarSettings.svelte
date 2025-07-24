@@ -243,7 +243,13 @@
 								{#snippet children(
 							{ checked },
 						)}
-									<span></span>
+									<Tooltip
+										label="Disabled on lock"
+										side="left"
+										sideOffset={12}
+									>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
 									<span
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
@@ -271,19 +277,23 @@
 							<DropdownMenu.CheckboxItem
 								class="hover:not-data-[disabled]:bg-lime-200 hover:not-data-[disabled]:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
 								bind:checked={uiStore.toolbar.autoMove}
-								disabled
 								closeOnSelect={false}
 							>
 								{#snippet children(
 							{ checked },
 						)}
-									<span></span>
+									<Tooltip
+										label="Disabled on lock"
+										side="left"
+										sideOffset={12}
+									>
+										<CircleQuestionMark class="size-4" />
+									</Tooltip>
 									<span
 										class="min-w-[250px] flex justify-between items-center gap-3"
 									>
 										<Switch
 											{checked}
-											disabled
 											labelText="Auto-Move"
 										/>
 									</span>

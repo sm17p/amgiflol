@@ -122,11 +122,6 @@ export class UIStore implements App.UIStore {
 		this.toolbar.isVisible = !this.toolbar.isVisible;
 	}
 
-	setToolbarPosition(x: number, y: number) {
-		this.toolbar.position.x = x;
-		this.toolbar.position.y = y;
-	}
-
 	setActiveFeature(feature?: string) {
 		this.toolbar.activeFeature = feature;
 	}

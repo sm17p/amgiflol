@@ -24,6 +24,7 @@
 		"zip:firefox": "wxt zip -b firefox --mv3"
 	},
 	"dependencies": {
+		"@ark-ui/svelte": "^5.3.1",
 		"@lucide/svelte": "^0.525.0",
 		"@wxt-dev/analytics": "0.5.0",
 		"bits-ui": "^2.8.10"

@@ -1,5 +1,11 @@
 # amgiflol
 
+## 0.2.8
+
+### Patch Changes
+
+- 4e72efa: feat: auto-move toolbar - Toolbar now automatically repositions to top/bottom based on mouse position
+
 ## 0.2.7
 
 ### Patch Changes

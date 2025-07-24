@@ -27,17 +27,18 @@
 		"@ark-ui/svelte": "^5.3.1",
 		"@lucide/svelte": "^0.525.0",
 		"@wxt-dev/analytics": "0.5.0",
-		"bits-ui": "^2.8.10"
+		"bits-ui": "^2.8.12"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.29.5",
 		"@playwright/test": "^1.54.1",
 		"@tsconfig/svelte": "^5.0.4",
-		"@types/node": "^24.0.14",
+		"@types/node": "^24.1.0",
 		"@unocss/extractor-svelte": "^66.3.3",
 		"@unocss/preset-attributify": "^66.3.3",
 		"@unocss/preset-rem-to-px": "^66.3.3",
 		"@unocss/preset-wind4": "^66.3.3",
+		"@wxt-dev/auto-icons": "^1.0.2",
 		"@wxt-dev/module-svelte": "^2.0.3",
 		"@wxt-dev/unocss": "^1.0.1",
 		"dprint": "0.50.1",
@@ -45,12 +46,12 @@
 		"playwright": "^1.54.1",
 		"playwright-webextext": "^0.0.4",
 		"runed": "^0.29.2",
-		"svelte": "^5.28.2",
-		"svelte-check": "^4.1.6",
+		"svelte": "^5.36.17",
+		"svelte-check": "^4.3.0",
 		"tslib": "^2.8.1",
 		"typescript": "^5.8.3",
 		"unocss": "^66.3.3",
-		"wxt": "^0.20.6"
+		"wxt": "^0.20.7"
 	},
 	"engines": {
 		"node": ">=24"

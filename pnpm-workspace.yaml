@@ -4,6 +4,7 @@ onlyBuiltDependencies:
   - "@tailwindcss/oxide"
   - dprint
   - esbuild
+  - sharp
   - spawn-sync
 
 patchedDependencies:

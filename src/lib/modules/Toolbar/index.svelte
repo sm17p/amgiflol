@@ -2,7 +2,6 @@
 	import ToolbarAction from "@/lib/components/ToolbarAction.svelte";
 	import {
 		createMessageHandler,
-		messageBus,
 		sendMessage,
 	} from "@/lib/core/MessageBus";
 	import {
@@ -22,29 +21,12 @@
 		TextCursor,
 	} from "@lucide/svelte";
 	import { Separator } from "bits-ui";
-	import { onDestroy, onMount } from "svelte";
-	import { fade, fly } from "svelte/transition";
+	import { fly } from "svelte/transition";
 	import ToolbarSettings from "./ToolbarSettings.svelte";
-
-	let myValue = $state("select");
 
 	const metadataStore = getContext<MetaDataStore>("metadataStore");
 	const trackersStore = getContext<TrackersStore>("trackersStore");
 	const uiStore = getContext<UIStore>("uiStore");
-
-	interface ToolbarProps {
-		autoMove?: boolean;
-		position?:
-			| "top-left"
-			| "top-right"
-			| "bottom-left"
-			| "bottom-right";
-		offsetX?: number;
-		offsetY?: number;
-		hideDelay?: number;
-	}
-
-	let hideTimeout: NodeJS.Timeout | null = null;
 
 	const trackers = trackersStore;
 

@@ -43,6 +43,7 @@ export default defineConfig({
 		"@wxt-dev/module-svelte",
 		"@wxt-dev/unocss",
 		"@wxt-dev/analytics/module",
+		"@wxt-dev/auto-icons",
 	],
 	outDir: "dist",
 	srcDir: "src",
@@ -67,8 +68,6 @@ export default defineConfig({
 		// firefoxArgs: ["--user-data-dir=./.wxt/firefox-data"],
 		startUrls: [
 			"https://wxt.dev/guide/essentials/entrypoints.html",
-			"https://wxt.dev/examples.html",
-			"https://wxt.dev/guide/resources/community.html",
 		],
 	},
 	zip: {

@@ -1,3 +1,6 @@
+import IconOn from "@/assets/icon.png";
+import IconOff from "@/assets/icon.png";
+
 export default defineBackground(() => {
 	browser.runtime.onMessage.addListener(async (event, sender) => {
 		if (event.type === "SCREENSHOT" && sender.tab) {
@@ -9,10 +12,20 @@ export default defineBackground(() => {
 		console.log(
 			`Extension installed, reason: ${reason}, browser: ${import.meta.env.BROWSER}`,
 		);
-
+		iconActions();
 		analytics.setEnabled(true);
 	});
 });
+
+function iconActions() {
+	storage.watch<boolean>(
+		"local:isExtensionEnabled",
+		isEnabled =>
+			browser.action.setIcon({
+				path: isEnabled! ? IconOn : IconOff,
+			}),
+	);
+}
 
 async function captureHandler(tab: Browser.tabs.Tab) {
 	try {

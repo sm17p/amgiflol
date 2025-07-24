@@ -92,7 +92,7 @@ jobs:
           NEW_VERSION: ${{ steps.version.outputs.newVersion }}
 
   release:
-    name: Create Release
+    name: Create Release & Publish to stores
     runs-on: ubuntu-24.04-arm
     needs: [changeset_check]
     permissions:
@@ -153,3 +153,19 @@ jobs:
             dist/*.zip
           draft: true
           prerelease: true
+
+      - name: Publish to Firefox Add-On Store
+        if: ${{ needs.changeset_check.outputs.hasChangesets == 'true' }}
+        run: |
+          pnpm wxt submit \
+            --firefox-zip dist/*-firefox.zip --firefox-sources-zip dist/*-sources.zip
+        env:
+          CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          CHROME_EXTENSION_ID: ${{ vars.CHROME_EXTENSION_ID }}
+          CHROME_PUBLISH_TARGET: ${{ vars.CHROME_PUBLISH_TARGET }}
+          CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          FIREFOX_CHANNEL: ${{ vars.FIREFOX_CHANNEL }}
+          FIREFOX_EXTENSION_ID: ${{ vars.FIREFOX_EXTENSION_ID }}
+          FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
+          FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}

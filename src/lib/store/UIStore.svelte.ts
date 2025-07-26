@@ -1,4 +1,5 @@
 import { createMessageHandler, sendMessage } from "@/lib/core/MessageBus";
+import rainbowLayoutCss from "@/lib/css/rainbow-translucent.css?raw";
 import { booleanToVote } from "@/utils/tracking";
 import { watch } from "runed";
 import { browser } from "wxt/browser";
@@ -7,6 +8,10 @@ export class UIStore implements App.UIStore {
 	isActive = $state(false);
 	debugToolbar = $state({
 		isVisible: import.meta.env.DEV,
+	});
+	rainbowLayout = $state<App.UIStore["rainbowLayout"]>({
+		css: new CSSStyleSheet({ disabled: true }),
+		enabled: false,
 	});
 	sidePanel = $state({
 		autoMove: false,
@@ -35,6 +40,11 @@ export class UIStore implements App.UIStore {
 	});
 
 	constructor() {
+		this.toggleRainbowLayout = this.toggleRainbowLayout.bind(this);
+		// Setup rainbow layout stylesheet
+		this.rainbowLayout.css!.replace(rainbowLayoutCss);
+		document.adoptedStyleSheets.push(this.rainbowLayout.css!);
+
 		$effect(() => {
 			const cleanup = createMessageHandler("KEYDOWN", this.handleKeyDown);
 			return cleanup;
@@ -42,14 +52,15 @@ export class UIStore implements App.UIStore {
 
 		watch(
 			() => [
+				this.rainbowLayout.enabled,
+				this.sidePanel.isVisible,
+				this.sidePanel.autoMove,
 				this.svg.showDistances,
 				this.svg.showRuler,
 				this.svg.showGrid,
 				this.toolbar.settings.open,
 				this.toolbar.autoHide,
 				this.toolbar.autoMove,
-				this.sidePanel.autoMove,
-				this.sidePanel.isVisible,
 			],
 			() => {
 				this.syncToStorage("content");
@@ -109,6 +120,9 @@ export class UIStore implements App.UIStore {
 			case "%":
 				this.toggleDistances();
 				break;
+			case "6":
+				this.toggleRainbowLayout();
+				break;
 			case "8":
 				this.toggleSidePanel();
 				break;
@@ -129,6 +143,11 @@ export class UIStore implements App.UIStore {
 	toggleAutoHide() {
 		this.toolbar.autoHide = !this.toolbar.autoHide;
 	}
+
+	toggleRainbowLayout = () => {
+		this.rainbowLayout.css!.disabled = this.rainbowLayout.enabled;
+		this.rainbowLayout.enabled = !this.rainbowLayout.enabled;
+	};
 
 	toggleSidePanel() {
 		this.sidePanel.isVisible = !this.sidePanel.isVisible;
@@ -196,6 +215,9 @@ export class UIStore implements App.UIStore {
 		const snapshot = {
 			isActive: this.isActive,
 			debugToolbar: $state.snapshot(this.debugToolbar),
+			rainbowLayout: {
+				enabled: this.rainbowLayout.enabled,
+			},
 			sidePanel: $state.snapshot(this.sidePanel),
 			svg: $state.snapshot(this.svg),
 			toolbar: $state.snapshot(this.toolbar),
@@ -246,6 +268,12 @@ export class UIStore implements App.UIStore {
 				this.sidePanel = result.uiStore.sidePanel;
 				this.svg = result.uiStore.svg;
 				this.toolbar = result.uiStore.toolbar;
+				this.rainbowLayout.enabled =
+					result.uiStore.rainbowLayout?.enabled ?? false;
+				if (this.isActive) {
+					this.rainbowLayout.css!.disabled = !this.rainbowLayout
+						.enabled;
+				}
 				// Handle store breaking change
 				if (result.uiStore.sidePanel.autoMove === undefined) {
 					this.sidePanel.autoMove = false;

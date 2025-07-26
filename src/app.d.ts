@@ -79,6 +79,10 @@ declare global {
 
 		interface UIStore {
 			isActive: boolean;
+			rainbowLayout: {
+				css?: CSSStyleSheet;
+				enabled: boolean;
+			};
 			svg: {
 				mode: Mode;
 				showDistances: boolean;

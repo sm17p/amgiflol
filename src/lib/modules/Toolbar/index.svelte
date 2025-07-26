@@ -16,6 +16,7 @@
 		LockKeyhole,
 		LockKeyholeOpen,
 		PanelRightOpen,
+		Rainbow,
 		Ruler,
 		SquareDashedMousePointer,
 		TextCursor,
@@ -202,6 +203,17 @@
 						absoluteStrokeWidth
 						class="size-6"
 					/>
+				</ToolbarAction>
+				<Separator.Root
+					class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"
+				/>
+				<ToolbarAction
+					pressed={uiStore.rainbowLayout.enabled}
+					onPressedChange={uiStore.toggleRainbowLayout}
+					label="Rainbow Layouts"
+					shortcut="6"
+				>
+					<Rainbow absoluteStrokeWidth class="size-6" />
 				</ToolbarAction>
 				<Separator.Root
 					class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"

@@ -29,6 +29,9 @@
 	const trackersStore = getContext<TrackersStore>("trackersStore");
 	const uiStore = getContext<UIStore>("uiStore");
 
+	const disableForFirefox = !import.meta.env.DEV &&
+		import.meta.env.FIREFOX;
+
 	const trackers = trackersStore;
 
 	let designModePressed = $state(false);
@@ -208,9 +211,12 @@
 					class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"
 				/>
 				<ToolbarAction
+					disabled={disableForFirefox}
 					pressed={uiStore.rainbowLayout.enabled}
 					onPressedChange={uiStore.toggleRainbowLayout}
-					label="Rainbow Layouts"
+					label={disableForFirefox
+						? "Chrome only for now!"
+						: "Rainbow Layouts"}
 					shortcut="6"
 				>
 					<Rainbow absoluteStrokeWidth class="size-6" />

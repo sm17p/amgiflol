@@ -43,7 +43,13 @@ export class UIStore implements App.UIStore {
 		this.toggleRainbowLayout = this.toggleRainbowLayout.bind(this);
 		// Setup rainbow layout stylesheet
 		this.rainbowLayout.css!.replace(rainbowLayoutCss);
-		document.adoptedStyleSheets.push(this.rainbowLayout.css!);
+
+		// https://bugzilla.mozilla.org/show_bug.cgi?id=1751346
+		// https://bugzilla.mozilla.org/show_bug.cgi?id=1817675
+		// https://bugzilla.mozilla.org/show_bug.cgi?id=1928865
+		if (!import.meta.env.FIREFOX) {
+			document.adoptedStyleSheets.push(this.rainbowLayout.css!);
+		}
 
 		$effect(() => {
 			const cleanup = createMessageHandler("KEYDOWN", this.handleKeyDown);
@@ -145,6 +151,10 @@ export class UIStore implements App.UIStore {
 	}
 
 	toggleRainbowLayout = () => {
+		if (
+			!import.meta.env.DEV &&
+			import.meta.env.FIREFOX
+		) return;
 		this.rainbowLayout.css!.disabled = this.rainbowLayout.enabled;
 		this.rainbowLayout.enabled = !this.rainbowLayout.enabled;
 	};

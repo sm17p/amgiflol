@@ -31,12 +31,13 @@ Personally, I'm building this tool to act as an active visual debugger, since it
 - **Visual Overlays**: Highlight elements and parent relationships
 - **Feature Voting**: Vote for your features to be developed
 - **Design Mode**: Edit text on screen
+- **Rainbow Layouts**: Nested rainbow themed overlay for layers
+- **Auto-Hide/Move**: Smart UI positioning to avoid interference
 
 ## Roadmap
 
 ### 🚀 Planned Features
 
-- **Auto-Hide/Move**: Smart UI positioning to avoid interference
 - **Neighbour Analysis**: Automatic sibling/parent distance detection
 - **Viewport Tools**: Responsive design testing utilities
 - **Parent/Sibling Traversal**: Navigate element hierarchy

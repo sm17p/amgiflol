@@ -1,5 +1,11 @@
 # amgiflol
 
+## 0.3.1
+
+### Patch Changes
+
+- a513ca8: fix: temp disable rainbow layouts for firefox
+
 ## 0.3.0
 
 ### Minor Changes

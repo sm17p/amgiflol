@@ -1,5 +1,15 @@
 # amgiflol
 
+## 0.3.0
+
+### Minor Changes
+
+- ba3a60a: feat: adds new icon
+
+### Patch Changes
+
+- ab3fe56: feat: add rainbow layouts
+
 ## 0.2.8
 
 ### Patch Changes

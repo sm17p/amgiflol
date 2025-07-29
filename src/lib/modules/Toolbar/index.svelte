@@ -141,10 +141,13 @@
 	<section
 		onmouseenter={onmouseenterToolbar}
 		onmouseleave={onmouseleaveToolbar}
-		class={["fixed p-3 pointer-events-initial h-18 w-full flex", {
-			"bottom-0 flex-col-reverse": bottom,
-			"top-0 flex-col": !bottom,
-		}]}
+		class={[
+			"fixed pt-3 pb-1 px-1 sm:px-3 sm:pb-3 pointer-events-initial w-full flex",
+			{
+				"bottom-0 flex-col-reverse": bottom,
+				"top-0 flex-col": !bottom,
+			},
+		]}
 		transition:fly|global={{
 			y,
 			duration: 150,
@@ -164,7 +167,7 @@
 				>
 					<SquareDashedMousePointer
 						absoluteStrokeWidth
-						class="size-5"
+						class="size-4 sm:size-5"
 					/>
 				</ToolbarAction>
 				{#if trackers.current}
@@ -180,7 +183,7 @@
 						{@const 				Icon = trackers.current?.isLocked
 					? LockKeyhole
 					: LockKeyholeOpen}
-						<Icon absoluteStrokeWidth class="size-6" />
+						<Icon absoluteStrokeWidth class="size-4 sm:size-6" />
 					</ToolbarAction>
 				{/if}
 				<ToolbarAction
@@ -188,14 +191,14 @@
 					label="Show Grid Lines"
 					shortcut="#"
 				>
-					<Grid3x3 absoluteStrokeWidth class="size-6" />
+					<Grid3x3 absoluteStrokeWidth class="size-4 sm:size-6" />
 				</ToolbarAction>
 				<ToolbarAction
 					bind:pressed={uiStore.svg.showRuler}
 					label="Show Ruler"
 					shortcut="$"
 				>
-					<Ruler absoluteStrokeWidth class="size-6" />
+					<Ruler absoluteStrokeWidth class="size-4 sm:size-6" />
 				</ToolbarAction>
 				<ToolbarAction
 					bind:pressed={uiStore.svg.showDistances}
@@ -204,11 +207,11 @@
 				>
 					<ChevronsLeftRightEllipsis
 						absoluteStrokeWidth
-						class="size-6"
+						class="size-4 sm:size-6"
 					/>
 				</ToolbarAction>
 				<Separator.Root
-					class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"
+					class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
 				/>
 				<ToolbarAction
 					disabled={disableForFirefox}
@@ -219,10 +222,10 @@
 						: "Rainbow Layouts"}
 					shortcut="6"
 				>
-					<Rainbow absoluteStrokeWidth class="size-6" />
+					<Rainbow absoluteStrokeWidth class="size-4 sm:size-6" />
 				</ToolbarAction>
 				<Separator.Root
-					class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"
+					class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
 				/>
 				<ToolbarAction
 					pressed={designModePressed}
@@ -230,20 +233,23 @@
 					label="Design Mode: Edit any text on the document"
 					shortcut="7"
 				>
-					<TextCursor absoluteStrokeWidth class="size-4" />
+					<TextCursor absoluteStrokeWidth class="size-3 sm:size-4" />
 				</ToolbarAction>
 				<Separator.Root
-					class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"
+					class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
 				/>
 				<ToolbarAction
 					bind:pressed={uiStore.sidePanel.isVisible}
 					label="Show Side Panel"
 					shortcut="8"
 				>
-					<PanelRightOpen absoluteStrokeWidth class="size-6" />
+					<PanelRightOpen
+						absoluteStrokeWidth
+						class="size-4 sm:size-6"
+					/>
 				</ToolbarAction>
 				<Separator.Root
-					class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"
+					class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
 				/>
 				<ToolbarAction
 					pressed={false}
@@ -251,10 +257,10 @@
 					onPressedChange={capture}
 					shortcut="9"
 				>
-					<Camera absoluteStrokeWidth class="size-6" />
+					<Camera absoluteStrokeWidth class="size-4 sm:size-6" />
 				</ToolbarAction>
 				<Separator.Root
-					class="bg-neutral-200 -my-1 mx-1 w-0.5 self-stretch"
+					class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
 				/>
 				<ToolbarSettings />
 			</div>

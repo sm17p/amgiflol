@@ -1,9 +1,30 @@
+<div class="title-block" style="text-align: center;" align="center">
+
 # Amgiflol - Figma-like Layout Inspector For Web
+
+<p><img alt="title="amgiflol logo"" title="amgiflol logo" src="src/assets/icon.png" width="256" height="256"></img></p>
+
+[![Release](https://img.shields.io/github/v/release/sm17p/amgiflol)](https://github.com/sm17p/amgiflol/releases)
+[![Release date](https://img.shields.io/github/release-date/sm17p/amgiflol)](https://github.com/sm17p/amgiflol/releases)
+[![License](https://img.shields.io/github/license/sm17p/amgiflol)](./LICENSE.md)
+
+**LOGO BY** - [b3an33](https://github.com/b3an33)
+
+</div>
 
 A browser extension that helps with design audit. Match web layouts with Figma designs through real-time element inspection, measurements, and visual overlays.
 
-- [Google Chrome](https://chromewebstore.google.com/detail/amgiflol/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl/)
-- [Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/amgiflol/)
+## Marketplace
+
+### Supported Browsers
+
+| Chromium                               | Firefox      |
+| -------------------------------------- | ------------ |
+| Chrome, Edge, Brave, Vivaldi, Arc, Dia | Firefox, Zen |
+
+### Users
+
+[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl?style=for-the-badge&logo=GoogleChrome&label=Chromium)](https://chromewebstore.google.com/detail/amgiflol/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl) [![Mozilla Add-on Users](https://img.shields.io/amo/users/amgiflol?style=for-the-badge&logo=Firefox-Browser&label=Firefox)](https://addons.mozilla.org/en-US/firefox/addon/amgiflol/)
 
 ## Target Audience
 
@@ -11,12 +32,14 @@ Any individual or web development teams including front-end developers, UI/UX de
 
 ## Usage Note
 
-Personally, I'm building this tool to act as an active visual debugger, since it is what I struggle with the most.
-
-1. For others, it's intended to be used as an audit tool at the end or during development. Use it to reason about the layout like you would in a prototyping tool like Figma, or Adobe XD.
-2. This tool won't automatically point out alignment or style mismatch with your designs.
-3. You may find some shortcuts not implemented or upto the industry standard.
-4. **This tool doesn't require you to login into any of your fav prototyping tool.**
+> [!IMPORTANT]
+>
+> Personally, I'm building this tool to act as an active visual debugger, since it is what I struggle with the most.
+>
+> 1. For others, it's intended to be used as an audit tool at the end or during development. Use it to reason about the layout like you would in a prototyping tool like Figma, or Adobe XD.
+> 2. This tool won't automatically point out alignment or style mismatch with your designs.
+> 3. You may find some shortcuts not implemented or upto the industry standard.
+> 4. **This tool doesn't require you to login into any of your fav prototyping tool.**
 
 ## Current Features
 
@@ -97,4 +120,4 @@ src/
 
 ---
 
-**License**: MIT | **Build**: Vite + WXT + Svelte + TypeScript
+**License**: [MIT](./LICENSE.md) | **Powered By**: Vite + WXT + Svelte + TypeScript + bits-ui

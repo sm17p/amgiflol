@@ -24,12 +24,12 @@
 		{disabled}
 		bind:pressed
 		{onPressedChange}
-		class="outline-none rounded-sm data-[state=off]:not-disabled:hover:bg-lime-200 data-[state=off]:not-disabled:hover:text-lime-500 !active:bg-lime-700 !active:text-lime-500 data-[state=on]:bg-lime-700 data-[state=on]:text-white/80 inline-flex size-10 items-center justify-center transition-all not-disabled:active:rounded-3xl not-disabled:active:scale-[0.85]"
+		class="size-7 sm:size-10 outline-none rounded-sm data-[state=off]:not-disabled:hover:bg-lime-200 data-[state=off]:not-disabled:hover:text-lime-500 !active:bg-lime-700 !active:text-lime-500 data-[state=on]:bg-lime-700 data-[state=on]:text-white/80 inline-flex items-center justify-center transition-all not-disabled:active:rounded-3xl not-disabled:active:scale-[0.85]"
 	>
 		{@render children?.({ pressed })}
 		{#if shortcut}
 			<kbd
-				class="text-xs not-prose duration-75 absolute translate-y-3 translate-x-3.5"
+				class="text-xs not-prose duration-75 absolute translate-y-2 translate-x-2.5 sm:translate-y-3 sm:translate-x-3.5"
 			>
 				{shortcut}
 			</kbd>

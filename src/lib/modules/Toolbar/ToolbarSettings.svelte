@@ -17,16 +17,16 @@
 <!-- class="rounded-2xl bg-background-alt flex h-10 items-center gap-1" -->
 <DropdownMenu.Root bind:open={uiStore.toolbar.settings.open}>
 	<DropdownMenu.Trigger
-		class="outline-none text-zinc-800 rounded-sm data-[state=closed]:not-disabled:hover:bg-lime-200 data-[state=closed]:not-disabled:hover:text-lime-500 !active:bg-lime-700 !active:text-lime-500 data-[state=open]:bg-lime-700 data-[state=open]:text-white/80 inline-flex size-10 items-center justify-center transition-all not-disabled:active:rounded-3xl not-disabled:active:scale-[0.85]"
+		class="size-7 sm:size-10 outline-none text-zinc-800 rounded-sm data-[state=closed]:not-disabled:hover:bg-lime-200 data-[state=closed]:not-disabled:hover:text-lime-500 !active:bg-lime-700 !active:text-lime-500 data-[state=open]:bg-lime-700 data-[state=open]:text-white/80 inline-flex items-center justify-center transition-all not-disabled:active:rounded-3xl not-disabled:active:scale-[0.85]"
 	>
 		<Cog
 			class={[
-				"size-6 duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
+				"size-4 sm:size-6 duration-300 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]",
 				{ "rotate-[270deg]": uiStore.toolbar.settings.open },
 			]}
 		/>
 		<kbd
-			class="text-xs not-prose duration-75 absolute translate-y-3 translate-x-3.5"
+			class="text-xs not-prose duration-75 absolute translate-y-2 translate-x-2.5 sm:translate-y-3 sm:translate-x-3.5"
 		>
 			0
 		</kbd>
@@ -82,23 +82,6 @@
 										disabled={disableForFirefox}
 										key="animation-debugger"
 										label="Animation Debugger"
-									/>
-								</DropdownMenu.Item>
-								<DropdownMenu.Item
-									class="hover:bg-lime-200 hover:text-lime-500 border-1 border-transparent rounded-lg grid grid-cols-[24px_1fr] pl-1 outline-0 hover:data-[disabled]:cursor-not-allowed"
-									closeOnSelect={false}
-								>
-									<Tooltip
-										label="Toolbar will switch position when mouse is in the bottom half of the screen."
-										side="left"
-										sideOffset={12}
-									>
-										<CircleQuestionMark class="size-4" />
-									</Tooltip>
-									<UpvoteAction
-										disabled={disableForFirefox}
-										key="auto-move-toolbar"
-										label="Auto-Move Toolbar"
 									/>
 								</DropdownMenu.Item>
 								<DropdownMenu.Item
@@ -230,7 +213,7 @@
 							aria-label="Toolbar Behaviour"
 						>
 							<DropdownMenu.GroupHeading>
-								<h4 class="m-0 ml-5">Side-panel</h4>
+								<h4 class="m-0 ml-7">Side-panel</h4>
 							</DropdownMenu.GroupHeading>
 							<DropdownMenu.Separator
 								class="-ml-1 -mr-1 block h-px bg-zinc-200"
@@ -269,7 +252,7 @@
 							aria-label="Toolbar Behaviour"
 						>
 							<DropdownMenu.GroupHeading>
-								<h4 class="m-0 ml-5">Toolbar</h4>
+								<h4 class="m-0 ml-7">Toolbar</h4>
 							</DropdownMenu.GroupHeading>
 							<DropdownMenu.Separator
 								class="-ml-1 -mr-1 block h-px bg-zinc-200"

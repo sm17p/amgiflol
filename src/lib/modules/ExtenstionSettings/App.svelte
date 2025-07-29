@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { useAppConfig } from "#imports";
+	import IconOff from "@/assets/icon-off.png";
 	import IconOn from "@/assets/icon.png";
-	import IconOff from "@/assets/icon.png";
 	import {
 		createMessageHandler,
 		sendMessage,
@@ -9,6 +9,7 @@
 	import { Label, Switch } from "bits-ui";
 	import { browser } from "wxt/browser";
 	import "./app.css";
+	import { fade } from "svelte/transition";
 
 	const appConfig = useAppConfig();
 
@@ -103,24 +104,28 @@
 <main class="prose prose-zinc bg-lime-300 p-1">
 	<div class="grid grid-cols-1 rounded-xl gap-y-6 p-4 border-1 border-zinc-800 min-h-36">
 		<h1 class="font-bold text-center mt-0 mb-0 text-4xl">
-			Amgif-lol
+			Amgif
 		</h1>
 		{#if isActive !== undefined}
-			{#if isActive}
-				<img
-					class="justify-self-center-safe"
-					src={IconOn}
-					alt="amgiflol on icon"
-					width={156}
-				/>
-			{:else}
-				<img
-					class="justify-self-center-safe"
-					src={IconOff}
-					alt="amgiflol off icon"
-					width={156}
-				/>
-			{/if}
+			<div class="grid grid-row-1 grid-col-1">
+				{#if isActive}
+					<img
+						transition:fade|global={{ duration: 150 }}
+						class="justify-self-center-safe col-span-full row-span-full"
+						src={IconOn}
+						alt="amgiflol on icon"
+						width={156}
+					/>
+				{:else}
+					<img
+						transition:fade|global={{ duration: 150 }}
+						class="justify-self-center-safe col-span-full row-span-full"
+						src={IconOff}
+						alt="amgiflol off icon"
+						width={156}
+					/>
+				{/if}
+			</div>
 			<hr class="mt-0 mb-0 border-zinc-800" />
 			<div class="flex justify-between space-x-3">
 				<Label.Root

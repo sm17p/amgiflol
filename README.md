@@ -10,21 +10,16 @@
 
 **LOGO BY** - [b3an33](https://github.com/b3an33)
 
-</div>
-
 A browser extension that helps with design audit. Match web layouts with Figma designs through real-time element inspection, measurements, and visual overlays.
+
+</div>
 
 ## Marketplace
 
-### Supported Browsers
-
-| Chromium                               | Firefox      |
-| -------------------------------------- | ------------ |
-| Chrome, Edge, Brave, Vivaldi, Arc, Dia | Firefox, Zen |
-
-### Users
-
-[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl?style=for-the-badge&logo=GoogleChrome&label=Chromium)](https://chromewebstore.google.com/detail/amgiflol/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl) [![Mozilla Add-on Users](https://img.shields.io/amo/users/amgiflol?style=for-the-badge&logo=Firefox-Browser&label=Firefox)](https://addons.mozilla.org/en-US/firefox/addon/amgiflol/)
+| Flavour  | Browsers                               | Web Store Links & Stats                                                                                                                                                                                                                              |
+| -------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Chromium | Chrome, Edge, Brave, Vivaldi, Arc, Dia | [![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl?style=for-the-badge&logo=GoogleChrome&label=Chromium)](https://chromewebstore.google.com/detail/amgiflol/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl) |
+| Firefox  | Firefox, Zen                           | [![Mozilla Add-on Users](https://img.shields.io/amo/users/amgiflol?style=for-the-badge&logo=Firefox-Browser&label=Firefox)](https://addons.mozilla.org/en-US/firefox/addon/amgiflol/)                                                                |
 
 ## Target Audience
 

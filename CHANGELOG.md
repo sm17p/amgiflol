@@ -1,5 +1,12 @@
 # amgiflol
 
+## 0.3.2
+
+### Patch Changes
+
+- 7ef4f11: fix: sync action icon state disabled state
+- 7d86c66: toolbar responsive mode size changes
+
 ## 0.3.1
 
 ### Patch Changes

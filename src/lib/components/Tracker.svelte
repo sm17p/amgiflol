@@ -6,13 +6,11 @@
 
 	interface TrackerProps {
 		trackerId?: string;
-		showParent?: boolean;
 		zIndex?: number;
 	}
 
 	let {
 		trackerId,
-		showParent = true,
 		zIndex,
 	}: TrackerProps = $props();
 
@@ -37,19 +35,27 @@
 </script>
 
 {#if tracker}
-	{#if showParent && tracker.parentRect}
+	{#if tracker.parentOfTarget}
 		<div
 			class="follower-p bg-rose-300/10 origin-top-left inline-block border-1 border-zinc-700 top-0 fixed duration-75"
-			style={`${tracker.parentStyles}z-index: ${zIndex};`}
+			style={`${tracker.parentOfTarget.overlayStyles}z-index: ${zIndex};`}
 		>
 		</div>
 	{/if}
 
 	<div
 		class="follower origin-top-left inline-block border-1 border-zinc-700 top-0 mix-blend-difference bg-lime-700/10 fixed duration-75"
-		style={`${tracker.elementStyles}z-index: ${zIndex};`}
+		style={`${tracker.target?.overlayStyles}z-index: ${zIndex};`}
 	>
 	</div>
+
+	{#if tracker.hoveredAltTarget}
+		<div
+			class="follower-p bg-indigo-500/10 origin-top-left inline-block border-1 border-zinc-700 top-0 fixed duration-75"
+			style={`${tracker.hoveredAltTarget.overlayStyles}z-index: ${zIndex};`}
+		>
+		</div>
+	{/if}
 {/if}
 
 <style>

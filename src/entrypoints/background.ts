@@ -17,6 +17,12 @@ export default defineBackground(() => {
 	browser.runtime.onMessage.addListener(async (event, sender) => {
 		if (event.type === "SCREENSHOT" && sender.tab) {
 			captureHandler(sender.tab);
+		} else if (event.type === "EXTENSION_TOGGLE") {
+			const { domain, isActive } = event.payload;
+			browser.storage?.local.set({
+				[domain]: isActive,
+			});
+			setIcon(isActive);
 		}
 	});
 
@@ -24,17 +30,20 @@ export default defineBackground(() => {
 		console.log(
 			`Extension installed, reason: ${reason}, browser: ${import.meta.env.BROWSER}`,
 		);
+
+		savePlatformInfo();
 		analytics.setEnabled(true);
 		updateIconForActiveTab();
 	});
 
 	browser.runtime.onStartup.addListener(async () => {
 		console.log("Extension started");
-		await updateIconForActiveTab();
+		updateIconForActiveTab();
 	});
 
 	// Update icon when switching tabs
-	browser.tabs.onActivated.addListener(async () => {
+	browser.tabs.onActivated.addListener(async (_activeInfo) => {
+		savePlatformInfo();
 		updateIconForActiveTab();
 	});
 
@@ -45,7 +54,7 @@ export default defineBackground(() => {
 		}
 	});
 
-	// Listen for storage changes to update icon
+	// // Listen for storage changes to update icon
 	browser.storage.onChanged.addListener(async (changes, areaName) => {
 		if (areaName === "local") {
 			updateIconForActiveTab();
@@ -53,17 +62,27 @@ export default defineBackground(() => {
 	});
 });
 
+async function savePlatformInfo() {
+	const platformInfo = await browser.runtime.getPlatformInfo();
+	browser.storage.local.set({ "platformInfo": platformInfo });
+}
+
 /**
  * Get the current active tab's domain
  */
-async function getCurrentDomain(): Promise<string | null> {
+async function getCurrentDomain(tabId?: number): Promise<string | null> {
 	try {
-		const [tab] = await browser.tabs.query({
-			active: true,
-			currentWindow: true,
-		});
+		let tab: globalThis.Browser.tabs.Tab;
+		if (tabId) {
+			tab = await browser.tabs.get(tabId);
+		} else {
+			[tab] = await browser.tabs.query({
+				active: true,
+				currentWindow: true,
+			});
+		}
 
-		if (!tab.url) return null;
+		if (!tab?.url) return null;
 
 		const url = new URL(tab.url);
 		return url.host;
@@ -86,29 +105,31 @@ async function isDomainActive(domain: string): Promise<boolean> {
 	}
 }
 
+async function setIcon(isActive: boolean) {
+	await (browser.action ?? browser.browserAction).setIcon({
+		path: isActive ? IconOn : IconOff,
+	});
+}
+
 /**
  * Update extension icon based on current active tab's domain state
  */
-async function updateIconForActiveTab() {
+async function updateIconForActiveTab(tabId?: number) {
 	try {
-		const domain = await getCurrentDomain();
+		const domain = await getCurrentDomain(tabId);
 
 		if (!domain) {
 			// No valid domain, show disabled state
-			await (browser.action ?? browser.browserAction).setIcon({
-				path: IconOff,
-			});
+			setIcon(false);
 			console.log("No valid domain, icon set to disabled");
 			return;
 		}
 
 		const isActive = await isDomainActive(domain);
 
-		await (browser.action ?? browser.browserAction).setIcon({
-			path: isActive ? IconOn : IconOff,
-		});
+		setIcon(isActive);
 
-		console.log(
+		console.trace(
 			`Icon updated for domain "${domain}": ${
 				isActive ? "active" : "inactive"
 			}`,

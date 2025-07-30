@@ -24,7 +24,7 @@
 		{disabled}
 		bind:pressed
 		{onPressedChange}
-		class="size-7 sm:size-10 outline-none rounded-sm data-[state=off]:not-disabled:hover:bg-lime-200 data-[state=off]:not-disabled:hover:text-lime-500 !active:bg-lime-700 !active:text-lime-500 data-[state=on]:bg-lime-700 data-[state=on]:text-white/80 inline-flex items-center justify-center transition-all not-disabled:active:rounded-3xl not-disabled:active:scale-[0.85]"
+		class="fade-in size-7 sm:size-10 outline-none rounded-sm data-[state=off]:not-disabled:hover:bg-lime-200 data-[state=off]:not-disabled:hover:text-lime-500 !active:bg-lime-700 !active:text-lime-500 data-[state=on]:bg-lime-700 data-[state=on]:text-white/80 inline-flex items-center justify-center transition-all not-disabled:active:rounded-3xl not-disabled:active:scale-[0.85]"
 	>
 		{@render children?.({ pressed })}
 		{#if shortcut}
@@ -36,3 +36,6 @@
 		{/if}
 	</Toggle.Root>
 </Tooltip>
+
+<style>
+</style>

@@ -155,7 +155,7 @@
 <svg class="fixed inset-0 w-screen h-screen pointer-events-none" {...props}>
 	<Ruler />
 	<Measurements gridSize={8} color="#3b82f6" zIndex={10000000001} />
-	{#if 		uiStore.svg.showDistances && tracker?.parentRect &&
+	{#if 		uiStore.svg.showDistances && tracker?.parentOfTarget &&
 			tracker.lines}
 		<g filter="url(#outline)">
 			{#each [...tracker.lockedLines, ...tracker.lines] as line}

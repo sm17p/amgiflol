@@ -7,6 +7,8 @@
 	} from "@/lib/store/index.svelte";
 	import { Tooltip } from "bits-ui";
 	import SelectorManager from "./components/SelectorManager.svelte";
+	// TODO: Enable Toaster when toast functionality is complete
+	// import Toaster from "./components/Toaster.svelte";
 	import DebugToolbar from "./modules/DebugToolbar/index.svelte";
 	import EventsManager from "./modules/EventsManager/index.svelte";
 	import SidePanel from "./modules/SidePanel/index.svelte";
@@ -42,6 +44,7 @@
 				showMessages={true}
 			/>
 			<SidePanel />
+			<!-- <Toaster /> -->
 			<Toolbar />
 		{/if}
 	</Tooltip.Provider>

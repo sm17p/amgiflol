@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { elementInspector } from "@/lib/core/ElementInspector";
 	import {
+		CONTENT,
 		createMessageHandler,
 		sendMessage,
 	} from "@/lib/core/MessageBus";
@@ -20,13 +21,20 @@
 		metadataStore.updateMousePosition(event.clientX, event.clientY);
 	}
 
+	const isMac = $derived(metadataStore.platformInfo.os === "mac");
+
 	function handleKeyDown(event: KeyboardEvent) {
 		if (!uiStore.isActive) return;
 
 		metadataStore.updateModifiers({
-			ctrl: event.ctrlKey,
-			shift: event.shiftKey,
 			alt: event.altKey,
+			meta: event.metaKey,
+			// Cross-platform primary modifier
+			primary: isMac ? event.metaKey : event.ctrlKey,
+			// Cross-platform secondary modifier
+			secondary: isMac ? event.ctrlKey : event.altKey,
+			shift: event.shiftKey,
+			ctrl: event.ctrlKey,
 		});
 
 		// Disable shortcuts when typing
@@ -36,7 +44,7 @@
 			(event.target instanceof HTMLElement &&
 				elementInspector.isExtensionElement(event.target))
 		) {
-			sendMessage("KEYDOWN", event, "content");
+			sendMessage("KEYDOWN", event, CONTENT);
 		}
 	}
 
@@ -55,12 +63,12 @@
 			sendMessage("VIEWPORT_RESIZE", {
 				width: window.innerWidth,
 				height: window.innerHeight,
-			}, "content");
+			}, CONTENT);
 		}
 	}
 
 	function handleMouseOver(event: MouseEvent) {
-		sendMessage("ELEMENT_HOVER", event, "content");
+		sendMessage("ELEMENT_HOVER", event, CONTENT);
 	}
 
 	function setupMessageHandlers() {
@@ -68,8 +76,8 @@
 			"EXTENSION_TOGGLE",
 			(payload: any, message) => {
 				if (
-					payload.isActive !== uiStore.isActive &&
-					message.source !== "content"
+					!message.source.content &&
+					payload.isActive !== uiStore.isActive
 				) {
 					uiStore.toggleActive(message.source);
 				}

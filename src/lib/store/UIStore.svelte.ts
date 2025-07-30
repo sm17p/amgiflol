@@ -1,4 +1,8 @@
-import { createMessageHandler, sendMessage } from "@/lib/core/MessageBus";
+import {
+	CONTENT,
+	createMessageHandler,
+	sendMessage,
+} from "@/lib/core/MessageBus";
 import rainbowLayoutCss from "@/lib/css/rainbow-translucent.css?raw";
 import { booleanToVote } from "@/utils/tracking";
 import { watch } from "runed";
@@ -69,7 +73,7 @@ export class UIStore implements App.UIStore {
 				this.toolbar.autoMove,
 			],
 			() => {
-				this.syncToStorage("content");
+				this.syncToStorage(CONTENT);
 			},
 			{
 				lazy: true,
@@ -216,7 +220,7 @@ export class UIStore implements App.UIStore {
 	async toggleActive(from: App.Message["source"]) {
 		this.isActive = !this.isActive;
 		await this.syncToStorage(from);
-		if (from === "content") {
+		if (from.content) {
 			this.broadcastStateChange();
 		}
 	}
@@ -238,7 +242,7 @@ export class UIStore implements App.UIStore {
 	private async syncToStorage(from: App.Message["source"]) {
 		try {
 			let active: Record<string, boolean> = {};
-			if (from === "content") {
+			if (from.content) {
 				const { host } = window.location;
 				active[host] = this.isActive;
 			}
@@ -256,7 +260,7 @@ export class UIStore implements App.UIStore {
 		sendMessage("EXTENSION_TOGGLE", {
 			isActive: this.isActive,
 			timestamp: Date.now(),
-		}, "popup");
+		});
 	}
 
 	async loadFromStorage() {

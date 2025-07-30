@@ -2,6 +2,16 @@ import { browser } from "wxt/browser";
 
 let popupProtocols = new Set(["chrome-extension:", "moz-extension:"]);
 
+export const CONTENT = Object.freeze({
+	content: true,
+});
+
+export const ALL_RECIPIENTS: App.MessageRecipients = Object.freeze({
+	background: true,
+	content: true,
+	popup: true,
+});
+
 class MessageBus {
 	private static instance: MessageBus;
 	private handlers: Map<App.MessageType | "*", Set<App.MessageHandler>> =
@@ -44,7 +54,7 @@ class MessageBus {
 	public async send<T>(
 		type: App.MessageType,
 		payload: T,
-		target: App.MessageRecipients = "all",
+		target: App.MessageRecipients = ALL_RECIPIENTS,
 	): Promise<void> {
 		const message: App.Message<T> = {
 			type,
@@ -56,33 +66,26 @@ class MessageBus {
 
 		this.addToHistory(message);
 
+		const promiseQueue: Promise<void>[] = [];
+
 		try {
-			switch (target) {
-				case "popup":
-					await this.sendToPopuporBackground(message);
-					break;
-				case "content":
-					await this.sendToContent(message);
-					break;
-				case "background":
-					await this.sendToPopuporBackground(message);
-					break;
-				case "all":
-					await Promise.allSettled([
-						this.sendToPopuporBackground(message),
-						this.sendToContent(message),
-					]);
-					break;
+			if (target.background || target.popup) {
+				promiseQueue.push(this.sendToPopuporBackground(message));
 			}
+
+			if (target.content) {
+				promiseQueue.push(this.sendToContent(message));
+			}
+			await Promise.allSettled(promiseQueue);
 		} catch (error) {
 			console.error(`Failed to send message of type ${type}:`, error);
+		} finally {
+			this.handleMessage(message);
 		}
-
-		this.handleMessage(message);
 	}
 
 	public broadcast<T>(type: App.MessageType, payload: T): Promise<void> {
-		return this.send(type, payload, "all");
+		return this.send(type, payload);
 	}
 
 	public getMessageHistory(): App.Message[] {
@@ -169,16 +172,16 @@ class MessageBus {
 		}
 	}
 
-	private getSource(): App.Message["source"] {
+	private getSource(): App.MessageRecipients {
 		if (typeof window === "undefined") {
-			return "background";
+			return { background: true };
 		}
 
 		if (popupProtocols.has(window.location.protocol)) {
-			return "popup";
+			return { popup: true };
 		}
 
-		return "content";
+		return CONTENT;
 	}
 
 	private isValidMessage(data: any): data is App.Message {
@@ -212,7 +215,7 @@ export const createMessageHandler = <T>(
 export const sendMessage = <T>(
 	type: App.MessageType,
 	payload: T,
-	target?: App.MessageRecipients,
+	target: App.MessageRecipients = ALL_RECIPIENTS,
 ): Promise<void> => {
 	return messageBus.send(type, payload, target);
 };

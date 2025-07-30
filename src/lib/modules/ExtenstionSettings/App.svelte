@@ -21,14 +21,6 @@
 
 	let domain = "";
 
-	function toggleActive() {
-		browser.storage?.local.set({
-			[domain]: !isActive,
-		});
-
-		isActive = !isActive;
-	}
-
 	async function mount() {
 		try {
 			analytics.page(location.href);
@@ -36,17 +28,22 @@
 			const [tab] = await browser.tabs.query({
 				active: true,
 				currentWindow: true,
+				status: "complete",
 			});
 
-			const url = new URL(tab.url!);
-			domain = url.host;
+			if (tab.url) {
+				const url = new URL(tab.url);
+				domain = url.host;
 
-			let result = await browser.storage?.local.get([
-				domain,
-			]);
+				let result = await browser.storage?.local.get([
+					domain,
+				]);
 
-			if (result) {
-				isActive = result[domain] ?? false;
+				console.log("🚀 ~ mount ~ result:", result);
+
+				if (result) {
+					isActive = result[domain] ?? false;
+				}
 			}
 		} catch (error) {
 			errorMessage = "Failed to load inspector state";
@@ -58,23 +55,19 @@
 		const unsub = createMessageHandler(
 			"EXTENSION_TOGGLE",
 			(payload: any, message) => {
-				if (
-					payload.isActive !== isActive &&
-					message.source !== "popup"
-				) {
-					isActive = payload.isActive;
-				}
+				isActive = payload.isActive;
 			},
 		);
 
 		return unsub;
 	});
 
-	$effect.pre(() => {
+	$effect(() => {
 		mount();
 	});
 
 	async function toggleActiveContent() {
+		console.log("🚀 ~ toggleActiveContent ~ toggled:");
 		if (isLoading) return;
 
 		isLoading = true;
@@ -84,10 +77,9 @@
 		try {
 			await sendMessage("EXTENSION_TOGGLE", {
 				isActive: !isActive,
+				domain,
 				timestamp: Date.now(),
-			}, "content");
-
-			toggleActive();
+			});
 		} catch (error) {
 			errorMessage = "Failed to toggle inspector";
 			console.error("Error toggling inspector:", error);

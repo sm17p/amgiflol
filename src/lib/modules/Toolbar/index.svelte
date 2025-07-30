@@ -18,6 +18,7 @@
 		PanelRightOpen,
 		Rainbow,
 		Ruler,
+		RulerDimensionLine,
 		SquareDashedMousePointer,
 		TextCursor,
 	} from "@lucide/svelte";
@@ -28,6 +29,8 @@
 	const metadataStore = getContext<MetaDataStore>("metadataStore");
 	const trackersStore = getContext<TrackersStore>("trackersStore");
 	const uiStore = getContext<UIStore>("uiStore");
+
+	const isMac = $derived(metadataStore.platformInfo.os === "mac");
 
 	const disableForFirefox = !import.meta.env.DEV &&
 		import.meta.env.FIREFOX;
@@ -70,7 +73,7 @@
 		}
 		uiStore.makeToolbarVisible(false);
 		await new Promise(resolve => setTimeout(resolve, 350));
-		sendMessage("SCREENSHOT", undefined, "background");
+		sendMessage("SCREENSHOT", undefined, { background: true });
 		await new Promise(resolve => setTimeout(resolve, 100));
 		if (isAutoHide) {
 			uiStore.toggleAutoHide();
@@ -87,13 +90,13 @@
 		event: KeyboardEvent,
 		message: App.Message<KeyboardEvent>,
 	) {
-		switch (event.key) {
-			case "7":
-				designMode(true);
-				break;
-			case "9":
-				capture(true);
-				break;
+		if (event.key === "7") {
+			designMode(true);
+		} else if (
+			(event.key === "9" ||
+				event.altKey && event.code === "Digit9")
+		) {
+			capture(true);
 		}
 	}
 
@@ -157,7 +160,7 @@
 		{#if uiStore.toolbar.isVisible}
 			<div
 				in:fly|global={{ duration: 300 }}
-				class="shadow-lg inline-flex items-center justify-center origin-left gap-x-0.5 bg-white cursor-pointer rounded-lg p-1 mx-auto"
+				class="shadow-lg inline-flex items-center justify-center origin-left gap-x-0.5 bg-white cursor-pointer rounded-lg p-1 mx-auto transition-width duration-300"
 			>
 				<ToolbarAction
 					disabled
@@ -172,6 +175,7 @@
 				</ToolbarAction>
 				{#if trackers.current}
 					<ToolbarAction
+						class=""
 						bind:pressed={trackers.current.isLocked}
 						label={`${
 							trackers.current.isLocked
@@ -183,7 +187,25 @@
 						{@const 				Icon = trackers.current?.isLocked
 					? LockKeyhole
 					: LockKeyholeOpen}
-						<Icon absoluteStrokeWidth class="size-4 sm:size-6" />
+						<Icon
+							absoluteStrokeWidth
+							class="size-4 sm:size-6"
+						/>
+					</ToolbarAction>
+				{/if}
+				{#if trackers.current?.isLocked}
+					<ToolbarAction
+						disabled={true}
+						pressed={false}
+						label={`Hold ${
+							isMac ? "option" : "alt"
+						} and hover around to measure distance between layers`}
+						shortcut={isMac ? "⌥" : "alt"}
+					>
+						{@const 				Icon = trackers.current?.isLocked
+					? LockKeyhole
+					: LockKeyholeOpen}
+						<RulerDimensionLine class="size-4 sm:size-6" />
 					</ToolbarAction>
 				{/if}
 				<ToolbarAction

@@ -29,25 +29,6 @@ export default defineConfig({
 		transformerDirectives(),
 	],
 	theme: {
-		colors: {
-			// Light mode VIBGYOR colors
-			"vibgyor-violet-light": "#8A2BE2",
-			"vibgyor-indigo-light": "#4B0082",
-			"vibgyor-blue-light": "#0000FF",
-			"vibgyor-green-light": "#008000",
-			"vibgyor-yellow-light": "#FFFF00",
-			"vibgyor-orange-light": "#FFA500",
-			"vibgyor-red-light": "#FF0000",
-
-			// Dark mode VIBGYOR colors (adjust these to your preference for dark mode visibility)
-			"vibgyor-violet-dark": "#B088F5", // Lighter violet for dark background
-			"vibgyor-indigo-dark": "#7A38BC", // Lighter indigo
-			"vibgyor-blue-dark": "#4F4FFF", // Lighter blue
-			"vibgyor-green-dark": "#3CB371", // Lighter green
-			"vibgyor-yellow-dark": "#FFFF99", // Lighter yellow
-			"vibgyor-orange-dark": "#FFD700", // Lighter orange (more golden)
-			"vibgyor-red-dark": "#FF6347", // Lighter red (tomato)
-		},
 		extend: {
 			transitionTimingFunction: {
 				"ease-spring": "cubic-bezier(0.68,-0.55,0.265,1.55)",

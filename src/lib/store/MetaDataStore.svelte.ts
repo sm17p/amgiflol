@@ -1,13 +1,19 @@
 export class MetaDataStore implements App.MetaDataStore {
+	keyboard: App.KeyboardState = {
+		modifiers: {
+			alt: false,
+			ctrl: false,
+			meta: false,
+			primary: false,
+			secondary: false,
+			shift: false,
+		},
+	};
+	platformInfo = $state<App.MetaDataStore["platformInfo"]>({ os: "none" });
 	mouse = $state<App.MouseState>({
 		x: 0,
 		y: 0,
 		isPressed: false,
-		modifiers: {
-			ctrl: false,
-			shift: false,
-			alt: false,
-		},
 	});
 	scroll = $state({
 		scrollX: 0,
@@ -19,6 +25,14 @@ export class MetaDataStore implements App.MetaDataStore {
 	});
 
 	constructor() {
+		const platformInfoStore = storage.defineItem<
+			App.MetaDataStore["platformInfo"]
+		>("local:platformInfo");
+		platformInfoStore.getValue().then(value => {
+			if (value) {
+				this.platformInfo = value;
+			}
+		});
 	}
 
 	public updateMousePosition(x: number, y: number) {
@@ -26,7 +40,7 @@ export class MetaDataStore implements App.MetaDataStore {
 		this.mouse.y = y;
 	}
 
-	public updateModifiers(modifiers: Partial<App.MouseState["modifiers"]>) {
-		Object.assign(this.mouse.modifiers, modifiers);
+	public updateModifiers(modifiers: Partial<App.KeyboardState["modifiers"]>) {
+		Object.assign(this.keyboard.modifiers, modifiers);
 	}
 }

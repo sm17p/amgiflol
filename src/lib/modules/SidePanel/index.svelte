@@ -16,9 +16,9 @@
 			trackersStore?.current && !trackersStore.current.isLocked &&
 			uiStore.sidePanel.isVisible &&
 			uiStore.sidePanel.autoMove &&
-			trackersStore.current.boundingRect
+			trackersStore.current.target?.bounds
 		) {
-			const { left, right } = trackersStore.current.boundingRect;
+			const { left, right } = trackersStore.current.target.bounds;
 
 			let boxSize = right - left;
 
@@ -46,15 +46,19 @@
 	}
 </script>
 
-{#if trackersStore?.current && uiStore.sidePanel.isVisible}
+{#if trackersStore?.current?.target && uiStore.sidePanel.isVisible}
 	{#if panelInLeftHalfState}
-		{@render SidePanel(trackersStore.current, true, -200)}
+		{@render SidePanel(trackersStore.current.target, true, -200)}
 	{:else}
-		{@render SidePanel(trackersStore.current, false, 200)}
+		{@render SidePanel(trackersStore.current.target, false, 200)}
 	{/if}
 {/if}
 
-{#snippet SidePanel(tracker: TrackerState, left: boolean, x: number)}
+{#snippet SidePanel(
+	tracker: App.TrackerTargetMetaData,
+	left: boolean,
+	x: number,
+)}
 	<aside
 		class={[
 			"fixed top-0 bg-white border border-zinc-200 rounded-lg shadow-xl translate-y-1/10 h-[80vh] overflow-auto pointer-events-initial",
@@ -88,12 +92,12 @@
 							class="text-sm text-zinc-800 hover:text-white transition-colors cursor-pointer font-mono bg-lime-400 hover:bg-lime-500 px-2 py-1 rounded"
 							onclick={() =>
 								copyToClipboard(
-									tracker.elementInfo
+									tracker.properties
 										?.tagName || "",
 								)}
 						>
 							{
-								tracker.elementInfo
+								tracker.properties
 									?.tagName || "N/A"
 							}
 						</button>
@@ -104,12 +108,12 @@
 							class="text-sm text-zinc-800 hover:text-white transition-colors cursor-pointer font-mono bg-lime-400 hover:bg-lime-500 px-2 py-1 rounded"
 							onclick={() =>
 								copyToClipboard(
-									tracker.elementInfo?.id ||
+									tracker.properties?.id ||
 										"",
 								)}
 						>
 							{
-								tracker.elementInfo
+								tracker.properties
 									?.id || "N/A"
 							}
 						</button>
@@ -117,7 +121,7 @@
 					<div class="flex items-start justify-between">
 						<span class="text-xs text-zinc-600">Classes:</span>
 						<div class="flex flex-wrap gap-1 justify-end max-w-[200px]">
-							{#each 							tracker.elementInfo
+							{#each 							tracker.properties
 								?.classes ?? [] as
 								className
 							}
@@ -148,13 +152,13 @@
 							class="text-sm text-zinc-800 hover:text-white transition-colors cursor-pointer font-mono bg-lime-400 hover:bg-lime-500 px-2 py-1 rounded"
 							onclick={() =>
 								copyToClipboard(
-									tracker.elementInfo
+									tracker.properties
 										?.dimensions
 										.aspectRatio || "",
 								)}
 						>
 							{
-								tracker.elementInfo
+								tracker.properties
 									?.dimensions
 									.aspectRatio
 							}
@@ -166,14 +170,14 @@
 							class="text-sm text-zinc-800 hover:text-white transition-colors cursor-pointer font-mono bg-lime-400 hover:bg-lime-500 px-2 py-1 rounded"
 							onclick={() =>
 								copyToClipboard(
-									tracker.elementInfo
+									tracker.properties
 										?.dimensions.width
 										.toString() ||
 										"",
 								)}
 						>
 							{
-								tracker.elementInfo
+								tracker.properties
 									?.dimensions.width
 							}px
 						</button>
@@ -184,14 +188,14 @@
 							class="text-sm text-zinc-800 hover:text-white transition-colors cursor-pointer font-mono bg-lime-400 hover:bg-lime-500 px-2 py-1 rounded"
 							onclick={() =>
 								copyToClipboard(
-									tracker.elementInfo
+									tracker.properties
 										?.dimensions.height
 										.toString() ||
 										"",
 								)}
 						>
 							{
-								tracker.elementInfo
+								tracker.properties
 									?.dimensions.height
 							}px
 						</button>
@@ -203,14 +207,14 @@
 							class="text-sm text-zinc-800 hover:text-white transition-colors cursor-pointer font-mono bg-lime-400 hover:bg-lime-500 px-2 py-1 rounded"
 							onclick={() =>
 								copyToClipboard(
-									tracker.elementInfo
+									tracker.properties
 										?.dimensions.x
 										.toString() ||
 										"",
 								)}
 						>
 							{
-								tracker.elementInfo
+								tracker.properties
 									?.dimensions.x
 							}px
 						</button>
@@ -221,14 +225,14 @@
 							class="text-sm text-zinc-800 hover:text-white transition-colors cursor-pointer font-mono bg-lime-400 hover:bg-lime-500 px-2 py-1 rounded"
 							onclick={() =>
 								copyToClipboard(
-									tracker.elementInfo
+									tracker.properties
 										?.dimensions.y
 										.toString() ||
 										"",
 								)}
 						>
 							{
-								tracker.elementInfo
+								tracker.properties
 									?.dimensions.y
 							}px
 						</button>
@@ -243,7 +247,7 @@
 				</h3>
 				<div class="space-y-1">
 					{#each 					Object.entries(
-						tracker.elementInfo?.computedStyles ||
+						tracker.properties?.computedStyles ||
 							{},
 					).sort(([a], [b]) => a.localeCompare(b)) as
 						[key, value]
@@ -268,8 +272,8 @@
 			</section>
 
 			<!-- Attributes -->
-			{#if 			tracker.elementInfo?.attributes &&
-				Object.keys(tracker.elementInfo.attributes).length >
+			{#if 			tracker.properties?.attributes &&
+				Object.keys(tracker.properties.attributes).length >
 					0}
 				<section class="space-y-2">
 					<h3 class="text-sm font-medium text-zinc-600 uppercase tracking-wide m-0">
@@ -277,7 +281,7 @@
 					</h3>
 					<div class="space-y-1">
 						{#each 					Object.entries(
-						tracker.elementInfo.attributes,
+						tracker.properties.attributes,
 					).sort(([a], [b]) => a.localeCompare(b)) as
 							[key, value]
 						}

@@ -38,33 +38,47 @@ declare global {
 			attributes: Record<string, string>;
 		}
 
+		interface TrackerTargetMetaData {
+			bounds: DOMRect;
+			domElement: HTMLElement;
+			properties: ElementInfo;
+			overlayStyles: string;
+			distanceLines: Line[];
+		}
+
 		interface TrackerState {
-			boundingRect?: DOMRect;
-			element?: HTMLElement;
-			parentElement?: HTMLElement;
-			elementInfo?: ElementInfo;
+			hoveredAltTarget?: TrackerTargetMetaData;
+			target?: TrackerTargetMetaData;
+			parentOfTarget?: TrackerTargetMetaData;
 			id: string;
 			isLocked: boolean;
 			isVisible: boolean;
-			parentRect?: DOMRect;
-			elementStyles?: string;
-			parentStyles?: string;
 			lines?: Lines[];
+		}
+
+		interface KeyboardState {
+			modifiers: {
+				alt: boolean;
+				ctrl: boolean;
+				meta: boolean;
+				primary: boolean;
+				secondary: boolean;
+				shift: boolean;
+			};
 		}
 
 		interface MouseState {
 			isPressed: boolean;
-			modifiers: {
-				alt: boolean;
-				ctrl: boolean;
-				shift: boolean;
-			};
 			x: number;
 			y: number;
 		}
 
 		interface MetaDataStore {
+			keyboard: KeyboardState;
 			mouse: MouseState;
+			platformInfo: {
+				os: string;
+			};
 			scroll: {
 				scrollX: number;
 				scrollY: number;
@@ -145,13 +159,17 @@ declare global {
 			| "KEYDOWN"
 			| "*";
 
-		type MessageRecipients = "popup" | "content" | "background" | "all";
+		type MessageRecipients = Partial<{
+			background: boolean;
+			content: boolean;
+			popup: boolean;
+		}>;
 
 		interface Message<T = any> {
 			type: MessageType;
 			payload: T;
 			timestamp: number;
-			source: Omit<MessageRecipients, "all">;
+			source: MessageRecipients;
 			target?: MessageRecipients;
 		}
 

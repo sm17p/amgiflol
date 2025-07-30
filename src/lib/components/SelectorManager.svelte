@@ -21,12 +21,8 @@
 	{#each trackersStore.lockedTrackers as tracker (tracker.id)}
 		<Tracker
 			trackerId={tracker.id}
-			showParent={true}
 			zIndex={1000000002}
 		/>
 	{/each}
-	<Tracker
-		showParent={true}
-		zIndex={1000000003}
-	/>
+	<Tracker zIndex={1000000003} />
 {/if}

@@ -1,5 +1,12 @@
 # amgiflol
 
+## 0.3.4
+
+### Patch Changes
+
+- 0f61314: fix: toolbar position pointer events pass through
+- 32f57fa: fix: toolbar on/off state after refactor
+
 ## 0.3.3
 
 ### Patch Changes

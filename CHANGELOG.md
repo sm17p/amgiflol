@@ -1,5 +1,11 @@
 # amgiflol
 
+## 0.3.3
+
+### Patch Changes
+
+- fdd89a3: feat: hold modifier key alt/option to measure distance b/w layers
+
 ## 0.3.2
 
 ### Patch Changes

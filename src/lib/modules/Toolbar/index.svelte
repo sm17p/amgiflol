@@ -145,10 +145,10 @@
 		onmouseenter={onmouseenterToolbar}
 		onmouseleave={onmouseleaveToolbar}
 		class={[
-			"fixed pt-3 pb-1 px-1 sm:px-3 sm:pb-3 pointer-events-initial w-full flex",
+			"fixed w-full grid place-items-center pointer-events-none",
 			{
-				"bottom-0 flex-col-reverse": bottom,
-				"top-0 flex-col": !bottom,
+				"bottom-0": bottom,
+				"top-0": !bottom,
 			},
 		]}
 		transition:fly|global={{
@@ -157,141 +157,151 @@
 		}}
 		style="--spacing: 4px; z-index: 1000000006"
 	>
-		{#if uiStore.toolbar.isVisible}
-			<div
-				in:fly|global={{ duration: 300 }}
-				class="shadow-lg inline-flex items-center justify-center origin-left gap-x-0.5 bg-white cursor-pointer rounded-lg p-1 mx-auto transition-width duration-300"
-			>
-				<ToolbarAction
-					disabled
-					pressed={uiStore.svg.mode === "inspect"}
-					label="Inspector Mode"
-					shortcut="1"
+		<div
+			class={[
+				"pointer-events-initial pt-3 pb-1 px-1 sm:px-3 sm:pb-3 flex",
+				{
+					"flex-col-reverse": bottom,
+					"flex-col": !bottom,
+				},
+			]}
+		>
+			{#if uiStore.toolbar.isVisible}
+				<div
+					in:fly|global={{ duration: 300 }}
+					class="shadow-lg inline-flex items-center justify-center origin-left gap-x-0.5 bg-white cursor-pointer rounded-lg p-1 mx-auto transition-width duration-300"
 				>
-					<SquareDashedMousePointer
-						absoluteStrokeWidth
-						class="size-4 sm:size-5"
-					/>
-				</ToolbarAction>
-				{#if trackers.current}
 					<ToolbarAction
-						class=""
-						bind:pressed={trackers.current.isLocked}
-						label={`${
-							trackers.current.isLocked
-								? "Unlock"
-								: "Lock"
-						} Inspector`}
-						shortcut="@"
+						disabled
+						pressed={uiStore.svg.mode === "inspect"}
+						label="Inspector Mode"
+						shortcut="1"
 					>
-						{@const 				Icon = trackers.current?.isLocked
-					? LockKeyhole
-					: LockKeyholeOpen}
-						<Icon
+						<SquareDashedMousePointer
+							absoluteStrokeWidth
+							class="size-4 sm:size-5"
+						/>
+					</ToolbarAction>
+					{#if trackers.current}
+						<ToolbarAction
+							class=""
+							bind:pressed={trackers.current.isLocked}
+							label={`${
+								trackers.current.isLocked
+									? "Unlock"
+									: "Lock"
+							} Inspector`}
+							shortcut="@"
+						>
+							{@const 					Icon = trackers.current?.isLocked
+						? LockKeyhole
+						: LockKeyholeOpen}
+							<Icon
+								absoluteStrokeWidth
+								class="size-4 sm:size-6"
+							/>
+						</ToolbarAction>
+					{/if}
+					{#if trackers.current?.isLocked}
+						<ToolbarAction
+							disabled={true}
+							pressed={metadataStore.keyboard.modifiers.alt}
+							label={`Hold ${
+								isMac ? "option" : "alt"
+							} and hover around to measure distance between layers`}
+							shortcut={isMac ? "⌥" : "alt"}
+						>
+							<RulerDimensionLine class="size-4 sm:size-6" />
+						</ToolbarAction>
+					{/if}
+					<ToolbarAction
+						bind:pressed={uiStore.svg.showGrid}
+						label="Show Grid Lines"
+						shortcut="#"
+					>
+						<Grid3x3 absoluteStrokeWidth class="size-4 sm:size-6" />
+					</ToolbarAction>
+					<ToolbarAction
+						bind:pressed={uiStore.svg.showRuler}
+						label="Show Ruler"
+						shortcut="$"
+					>
+						<Ruler absoluteStrokeWidth class="size-4 sm:size-6" />
+					</ToolbarAction>
+					<ToolbarAction
+						bind:pressed={uiStore.svg.showDistances}
+						label="Show Distances"
+						shortcut="%"
+					>
+						<ChevronsLeftRightEllipsis
 							absoluteStrokeWidth
 							class="size-4 sm:size-6"
 						/>
 					</ToolbarAction>
-				{/if}
-				{#if trackers.current?.isLocked}
+					<Separator.Root
+						class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
+					/>
 					<ToolbarAction
-						disabled={true}
-						pressed={false}
-						label={`Hold ${
-							isMac ? "option" : "alt"
-						} and hover around to measure distance between layers`}
-						shortcut={isMac ? "⌥" : "alt"}
+						disabled={disableForFirefox}
+						pressed={uiStore.rainbowLayout.enabled}
+						onPressedChange={uiStore.toggleRainbowLayout}
+						label={disableForFirefox
+							? "Chrome only for now!"
+							: "Rainbow Layouts"}
+						shortcut="6"
 					>
-						{@const 				Icon = trackers.current?.isLocked
-					? LockKeyhole
-					: LockKeyholeOpen}
-						<RulerDimensionLine class="size-4 sm:size-6" />
+						<Rainbow absoluteStrokeWidth class="size-4 sm:size-6" />
 					</ToolbarAction>
-				{/if}
-				<ToolbarAction
-					bind:pressed={uiStore.svg.showGrid}
-					label="Show Grid Lines"
-					shortcut="#"
-				>
-					<Grid3x3 absoluteStrokeWidth class="size-4 sm:size-6" />
-				</ToolbarAction>
-				<ToolbarAction
-					bind:pressed={uiStore.svg.showRuler}
-					label="Show Ruler"
-					shortcut="$"
-				>
-					<Ruler absoluteStrokeWidth class="size-4 sm:size-6" />
-				</ToolbarAction>
-				<ToolbarAction
-					bind:pressed={uiStore.svg.showDistances}
-					label="Show Distances"
-					shortcut="%"
-				>
-					<ChevronsLeftRightEllipsis
-						absoluteStrokeWidth
-						class="size-4 sm:size-6"
+					<Separator.Root
+						class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
 					/>
-				</ToolbarAction>
-				<Separator.Root
-					class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
-				/>
-				<ToolbarAction
-					disabled={disableForFirefox}
-					pressed={uiStore.rainbowLayout.enabled}
-					onPressedChange={uiStore.toggleRainbowLayout}
-					label={disableForFirefox
-						? "Chrome only for now!"
-						: "Rainbow Layouts"}
-					shortcut="6"
-				>
-					<Rainbow absoluteStrokeWidth class="size-4 sm:size-6" />
-				</ToolbarAction>
-				<Separator.Root
-					class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
-				/>
-				<ToolbarAction
-					pressed={designModePressed}
-					onPressedChange={designMode}
-					label="Design Mode: Edit any text on the document"
-					shortcut="7"
-				>
-					<TextCursor absoluteStrokeWidth class="size-3 sm:size-4" />
-				</ToolbarAction>
-				<Separator.Root
-					class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
-				/>
-				<ToolbarAction
-					bind:pressed={uiStore.sidePanel.isVisible}
-					label="Show Side Panel"
-					shortcut="8"
-				>
-					<PanelRightOpen
-						absoluteStrokeWidth
-						class="size-4 sm:size-6"
+					<ToolbarAction
+						pressed={designModePressed}
+						onPressedChange={designMode}
+						label="Design Mode: Edit any text on the document"
+						shortcut="7"
+					>
+						<TextCursor
+							absoluteStrokeWidth
+							class="size-3 sm:size-4"
+						/>
+					</ToolbarAction>
+					<Separator.Root
+						class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
 					/>
-				</ToolbarAction>
-				<Separator.Root
-					class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
-				/>
-				<ToolbarAction
-					pressed={false}
-					label="Screenshot"
-					onPressedChange={capture}
-					shortcut="9"
+					<ToolbarAction
+						bind:pressed={uiStore.sidePanel.isVisible}
+						label="Show Side Panel"
+						shortcut="8"
+					>
+						<PanelRightOpen
+							absoluteStrokeWidth
+							class="size-4 sm:size-6"
+						/>
+					</ToolbarAction>
+					<Separator.Root
+						class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
+					/>
+					<ToolbarAction
+						pressed={false}
+						label="Screenshot"
+						onPressedChange={capture}
+						shortcut="9"
+					>
+						<Camera absoluteStrokeWidth class="size-4 sm:size-6" />
+					</ToolbarAction>
+					<Separator.Root
+						class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
+					/>
+					<ToolbarSettings />
+				</div>
+			{:else}
+				<div
+					in:fly|global={{ duration: 300 }}
+					class="shadow-lg inline-flex items-center justify-center h-4 bg-lime-500 rounded-lg w-16 mx-auto"
 				>
-					<Camera absoluteStrokeWidth class="size-4 sm:size-6" />
-				</ToolbarAction>
-				<Separator.Root
-					class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
-				/>
-				<ToolbarSettings />
-			</div>
-		{:else}
-			<div
-				in:fly|global={{ duration: 300 }}
-				class="shadow-lg inline-flex items-center justify-center h-4 bg-lime-500 rounded-lg w-16 mx-auto"
-			>
-			</div>
-		{/if}
+				</div>
+			{/if}
+		</div>
 	</section>
 {/snippet}

@@ -1,5 +1,5 @@
 export class MetaDataStore implements App.MetaDataStore {
-	keyboard: App.KeyboardState = {
+	keyboard: App.KeyboardState = $state<App.KeyboardState>({
 		modifiers: {
 			alt: false,
 			ctrl: false,
@@ -8,7 +8,7 @@ export class MetaDataStore implements App.MetaDataStore {
 			secondary: false,
 			shift: false,
 		},
-	};
+	});
 	platformInfo = $state<App.MetaDataStore["platformInfo"]>({ os: "none" });
 	mouse = $state<App.MouseState>({
 		x: 0,

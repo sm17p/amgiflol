@@ -67,7 +67,6 @@
 	});
 
 	async function toggleActiveContent() {
-		console.log("🚀 ~ toggleActiveContent ~ toggled:");
 		if (isLoading) return;
 
 		isLoading = true;

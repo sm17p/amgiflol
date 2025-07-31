@@ -131,12 +131,14 @@ class MessageBus {
 
 	private async sendToContent<T>(message: App.Message<T>): Promise<void> {
 		if (browser.tabs?.query && browser.tabs?.sendMessage) {
-			const tabs = await browser.tabs.query({
+			const [tab] = await browser.tabs.query({
 				active: true,
 				currentWindow: true,
 			});
-			if (tabs[0]?.id) {
-				await browser.tabs.sendMessage(tabs[0].id, message);
+			if (tab?.id) {
+				return await browser.tabs.sendMessage(tab.id, message);
+			} else {
+				return Promise.resolve(void 0);
 			}
 		}
 	}
@@ -190,7 +192,8 @@ class MessageBus {
 			typeof data === "object" &&
 			typeof data.type === "string" &&
 			typeof data.timestamp === "number" &&
-			typeof data.source === "string" &&
+			(data.source?.content || data.source?.background ||
+				data.source?.popup) &&
 			data.payload !== undefined
 		);
 	}

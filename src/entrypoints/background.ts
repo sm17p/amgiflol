@@ -33,38 +33,38 @@ export default defineBackground(() => {
 
 		savePlatformInfo();
 		analytics.setEnabled(true);
-		updateIconForActiveTab();
+		void updateIconForActiveTab();
 	});
 
 	browser.runtime.onStartup.addListener(async () => {
 		console.log("Extension started");
-		updateIconForActiveTab();
+		void updateIconForActiveTab();
 	});
 
 	// Update icon when switching tabs
 	browser.tabs.onActivated.addListener(async (_activeInfo) => {
 		savePlatformInfo();
-		updateIconForActiveTab();
+		void updateIconForActiveTab();
 	});
 
 	// Update icon when tab URL changes
 	browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 		if (changeInfo.status === "complete" && tab.active) {
-			updateIconForActiveTab();
+			void updateIconForActiveTab();
 		}
 	});
 
 	// // Listen for storage changes to update icon
 	browser.storage.onChanged.addListener(async (changes, areaName) => {
 		if (areaName === "local") {
-			updateIconForActiveTab();
+			void updateIconForActiveTab();
 		}
 	});
 });
 
 async function savePlatformInfo() {
 	const platformInfo = await browser.runtime.getPlatformInfo();
-	browser.storage.local.set({ "platformInfo": platformInfo });
+	void browser.storage.local.set({ platformInfo: platformInfo });
 }
 
 /**
@@ -144,18 +144,14 @@ async function captureHandler(tab: Browser.tabs.Tab) {
 		const dataUrl = await browser.tabs.captureVisibleTab();
 		await downloadImage(dataUrl);
 	} catch (err) {
-		console.error(
-			"Cannot capture screenshot of current tab",
-			tab,
-			err,
-		);
+		console.error("Cannot capture screenshot of current tab", tab, err);
 	}
 }
 
 async function downloadImage(dataUrl: string): Promise<number> {
-	const filename = `Screenshot-${
-		new Date().toISOString().replaceAll(":", "-")
-	}.png`;
+	const filename = `Screenshot-${new Date()
+		.toISOString()
+		.replaceAll(":", "-")}.png`;
 
 	console.log(`Downloading image: ${filename}`, { dataUrl });
 

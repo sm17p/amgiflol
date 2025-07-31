@@ -34,7 +34,7 @@
 
 	/* Overlay properties */
 	--overlay-opacity: 0.01;
-	--overlay-blur: 0.0px;
+	--overlay-blur: 0px;
 }
 
 /* Dark mode color switching */

@@ -5,7 +5,8 @@
 		TrackersStore,
 		UIStore,
 	} from "@/lib/store/index.svelte";
-	import { Tooltip } from "bits-ui";
+	import { setContext } from "svelte";
+
 	import SelectorManager from "./components/SelectorManager.svelte";
 	// TODO: Enable Toaster when toast functionality is complete
 	// import Toaster from "./components/Toaster.svelte";
@@ -23,31 +24,31 @@
 	setContext("uiStore", uiStore);
 </script>
 
-<EventsManager />
-
 <main
-	class={["amg-root relative prose prose-zinc max-w-screen", {
-		active: uiStore.isActive,
-	}]}
+	class={[
+		"amg-root relative prose prose-zinc max-w-screen",
+		{
+			active: uiStore.isActive,
+		},
+	]}
 >
-	<Tooltip.Provider delayDuration={0} disableHoverableContent={false}>
-		{#if uiStore.isActive}
-			<SvgManager style="z-index: 1000000004" />
-			<SelectorManager
-				enabled={uiStore.isActive}
-				maxTrackers={10}
-				autoCleanup={true}
-			/>
-			<DebugToolbar
-				showPerformance={true}
-				showMemory={true}
-				showMessages={true}
-			/>
-			<SidePanel />
-			<!-- <Toaster /> -->
-			<Toolbar />
-		{/if}
-	</Tooltip.Provider>
+	{#if uiStore.isActive}
+		<EventsManager />
+		<SvgManager style="z-index: 1000000004" />
+		<SelectorManager
+			enabled={uiStore.isActive}
+			maxTrackers={10}
+			autoCleanup={true}
+		/>
+		<DebugToolbar
+			showPerformance={true}
+			showMemory={true}
+			showMessages={true}
+		/>
+		<SidePanel />
+		<!-- <Toaster /> -->
+		<Toolbar />
+	{/if}
 </main>
 
 <style>

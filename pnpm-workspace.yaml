@@ -4,8 +4,9 @@ onlyBuiltDependencies:
   - "@tailwindcss/oxide"
   - dprint
   - esbuild
-  - sharp
   - spawn-sync
+ignoredBuiltDependencies:
+  - sharp
 
 patchedDependencies:
   "@wxt-dev/analytics": patches/@wxt-dev__analytics.patch

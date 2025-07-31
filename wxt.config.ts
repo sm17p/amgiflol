@@ -21,8 +21,8 @@ export default defineConfig({
 		if (browser === "firefox") {
 			manifest.browser_specific_settings = {
 				gecko: {
-					"id": "amgiflol@sm17p.me",
-					"strict_min_version": "132.0",
+					id: "amgiflol@sm17p.me",
+					strict_min_version: "132.0",
 				},
 			};
 			manifest.developer = {
@@ -58,6 +58,9 @@ export default defineConfig({
 		build: {
 			sourcemap: "inline",
 		},
+		optimizeDeps: {
+			entries: ["src/entrypoints/**/*.html"],
+		},
 	}),
 	webExt: {
 		openConsole: true,
@@ -66,14 +69,9 @@ export default defineConfig({
 		chromiumArgs: ["--user-data-dir=./.wxt/chrome-data"],
 		keepProfileChanges: true,
 		// firefoxArgs: ["--user-data-dir=./.wxt/firefox-data"],
-		startUrls: [
-			"https://wxt.dev/guide/essentials/entrypoints.html",
-		],
+		startUrls: ["https://wxt.dev/guide/essentials/entrypoints.html"],
 	},
 	zip: {
-		excludeSources: [
-			"tmp/*",
-			"*.env*",
-		],
+		excludeSources: ["tmp/*", "*.env*"],
 	},
 });

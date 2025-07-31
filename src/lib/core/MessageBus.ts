@@ -110,7 +110,8 @@ class MessageBus {
 		if (typeof window !== "undefined") {
 			window.addEventListener("message", (event) => {
 				if (
-					event.source === window && this.isValidMessage(event.data)
+					event.source === window &&
+					this.isValidMessage(event.data)
 				) {
 					this.handleMessage(event.data);
 				}
@@ -192,7 +193,8 @@ class MessageBus {
 			typeof data === "object" &&
 			typeof data.type === "string" &&
 			typeof data.timestamp === "number" &&
-			(data.source?.content || data.source?.background ||
+			(data.source?.content ||
+				data.source?.background ||
 				data.source?.popup) &&
 			data.payload !== undefined
 		);
@@ -211,7 +213,7 @@ export const messageBus = MessageBus.getInstance();
 export const createMessageHandler = <T>(
 	type: App.MessageType | "*",
 	handler: App.MessageHandler<T>,
-): () => void => {
+): (() => void) => {
 	return messageBus.subscribe(type, handler);
 };
 

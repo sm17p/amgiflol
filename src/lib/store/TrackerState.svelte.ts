@@ -27,19 +27,16 @@ export class TrackerState implements App.TrackerState {
 		]);
 
 		$effect(() => {
-			const unsub = createMessageHandler(
-				"ELEMENT_HOVER",
-				(payload) => {
-					if (!this.isLocked) {
-						this.handleMouseenter(payload as MouseEvent);
-					} else if (
-						this.isLocked &&
-						this.metadataStore.keyboard.modifiers.alt
-					) {
-						this.addDistanceFromElem(payload as MouseEvent);
-					}
-				},
-			);
+			const unsub = createMessageHandler("ELEMENT_HOVER", (payload) => {
+				if (!this.isLocked) {
+					this.handleMouseenter(payload as MouseEvent);
+				} else if (
+					this.isLocked &&
+					this.metadataStore.keyboard.modifiers.alt
+				) {
+					this.addDistanceFromElem(payload as MouseEvent);
+				}
+			});
 			return unsub;
 		});
 
@@ -58,9 +55,7 @@ export class TrackerState implements App.TrackerState {
 		);
 
 		watch.pre(
-			() => [
-				this.isLocked,
-			],
+			() => [this.isLocked],
 			([_locked]) => {
 				this.updateLockedLines();
 			},
@@ -158,9 +153,8 @@ export class TrackerState implements App.TrackerState {
 
 		const parentElement = elementInspector.moveUp(target);
 		if (parentElement) {
-			this.parentOfTarget = this.createTrackerTargetMetaData(
-				parentElement,
-			);
+			this.parentOfTarget =
+				this.createTrackerTargetMetaData(parentElement);
 		}
 
 		this.updateTrackerPosition();
@@ -183,9 +177,9 @@ export class TrackerState implements App.TrackerState {
 	}
 
 	private getId() {
-		return `tracker-${Date.now()}-${
-			Math.random().toString(36).slice(2, 9)
-		}`;
+		return `tracker-${Date.now()}-${Math.random()
+			.toString(36)
+			.slice(2, 9)}`;
 	}
 
 	private getStyles(rects?: DOMRect): string {
@@ -202,7 +196,9 @@ export class TrackerState implements App.TrackerState {
 		}
 
 		if (
-			this.isLocked && this.target && this.hoveredAltTarget &&
+			this.isLocked &&
+			this.target &&
+			this.hoveredAltTarget &&
 			this.metadataStore.keyboard.modifiers.alt
 		) {
 			this.hoveredAltTarget.distanceLines = this.setDistanceLines(
@@ -303,13 +299,14 @@ export class TrackerState implements App.TrackerState {
 		if (!from || !to) return [];
 
 		const mouse = this.metadataStore.mouse;
-		const isContaining = from.domElement.contains(to.domElement) ||
+		const isContaining =
+			from.domElement.contains(to.domElement) ||
 			to.domElement.contains(from.domElement);
 		const element = from.bounds;
 		const parent = to.bounds;
 
-		let x = !stickToMouse ? (element.x + element.width / 2) : mouse.x;
-		let y = !stickToMouse ? (element.y + element.height / 2) : mouse.y;
+		let x = !stickToMouse ? element.x + element.width / 2 : mouse.x;
+		let y = !stickToMouse ? element.y + element.height / 2 : mouse.y;
 
 		if (isContaining) {
 			// For containing elements, show distances from all boundaries
@@ -339,8 +336,7 @@ export class TrackerState implements App.TrackerState {
 					x2: parent.x + parent.width,
 					y2: y,
 					distance: Math.round(
-						parent.x + parent.width -
-							(element.x + element.width),
+						parent.x + parent.width - (element.x + element.width),
 					),
 					color: "#bbf451",
 				},
@@ -351,8 +347,7 @@ export class TrackerState implements App.TrackerState {
 					x2: x,
 					y2: parent.y + parent.height,
 					distance: Math.round(
-						parent.y + parent.height -
-							(element.y + element.height),
+						parent.y + parent.height - (element.y + element.height),
 					),
 					color: "#bbf451",
 				},
@@ -394,7 +389,7 @@ export class TrackerState implements App.TrackerState {
 				// Elements overlap horizontally - show distance to nearest edge
 				const leftDistance = Math.abs(element.x - parent.x);
 				const rightDistance = Math.abs(
-					(element.x + element.width) - (parent.x + parent.width),
+					element.x + element.width - (parent.x + parent.width),
 				);
 
 				if (leftDistance <= rightDistance) {
@@ -452,7 +447,7 @@ export class TrackerState implements App.TrackerState {
 				// Elements overlap vertically - show distance to nearest edge
 				const topDistance = Math.abs(element.y - parent.y);
 				const bottomDistance = Math.abs(
-					(element.y + element.height) - (parent.y + parent.height),
+					element.y + element.height - (parent.y + parent.height),
 				);
 
 				if (topDistance <= bottomDistance) {

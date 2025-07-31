@@ -155,10 +155,7 @@ export class UIStore implements App.UIStore {
 	}
 
 	toggleRainbowLayout = () => {
-		if (
-			!import.meta.env.DEV &&
-			import.meta.env.FIREFOX
-		) return;
+		if (!import.meta.env.DEV && import.meta.env.FIREFOX) return;
 		this.rainbowLayout.css!.disabled = this.rainbowLayout.enabled;
 		this.rainbowLayout.enabled = !this.rainbowLayout.enabled;
 	};
@@ -180,8 +177,7 @@ export class UIStore implements App.UIStore {
 	}
 
 	toggleDebugToolbar() {
-		this.debugToolbar.isVisible = !this.debugToolbar
-			.isVisible;
+		this.debugToolbar.isVisible = !this.debugToolbar.isVisible;
 	}
 
 	setMode(mode: App.Mode) {
@@ -257,7 +253,7 @@ export class UIStore implements App.UIStore {
 	}
 
 	private broadcastStateChange() {
-		sendMessage("EXTENSION_TOGGLE", {
+		void sendMessage("EXTENSION_TOGGLE", {
 			isActive: this.isActive,
 			timestamp: Date.now(),
 		});
@@ -285,8 +281,8 @@ export class UIStore implements App.UIStore {
 				this.rainbowLayout.enabled =
 					result.uiStore.rainbowLayout?.enabled ?? false;
 				if (this.isActive) {
-					this.rainbowLayout.css!.disabled = !this.rainbowLayout
-						.enabled;
+					this.rainbowLayout.css!.disabled =
+						!this.rainbowLayout.enabled;
 				}
 				// Handle store breaking change
 				if (result.uiStore.sidePanel.autoMove === undefined) {

@@ -15,10 +15,10 @@ export default defineAppConfig({
 			fallback: true,
 		}),
 		userId: storage.defineItem("local:amg-user-id-key", {
-			init: () => crypto.randomUUID().toString(),
+			fallback: crypto.randomUUID().toString(),
 		}),
 		userProperties: storage.defineItem("local:amg-user-properties-key", {
-			init: () => ({}),
+			fallback: {},
 		}),
 	},
 	version: pkg.version.toString(),

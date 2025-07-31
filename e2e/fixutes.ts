@@ -1,8 +1,8 @@
 import {
-	type BrowserContext,
-	chromium,
-	firefox,
 	test as base,
+	type BrowserContext,
+	// chromium,
+	firefox,
 } from "@playwright/test";
 import path from "path";
 
@@ -12,7 +12,7 @@ export const test = base.extend<{
 	context: BrowserContext;
 	extensionId: string;
 }>({
-	context: async ({}, use) => {
+	context: async (_, use) => {
 		const context = await firefox.launchPersistentContext("", {
 			headless: false,
 			args: [

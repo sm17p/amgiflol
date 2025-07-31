@@ -22,7 +22,8 @@
 		SquareDashedMousePointer,
 		TextCursor,
 	} from "@lucide/svelte";
-	import { Separator } from "bits-ui";
+	import { getContext } from "svelte";
+
 	import { fly } from "svelte/transition";
 	import ToolbarSettings from "./ToolbarSettings.svelte";
 
@@ -72,9 +73,9 @@
 			uiStore.toggleAutoHide();
 		}
 		uiStore.makeToolbarVisible(false);
-		await new Promise(resolve => setTimeout(resolve, 350));
+		await new Promise((resolve) => setTimeout(resolve, 350));
 		sendMessage("SCREENSHOT", undefined, { background: true });
-		await new Promise(resolve => setTimeout(resolve, 100));
+		await new Promise((resolve) => setTimeout(resolve, 100));
 		if (isAutoHide) {
 			uiStore.toggleAutoHide();
 		}
@@ -93,8 +94,8 @@
 		if (event.key === "7") {
 			designMode(true);
 		} else if (
-			(event.key === "9" ||
-				event.altKey && event.code === "Digit9")
+			event.key === "9" ||
+			(event.altKey && event.code === "Digit9")
 		) {
 			capture(true);
 		}
@@ -117,7 +118,8 @@
 
 	$effect.pre(() => {
 		if (
-			trackersStore?.current && !trackersStore.current.isLocked &&
+			trackersStore?.current &&
+			!trackersStore.current.isLocked &&
 			uiStore.toolbar.isVisible &&
 			uiStore.toolbar.autoMove
 		) {
@@ -238,9 +240,11 @@
 							class="size-4 sm:size-6"
 						/>
 					</ToolbarAction>
-					<Separator.Root
+					<div
+						role="separator"
 						class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
-					/>
+					>
+					</div>
 					<ToolbarAction
 						disabled={disableForFirefox}
 						pressed={uiStore.rainbowLayout.enabled}
@@ -252,9 +256,11 @@
 					>
 						<Rainbow absoluteStrokeWidth class="size-4 sm:size-6" />
 					</ToolbarAction>
-					<Separator.Root
+					<div
+						role="separator"
 						class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
-					/>
+					>
+					</div>
 					<ToolbarAction
 						pressed={designModePressed}
 						onPressedChange={designMode}
@@ -266,9 +272,11 @@
 							class="size-3 sm:size-4"
 						/>
 					</ToolbarAction>
-					<Separator.Root
+					<div
+						role="separator"
 						class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
-					/>
+					>
+					</div>
 					<ToolbarAction
 						bind:pressed={uiStore.sidePanel.isVisible}
 						label="Show Side Panel"
@@ -279,9 +287,11 @@
 							class="size-4 sm:size-6"
 						/>
 					</ToolbarAction>
-					<Separator.Root
+					<div
+						role="separator"
 						class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
-					/>
+					>
+					</div>
 					<ToolbarAction
 						pressed={false}
 						label="Screenshot"
@@ -290,9 +300,11 @@
 					>
 						<Camera absoluteStrokeWidth class="size-4 sm:size-6" />
 					</ToolbarAction>
-					<Separator.Root
+					<div
+						role="separator"
 						class="bg-neutral-200 -my-1 mx-0.5 sm:mx-1 w-0.5 self-stretch"
-					/>
+					>
+					</div>
 					<ToolbarSettings />
 				</div>
 			{:else}

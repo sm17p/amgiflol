@@ -24,9 +24,7 @@ export class TrackersStore {
 		switch (event.key) {
 			case "c":
 			case "C":
-				if (
-					event.ctrlKey || (event.metaKey && event.shiftKey)
-				) {
+				if (event.ctrlKey || (event.metaKey && event.shiftKey)) {
 					this.clearAllTrackers();
 				}
 				break;

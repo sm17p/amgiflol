@@ -9,9 +9,7 @@ import {
 } from "unocss";
 
 export default defineConfig({
-	extractors: [
-		extractorSvelte(),
-	],
+	extractors: [extractorSvelte()],
 	presets: [
 		presetAttributify({
 			prefix: "amg-",
@@ -25,9 +23,7 @@ export default defineConfig({
 		presetTypography(),
 		presetRemToPx(),
 	],
-	transformers: [
-		transformerDirectives(),
-	],
+	transformers: [transformerDirectives()],
 	theme: {
 		extend: {
 			transitionTimingFunction: {

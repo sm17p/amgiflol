@@ -115,4 +115,4 @@ src/
 
 ---
 
-**License**: [MIT](./LICENSE.md) | **Powered By**: Vite + WXT + Svelte + TypeScript + bits-ui
+**License**: [MIT](./LICENSE.md) | **Powered By**: Vite + WXT + Svelte + TypeScript + Ark UI

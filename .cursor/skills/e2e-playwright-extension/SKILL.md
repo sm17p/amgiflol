@@ -9,7 +9,7 @@ Aligned with [WXT’s Playwright E2E example](https://github.com/wxt-dev/example
 
 ## Layout
 
-- Tests in [e2e/tests/](e2e/tests/)
+- Tests in [e2e/tests/](e2e/tests/) — main suite [e2e/tests/extension.spec.ts](e2e/tests/extension.spec.ts) with describe blocks: **Popup**, **Content injection**, **Per-domain activation**
 - Shared fixture in [e2e/fixtures.ts](e2e/fixtures.ts)
 - Page helpers in [e2e/pages/](e2e/pages/) (e.g. [e2e/pages/popup.ts](e2e/pages/popup.ts))
 
@@ -24,7 +24,7 @@ Use `context` and `extensionId` in tests. Import the extended `test` and `expect
 
 ## Popup
 
-Navigate to `chrome-extension://${extensionId}/popup.html`. Use helpers like `openPopup(page, extensionId)` from [e2e/pages/popup.ts](e2e/pages/popup.ts) for consistent setup.
+Navigate to `chrome-extension://${extensionId}/popup.html`. Use helpers like `openPopup(page, extensionId)` from [e2e/pages/popup.ts](e2e/pages/popup.ts) for consistent setup. Tests: "popup opens and shows active toggle" (Popup), "inspector root and app load on supported page" (Content injection), "when domain is enabled in storage, inspector is active on page load" (Per-domain activation).
 
 ## Run
 

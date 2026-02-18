@@ -10,7 +10,7 @@ export default defineContentScript({
 		const ui = await createShadowRootUi(ctx, {
 			anchor: "body",
 			append: "after",
-			mode: "closed",
+			mode: "open",
 			name: "amgif-lol",
 			position: "inline",
 			onMount: (container) => {

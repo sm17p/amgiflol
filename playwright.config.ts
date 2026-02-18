@@ -13,8 +13,9 @@ import { defineConfig, devices } from "@playwright/test";
  */
 export default defineConfig({
 	testDir: "./e2e",
+	testMatch: "tests/**/*.spec.ts",
 	/* Run tests in files in parallel */
-	fullyParallel: true,
+	// fullyParallel: true,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: !!process.env.CI,
 	/* Retry on CI only */
@@ -36,6 +37,10 @@ export default defineConfig({
 			name: "chromium",
 			use: { ...devices["Desktop Chrome"] },
 		},
+		// {
+		// 	name: "firefox",
+		// 	use: { ...devices["Desktop Firefox"] },
+		// },
 		/* Test against mobile viewports. */
 		// {
 		//   name: 'Mobile Chrome',
@@ -56,6 +61,7 @@ export default defineConfig({
 		//   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
 		// },
 	],
+	timeout: 60_000,
 	/* Run your local dev server before starting the tests */
 	// webServer: {
 	//   command: 'pnpm dev',

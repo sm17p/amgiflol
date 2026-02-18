@@ -1,23 +1,27 @@
-import {
-	test as base,
-	chromium,
-	type BrowserContext,
-} from "@playwright/test";
+import { test as base, chromium, type BrowserContext } from "@playwright/test";
+import os from "os";
 import path from "path";
 
 const pathToExtension = path.resolve("dist/chrome-mv3");
+const userDataDir = path.join(os.tmpdir(), "playwright-amgiflol-extension");
 
 export const test = base.extend<{
 	context: BrowserContext;
 	extensionId: string;
 }>({
 	context: async ({}, use) => {
-		const context = await chromium.launchPersistentContext("", {
+		const context = await chromium.launchPersistentContext(userDataDir, {
 			headless: !!process.env.CI,
 			args: [
 				`--disable-extensions-except=${pathToExtension}`,
 				`--load-extension=${pathToExtension}`,
 			],
+		});
+		await context.addInitScript(() => {
+			const orig = Element.prototype.attachShadow;
+			Element.prototype.attachShadow = function (init) {
+				return orig.call(this, { ...init, mode: "open" });
+			};
 		});
 		await use(context);
 		await context.close();

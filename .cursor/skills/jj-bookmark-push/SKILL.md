@@ -7,38 +7,23 @@ description: Uses jj (Jujutsu VCS) to create or update bookmarks and push to the
 
 Use jj for version control in this project (not git) when creating branches, updating bookmarks, or pushing.
 
-## Create or update a bookmark
+## Rules
 
-Bookmarks are named pointers (like Git branches). Set or move a bookmark to the current revision:
+- **Never push without a description.** jj rejects pushing revisions with no commit message. Before push, ensure current revision has a description: `jj describe -m "message"` or `jj describe` (editor). If the working copy is a new empty revision, describe it or move the bookmark to a described revision.
+- **Never rewrite pushed commits.** No amend/squash of commits already pushed or on a branch with an open PR; that force-pushes and removes GitHub PR comments. Add a new commit for follow-up changes unless the user explicitly requests a force-push.
 
-```bash
-jj bookmark set <name>
-```
+## Workflow
 
-Set to a specific revision:
-
-```bash
-jj bookmark set <name> -r <rev>
-```
-
-Short form: `jj b s <name>`. Use `-B`/`--allow-backwards` to move a bookmark backwards. New commits do not move bookmarks automatically; set the bookmark after committing if you want it to point at the new commit.
-
-## Push to remote
-
-Push one bookmark (maps to same-named Git branch on remote):
-
-```bash
-jj git push -b <name>
-```
-
-Push all bookmarks: `jj git push --all`. Push only tracked: `jj git push --tracked`. Specify remote: `jj git push --remote <remote>` (default is origin).
-
-Push performs safety checks (similar to `git push --force-with-lease`). If the remote bookmark moved, run `jj git fetch` and resolve any bookmark conflict, then push again.
-
-## Quick workflow
-
-1. Make changes; commit with `jj commit` / `jj new` etc.
+1. Make changes; commit with `jj commit` / `jj new` (set description when committing).
 2. `jj bookmark set <branch-name>` so the bookmark points at the revision to publish.
 3. `jj git push -b <branch-name>`.
 
-List bookmarks: `jj bookmark list` or `jj b l`. List with remotes: `jj bookmark list --all`.
+Bookmarks are branch-like pointers. Set: `jj bookmark set <name>`. Set to a revision: `jj bookmark set <name> -r <rev>`. Use `-B` to move backwards. Push one: `jj git push -b <name>`. Push all: `jj git push --all`. List: `jj bookmark list --all`.
+
+## If push fails
+
+| Symptom | Fix |
+| -------- | --- |
+| "has no description" | `jj describe -m "message"` on current rev, then push again. Or move bookmark to a described rev: `jj bookmark set <name> -r <rev> -B` then push. |
+| "Refusing to move bookmark backwards" | Use `-B`: `jj bookmark set <name> -r <rev> -B`. |
+| Remote bookmark moved / conflict | `jj git fetch`; resolve conflict or set bookmark to desired rev with `-B` if needed, then push. |

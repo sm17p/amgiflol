@@ -9,7 +9,7 @@ Use jj for version control in this project (not git) when creating branches, upd
 
 ## Rules
 
-- **Never push without a description.** jj rejects pushing revisions with no commit message. Before push, ensure current revision has a description: `jj describe -m "message"` or `jj describe` (editor). If the working copy is a new empty revision, describe it or move the bookmark to a described revision.
+- **Never push without a description.** jj rejects pushing revisions with no commit message. Before push, ensure current revision has a description. If it is missing, apply [jj-commit](.cursor/skills/jj-commit/SKILL.md) to add a proper message, then push. Alternatively move the bookmark to a described rev: `jj bookmark set <name> -r <rev> -B` then push.
 - **Never rewrite pushed commits.** No amend/squash of commits already pushed or on a branch with an open PR; that force-pushes and removes GitHub PR comments. Add a new commit for follow-up changes unless the user explicitly requests a force-push.
 
 ## Workflow
@@ -24,6 +24,6 @@ Bookmarks are branch-like pointers. Set: `jj bookmark set <name>`. Set to a revi
 
 | Symptom | Fix |
 | -------- | --- |
-| "has no description" | `jj describe -m "message"` on current rev, then push again. Or move bookmark to a described rev: `jj bookmark set <name> -r <rev> -B` then push. |
+| "has no description" | Apply [jj-commit](.cursor/skills/jj-commit/SKILL.md) to add a proper message, then push. Or move bookmark to a described rev: `jj bookmark set <name> -r <rev> -B` then push. |
 | "Refusing to move bookmark backwards" | Use `-B`: `jj bookmark set <name> -r <rev> -B`. |
 | Remote bookmark moved / conflict | `jj git fetch`; resolve conflict or set bookmark to desired rev with `-B` if needed, then push. |

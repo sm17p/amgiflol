@@ -1,12 +1,7 @@
 import extractorSvelte from "@unocss/extractor-svelte";
 import presetRemToPx from "@unocss/preset-rem-to-px";
 import presetWind4 from "@unocss/preset-wind4";
-import {
-	defineConfig,
-	presetAttributify,
-	presetTypography,
-	transformerDirectives,
-} from "unocss";
+import { defineConfig, presetAttributify, presetTypography, transformerDirectives } from "unocss";
 
 export default defineConfig({
 	extractors: [extractorSvelte()],

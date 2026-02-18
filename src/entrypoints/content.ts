@@ -1,5 +1,6 @@
-import Main from "@/lib/Main.svelte";
 import { mount, unmount } from "svelte";
+
+import Main from "@/lib/Main.svelte";
 import "virtual:uno.css";
 
 export default defineContentScript({
@@ -13,11 +14,13 @@ export default defineContentScript({
 			name: "amgif-lol",
 			position: "inline",
 			onMount: (container) => {
-				// Create the Svelte app inside the UI container
+				const root = container.getRootNode();
+				if (root instanceof ShadowRoot) {
+					root.host.setAttribute("data-amgiflol-root", "true");
+				}
 				return mount(Main, { target: container });
 			},
 			onRemove: (app) => {
-				// Destroy the app when the UI is removed
 				unmount(app!);
 			},
 		});

@@ -29,11 +29,7 @@ function runTests() {
 	console.log("Test 2: Custom prefix");
 	const prefixedId = useId("custom");
 	console.log(`Prefixed ID: ${prefixedId}`);
-	console.log(
-		`Has custom prefix: ${
-			prefixedId.startsWith("custom-") ? "✅" : "❌"
-		}\n`,
-	);
+	console.log(`Has custom prefix: ${prefixedId.startsWith("custom-") ? "✅" : "❌"}\n`);
 
 	// Test 3: generateId always returns new ID
 	console.log("Test 3: generateId uniqueness");
@@ -41,9 +37,7 @@ function runTests() {
 	const genId2 = generateId();
 	console.log(`Generated ID 1: ${genId1}`);
 	console.log(`Generated ID 2: ${genId2}`);
-	console.log(
-		`Generated IDs are different: ${genId1 !== genId2 ? "✅" : "❌"}\n`,
-	);
+	console.log(`Generated IDs are different: ${genId1 !== genId2 ? "✅" : "❌"}\n`);
 
 	// Test 4: useUniqueId format
 	console.log("Test 4: useUniqueId format");
@@ -58,9 +52,7 @@ function runTests() {
 	const counterAfter = getIdCounter();
 	console.log(`Counter before: ${counterBefore}`);
 	console.log(`Counter after: ${counterAfter}`);
-	console.log(
-		`Counter incremented: ${counterAfter > counterBefore ? "✅" : "❌"}\n`,
-	);
+	console.log(`Counter incremented: ${counterAfter > counterBefore ? "✅" : "❌"}\n`);
 
 	// Test 6: Reset functionality
 	console.log("Test 6: Reset functionality");
@@ -87,16 +79,8 @@ function runTests() {
 	console.log(`Component 1 call 1: ${comp1Id1}`);
 	console.log(`Component 1 call 2: ${comp1Id2}`);
 	console.log(`Component with custom ID: ${comp2IdWithProp}`);
-	console.log(
-		`Auto-generated IDs are different: ${
-			comp1Id1 !== comp1Id2 ? "✅" : "❌"
-		}`,
-	);
-	console.log(
-		`Custom ID preserved: ${
-			comp2IdWithProp === "custom-id" ? "✅" : "❌"
-		}\n`,
-	);
+	console.log(`Auto-generated IDs are different: ${comp1Id1 !== comp1Id2 ? "✅" : "❌"}`);
+	console.log(`Custom ID preserved: ${comp2IdWithProp === "custom-id" ? "✅" : "❌"}\n`);
 
 	console.log("✅ All tests completed!");
 }

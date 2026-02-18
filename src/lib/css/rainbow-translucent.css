@@ -61,16 +61,8 @@ body {
 	outline-color: var(--amg-rainbow-1);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -78,16 +70,8 @@ body > * {
 	outline-color: var(--amg-rainbow-2);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -95,16 +79,8 @@ body > * > * {
 	outline-color: var(--amg-rainbow-3);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -112,16 +88,8 @@ body > * > * > * {
 	outline-color: var(--amg-rainbow-4);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -129,16 +97,8 @@ body > * > * > * > * {
 	outline-color: var(--amg-rainbow-5);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -146,16 +106,8 @@ body > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-6);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -163,16 +115,8 @@ body > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-7);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -180,16 +124,8 @@ body > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-1);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -197,16 +133,8 @@ body > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-2);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -214,16 +142,8 @@ body > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-3);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -231,16 +151,8 @@ body > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-4);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -248,16 +160,8 @@ body > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-5);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -265,16 +169,8 @@ body > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-6);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -282,16 +178,8 @@ body > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-7);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -299,16 +187,8 @@ body > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-1);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -316,16 +196,8 @@ body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-2);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -333,16 +205,8 @@ body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-3);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -350,16 +214,8 @@ body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-4);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -367,206 +223,53 @@ body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-5);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
-body
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> * {
+body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-6);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
-body
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> * {
+body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-7);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
-body
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> * {
+body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-1);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
-body
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> * {
+body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-2);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
-body
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> * {
+body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-3);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -598,16 +301,8 @@ body
 	outline-color: var(--amg-rainbow-4);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -640,16 +335,8 @@ body
 	outline-color: var(--amg-rainbow-5);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-5) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -683,16 +370,8 @@ body
 	outline-color: var(--amg-rainbow-6);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-6) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -727,16 +406,8 @@ body
 	outline-color: var(--amg-rainbow-7);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-7) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -772,16 +443,8 @@ body
 	outline-color: var(--amg-rainbow-1);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-1) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -818,16 +481,8 @@ body
 	outline-color: var(--amg-rainbow-2);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-2) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -865,16 +520,8 @@ body
 	outline-color: var(--amg-rainbow-3);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-3) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 
@@ -913,16 +560,8 @@ body
 	outline-color: var(--amg-rainbow-4);
 	background-image: linear-gradient(
 		to right,
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%),
-			transparent
-		),
-		color-mix(
-			in srgb,
-			var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%),
-			transparent
-		)
+		color-mix(in srgb, var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%), transparent),
+		color-mix(in srgb, var(--amg-rainbow-4) calc(var(--overlay-opacity) * 100%), transparent)
 	);
 }
 

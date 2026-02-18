@@ -1,8 +1,10 @@
+import { watch } from "runed";
+import { getContext } from "svelte";
+
 import { elementInspector } from "@/lib/core/ElementInspector";
 import { createMessageHandler } from "@/lib/core/MessageBus";
 import { booleanToVote } from "@/utils/tracking";
-import { watch } from "runed";
-import { getContext } from "svelte";
+
 import { MetaDataStore } from "./MetaDataStore.svelte";
 
 export class TrackerState implements App.TrackerState {
@@ -30,10 +32,7 @@ export class TrackerState implements App.TrackerState {
 			const unsub = createMessageHandler("ELEMENT_HOVER", (payload) => {
 				if (!this.isLocked) {
 					this.handleMouseenter(payload as MouseEvent);
-				} else if (
-					this.isLocked &&
-					this.metadataStore.keyboard.modifiers.alt
-				) {
+				} else if (this.isLocked && this.metadataStore.keyboard.modifiers.alt) {
 					this.addDistanceFromElem(payload as MouseEvent);
 				}
 			});
@@ -41,11 +40,7 @@ export class TrackerState implements App.TrackerState {
 		});
 
 		watch.pre(
-			() => [
-				this.metadataStore.mouse.y,
-				this.metadataStore.mouse.x,
-				this.isLocked,
-			],
+			() => [this.metadataStore.mouse.y, this.metadataStore.mouse.x, this.isLocked],
 			() => {
 				this.updateLines();
 			},
@@ -81,10 +76,7 @@ export class TrackerState implements App.TrackerState {
 		);
 
 		watch.pre(
-			() => [
-				this.metadataStore.window.innerHeight,
-				this.metadataStore.window.innerWidth,
-			],
+			() => [this.metadataStore.window.innerHeight, this.metadataStore.window.innerWidth],
 			([height, width]) => {
 				if (height > 0 && width > 0) {
 					this.updateTrackerPosition();
@@ -109,23 +101,17 @@ export class TrackerState implements App.TrackerState {
 
 	public updateTrackerPosition() {
 		if (this.target?.domElement instanceof HTMLElement) {
-			this.target = this.createTrackerTargetMetaData(
-				this.target.domElement,
-			);
+			this.target = this.createTrackerTargetMetaData(this.target.domElement);
 		}
 
 		if (this.parentOfTarget?.domElement instanceof HTMLElement) {
-			this.parentOfTarget = this.createTrackerTargetMetaData(
-				this.parentOfTarget.domElement,
-			);
+			this.parentOfTarget = this.createTrackerTargetMetaData(this.parentOfTarget.domElement);
 		}
 
 		this.updateLines();
 	}
 
-	private createTrackerTargetMetaData(
-		element: HTMLElement,
-	): App.TrackerTargetMetaData {
+	private createTrackerTargetMetaData(element: HTMLElement): App.TrackerTargetMetaData {
 		const properties = elementInspector.getElementInfo(element);
 		const bounds = element.getBoundingClientRect();
 		const overlayStyles = this.getStyles(bounds);
@@ -142,10 +128,7 @@ export class TrackerState implements App.TrackerState {
 	private handleMouseenter(event: MouseEvent) {
 		let { target } = event;
 
-		if (
-			!(target instanceof HTMLElement) ||
-			elementInspector.isExtensionElement(target)
-		) {
+		if (!(target instanceof HTMLElement) || elementInspector.isExtensionElement(target)) {
 			return;
 		}
 
@@ -153,8 +136,7 @@ export class TrackerState implements App.TrackerState {
 
 		const parentElement = elementInspector.moveUp(target);
 		if (parentElement) {
-			this.parentOfTarget =
-				this.createTrackerTargetMetaData(parentElement);
+			this.parentOfTarget = this.createTrackerTargetMetaData(parentElement);
 		}
 
 		this.updateTrackerPosition();
@@ -177,9 +159,7 @@ export class TrackerState implements App.TrackerState {
 	}
 
 	private getId() {
-		return `tracker-${Date.now()}-${Math.random()
-			.toString(36)
-			.slice(2, 9)}`;
+		return `tracker-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 	}
 
 	private getStyles(rects?: DOMRect): string {
@@ -216,9 +196,7 @@ export class TrackerState implements App.TrackerState {
 		if (this.isLocked && this.target && this.parentOfTarget) {
 			const element = this.target.bounds;
 			const parent = this.parentOfTarget.bounds;
-			lines.push(
-				...this.setDistanceLines(this.target, this.parentOfTarget),
-			);
+			lines.push(...this.setDistanceLines(this.target, this.parentOfTarget));
 
 			lines.push(
 				{
@@ -300,8 +278,7 @@ export class TrackerState implements App.TrackerState {
 
 		const mouse = this.metadataStore.mouse;
 		const isContaining =
-			from.domElement.contains(to.domElement) ||
-			to.domElement.contains(from.domElement);
+			from.domElement.contains(to.domElement) || to.domElement.contains(from.domElement);
 		const element = from.bounds;
 		const parent = to.bounds;
 
@@ -335,9 +312,7 @@ export class TrackerState implements App.TrackerState {
 					y1: y,
 					x2: parent.x + parent.width,
 					y2: y,
-					distance: Math.round(
-						parent.x + parent.width - (element.x + element.width),
-					),
+					distance: Math.round(parent.x + parent.width - (element.x + element.width)),
 					color: "#bbf451",
 				},
 				{
@@ -346,9 +321,7 @@ export class TrackerState implements App.TrackerState {
 					y1: element.y + element.height,
 					x2: x,
 					y2: parent.y + parent.height,
-					distance: Math.round(
-						parent.y + parent.height - (element.y + element.height),
-					),
+					distance: Math.round(parent.y + parent.height - (element.y + element.height)),
 					color: "#bbf451",
 				},
 			];

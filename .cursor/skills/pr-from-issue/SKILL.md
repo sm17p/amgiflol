@@ -32,13 +32,13 @@ Use GitHub MCP (server `user-github`) for all GitHub actions. Before calling any
 
 Use `call_mcp_tool` with `server: "user-github"`. Typical tools and intent:
 
-| Tool (check schema for exact name) | Use for |
-| ---------------------------------- | ------- |
-| get_me | Current user and permissions; infer or confirm owner/repo |
-| search_issues | Find existing issue by number, title, or labels; avoid duplicate creation |
-| create_issue (or equivalent) | Create main or sub-issue when missing; use ISSUE_REFINEMENTS labels |
-| create_pull_request | Create PR from branch; use repo PR template if present |
-| list_issue_types | Optional; use for orgs that use issue types |
+| Tool (check schema for exact name) | Use for                                                                   |
+| ---------------------------------- | ------------------------------------------------------------------------- |
+| get_me                             | Current user and permissions; infer or confirm owner/repo                 |
+| search_issues                      | Find existing issue by number, title, or labels; avoid duplicate creation |
+| create_issue (or equivalent)       | Create main or sub-issue when missing; use ISSUE_REFINEMENTS labels       |
+| create_pull_request                | Create PR from branch; use repo PR template if present                    |
+| list_issue_types                   | Optional; use for orgs that use issue types                               |
 
 Infer `owner/repo` from git remote or conversation. Always check the tool’s JSON descriptor for required parameters before calling.
 
@@ -61,10 +61,10 @@ Use the repo’s PR template if present. Title and description should reflect th
 
 ## Summary
 
-| Scenario | Action |
-| -------- | ------ |
-| No issue | Create issue via MCP; one PR with `Closes #M`. |
-| One issue, small scope | One PR with `Closes #M`. |
+| Scenario                  | Action                                                                                                     |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| No issue                  | Create issue via MCP; one PR with `Closes #M`.                                                             |
+| One issue, small scope    | One PR with `Closes #M`.                                                                                   |
 | One issue, can break down | Create sub-issues S1…Sn; each PR closes its sub-issue(s); last PR closes its sub-issue(s) and `Closes #M`. |
 
 For when to treat work as "big", how to phrase sub-issues, and example PR body snippets, see [reference.md](reference.md).

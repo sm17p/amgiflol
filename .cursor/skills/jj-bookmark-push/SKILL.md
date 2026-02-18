@@ -22,8 +22,8 @@ Bookmarks are branch-like pointers. Set: `jj bookmark set <name>`. Set to a revi
 
 ## If push fails
 
-| Symptom | Fix |
-| -------- | --- |
-| "has no description" | Apply [jj-commit](.cursor/skills/jj-commit/SKILL.md) to add a proper message, then push. Or move bookmark to a described rev: `jj bookmark set <name> -r <rev> -B` then push. |
-| "Refusing to move bookmark backwards" | Use `-B`: `jj bookmark set <name> -r <rev> -B`. |
-| Remote bookmark moved / conflict | `jj git fetch`; resolve conflict or set bookmark to desired rev with `-B` if needed, then push. |
+| Symptom                               | Fix                                                                                                                                                                           |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "has no description"                  | Apply [jj-commit](.cursor/skills/jj-commit/SKILL.md) to add a proper message, then push. Or move bookmark to a described rev: `jj bookmark set <name> -r <rev> -B` then push. |
+| "Refusing to move bookmark backwards" | Use `-B`: `jj bookmark set <name> -r <rev> -B`.                                                                                                                               |
+| Remote bookmark moved / conflict      | `jj git fetch`; resolve conflict or set bookmark to desired rev with `-B` if needed, then push.                                                                               |

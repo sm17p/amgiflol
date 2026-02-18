@@ -14,8 +14,7 @@ export const ALL_RECIPIENTS: App.MessageRecipients = Object.freeze({
 
 class MessageBus {
 	private static instance: MessageBus;
-	private handlers: Map<App.MessageType | "*", Set<App.MessageHandler>> =
-		new Map();
+	private handlers: Map<App.MessageType | "*", Set<App.MessageHandler>> = new Map();
 	private messageHistory: App.Message[] = [];
 	private maxHistorySize = 100;
 
@@ -30,10 +29,7 @@ class MessageBus {
 		return MessageBus.instance;
 	}
 
-	public subscribe<T>(
-		type: App.MessageType | "*",
-		handler: App.MessageHandler<T>,
-	): () => void {
+	public subscribe<T>(type: App.MessageType | "*", handler: App.MessageHandler<T>): () => void {
 		if (!this.handlers.has(type)) {
 			this.handlers.set(type, new Set());
 		}
@@ -98,21 +94,16 @@ class MessageBus {
 
 	private setupMessageListeners(): void {
 		if (browser.runtime?.onMessage) {
-			browser.runtime.onMessage.addListener(
-				(message, _sender, _sendResponse) => {
-					if (this.isValidMessage(message)) {
-						this.handleMessage(message);
-					}
-				},
-			);
+			browser.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
+				if (this.isValidMessage(message)) {
+					this.handleMessage(message);
+				}
+			});
 		}
 
 		if (typeof window !== "undefined") {
 			window.addEventListener("message", (event) => {
-				if (
-					event.source === window &&
-					this.isValidMessage(event.data)
-				) {
+				if (event.source === window && this.isValidMessage(event.data)) {
 					this.handleMessage(event.data);
 				}
 			});
@@ -122,9 +113,7 @@ class MessageBus {
 		}
 	}
 
-	private async sendToPopuporBackground<T>(
-		message: App.Message<T>,
-	): Promise<void> {
+	private async sendToPopuporBackground<T>(message: App.Message<T>): Promise<void> {
 		if (browser.runtime?.sendMessage) {
 			await browser.runtime.sendMessage(message);
 		}
@@ -151,10 +140,7 @@ class MessageBus {
 				try {
 					handler(message.payload, message);
 				} catch (error) {
-					console.error(
-						`Error in message handler for ${message.type}:`,
-						error,
-					);
+					console.error(`Error in message handler for ${message.type}:`, error);
 				}
 			});
 		}
@@ -166,10 +152,7 @@ class MessageBus {
 				try {
 					handler(message.payload, message);
 				} catch (error) {
-					console.error(
-						`Error in wildcard message handler for ${message.type}:`,
-						error,
-					);
+					console.error(`Error in wildcard message handler for ${message.type}:`, error);
 				}
 			});
 		}
@@ -193,9 +176,7 @@ class MessageBus {
 			typeof data === "object" &&
 			typeof data.type === "string" &&
 			typeof data.timestamp === "number" &&
-			(data.source?.content ||
-				data.source?.background ||
-				data.source?.popup) &&
+			(data.source?.content || data.source?.background || data.source?.popup) &&
 			data.payload !== undefined
 		);
 	}
@@ -225,9 +206,6 @@ export const sendMessage = <T>(
 	return messageBus.send(type, payload, target);
 };
 
-export const broadcastMessage = <T>(
-	type: App.MessageType,
-	payload: T,
-): Promise<void> => {
+export const broadcastMessage = <T>(type: App.MessageType, payload: T): Promise<void> => {
 	return messageBus.broadcast(type, payload);
 };

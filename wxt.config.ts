@@ -1,4 +1,5 @@
 import { defineConfig, type UserManifest } from "wxt";
+
 import packageJson from "./package.json";
 
 // See https://wxt.dev/api/config.html
@@ -10,12 +11,7 @@ export default defineConfig({
 			name: packageJson.name,
 			description: packageJson.description,
 			homepage_url: packageJson.homepage,
-			permissions: [
-				"activeTab",
-				"clipboardWrite",
-				"downloads",
-				"storage",
-			],
+			permissions: ["activeTab", "clipboardWrite", "downloads", "storage"],
 		};
 
 		if (browser === "firefox") {

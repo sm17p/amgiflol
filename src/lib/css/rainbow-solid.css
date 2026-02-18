@@ -61,323 +61,122 @@
 /* Extended pattern using 7-color cycle for deeper nesting */
 body {
 	outline-color: var(--amg-rainbow-1);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-1),
-		var(--amg-rainbow-1)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-1), var(--amg-rainbow-1));
 }
 
 body > * {
 	outline-color: var(--amg-rainbow-2);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-2),
-		var(--amg-rainbow-2)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-2), var(--amg-rainbow-2));
 }
 
 body > * > * {
 	outline-color: var(--amg-rainbow-3);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-3),
-		var(--amg-rainbow-3)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-3), var(--amg-rainbow-3));
 }
 
 body > * > * > * {
 	outline-color: var(--amg-rainbow-4);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-4),
-		var(--amg-rainbow-4)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-4), var(--amg-rainbow-4));
 }
 
 body > * > * > * > * {
 	outline-color: var(--amg-rainbow-5);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-5),
-		var(--amg-rainbow-5)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-5), var(--amg-rainbow-5));
 }
 
 body > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-6);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-6),
-		var(--amg-rainbow-6)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-6), var(--amg-rainbow-6));
 }
 
 body > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-7);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-7),
-		var(--amg-rainbow-7)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-7), var(--amg-rainbow-7));
 }
 
 body > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-1);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-1),
-		var(--amg-rainbow-1)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-1), var(--amg-rainbow-1));
 }
 
 body > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-2);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-2),
-		var(--amg-rainbow-2)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-2), var(--amg-rainbow-2));
 }
 
 body > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-3);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-3),
-		var(--amg-rainbow-3)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-3), var(--amg-rainbow-3));
 }
 
 body > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-4);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-4),
-		var(--amg-rainbow-4)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-4), var(--amg-rainbow-4));
 }
 
 body > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-5);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-5),
-		var(--amg-rainbow-5)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-5), var(--amg-rainbow-5));
 }
 
 body > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-6);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-6),
-		var(--amg-rainbow-6)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-6), var(--amg-rainbow-6));
 }
 
 body > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-7);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-7),
-		var(--amg-rainbow-7)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-7), var(--amg-rainbow-7));
 }
 
 body > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-1);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-1),
-		var(--amg-rainbow-1)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-1), var(--amg-rainbow-1));
 }
 
 body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-2);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-2),
-		var(--amg-rainbow-2)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-2), var(--amg-rainbow-2));
 }
 
 body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-3);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-3),
-		var(--amg-rainbow-3)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-3), var(--amg-rainbow-3));
 }
 
 body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-4);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-4),
-		var(--amg-rainbow-4)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-4), var(--amg-rainbow-4));
 }
 
 body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-5);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-5),
-		var(--amg-rainbow-5)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-5), var(--amg-rainbow-5));
 }
 
-body
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> * {
+body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-6);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-6),
-		var(--amg-rainbow-6)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-6), var(--amg-rainbow-6));
 }
 
-body
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> * {
+body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-7);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-7),
-		var(--amg-rainbow-7)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-7), var(--amg-rainbow-7));
 }
 
-body
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> * {
+body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-1);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-1),
-		var(--amg-rainbow-1)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-1), var(--amg-rainbow-1));
 }
 
-body
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> * {
+body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-2);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-2),
-		var(--amg-rainbow-2)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-2), var(--amg-rainbow-2));
 }
 
-body
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> *
-	> * {
+body > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * > * {
 	outline-color: var(--amg-rainbow-3);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-3),
-		var(--amg-rainbow-3)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-3), var(--amg-rainbow-3));
 }
 
 body
@@ -406,11 +205,7 @@ body
 	> *
 	> * {
 	outline-color: var(--amg-rainbow-4);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-4),
-		var(--amg-rainbow-4)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-4), var(--amg-rainbow-4));
 }
 
 body
@@ -440,11 +235,7 @@ body
 	> *
 	> * {
 	outline-color: var(--amg-rainbow-5);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-5),
-		var(--amg-rainbow-5)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-5), var(--amg-rainbow-5));
 }
 
 body
@@ -475,11 +266,7 @@ body
 	> *
 	> * {
 	outline-color: var(--amg-rainbow-6);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-6),
-		var(--amg-rainbow-6)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-6), var(--amg-rainbow-6));
 }
 
 body
@@ -511,11 +298,7 @@ body
 	> *
 	> * {
 	outline-color: var(--amg-rainbow-7);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-7),
-		var(--amg-rainbow-7)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-7), var(--amg-rainbow-7));
 }
 
 body
@@ -548,11 +331,7 @@ body
 	> *
 	> * {
 	outline-color: var(--amg-rainbow-1);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-1),
-		var(--amg-rainbow-1)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-1), var(--amg-rainbow-1));
 }
 
 body
@@ -586,11 +365,7 @@ body
 	> *
 	> * {
 	outline-color: var(--amg-rainbow-2);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-2),
-		var(--amg-rainbow-2)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-2), var(--amg-rainbow-2));
 }
 
 body
@@ -625,11 +400,7 @@ body
 	> *
 	> * {
 	outline-color: var(--amg-rainbow-3);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-3),
-		var(--amg-rainbow-3)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-3), var(--amg-rainbow-3));
 }
 
 body
@@ -665,11 +436,7 @@ body
 	> *
 	> * {
 	outline-color: var(--amg-rainbow-4);
-	background-image: linear-gradient(
-		to right,
-		var(--amg-rainbow-4),
-		var(--amg-rainbow-4)
-	);
+	background-image: linear-gradient(to right, var(--amg-rainbow-4), var(--amg-rainbow-4));
 }
 
 /* Exclude SVG elements and their children from rainbow styling */

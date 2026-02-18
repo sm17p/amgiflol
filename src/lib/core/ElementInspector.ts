@@ -54,7 +54,7 @@ export class ElementInspector {
 	public isExtensionElement(element: HTMLElement): boolean {
 		if (!element) return false;
 
-		return element.closest("[data-wxt-shadow-root]") !== null;
+		return element.closest("[data-amgiflol-root]") !== null;
 	}
 
 	public getElementPath(element: HTMLElement): string[] {
@@ -100,9 +100,7 @@ export class ElementInspector {
 		type: "horizontal" | "vertical" = "horizontal",
 	): number {
 		const distance =
-			type === "horizontal"
-				? Math.abs(rect1.x - rect2.x)
-				: Math.abs(rect1.y - rect2.y);
+			type === "horizontal" ? Math.abs(rect1.x - rect2.x) : Math.abs(rect1.y - rect2.y);
 
 		return Math.round(distance / this.zoomLevel);
 	}
@@ -122,10 +120,7 @@ export class ElementInspector {
 
 	public getElementAtPoint(x: number, y: number): HTMLElement | null {
 		const elements = document.elementsFromPoint(x, y);
-		return (
-			(elements.find((el) => el instanceof HTMLElement) as HTMLElement) ||
-			null
-		);
+		return (elements.find((el) => el instanceof HTMLElement) as HTMLElement) || null;
 	}
 
 	private extractDimensions(element: HTMLElement, rect: DOMRect) {
@@ -157,10 +152,7 @@ export class ElementInspector {
 			display: computedStyle.display,
 			position: computedStyle.position,
 			zIndex: computedStyle.zIndex,
-			lineHeightToFontSizeRatio: this.calculateLineHeightRatio(
-				fontSize,
-				lineHeight,
-			),
+			lineHeightToFontSizeRatio: this.calculateLineHeightRatio(fontSize, lineHeight),
 		};
 	}
 
@@ -184,10 +176,7 @@ export class ElementInspector {
 		return `${ratioWidth}:${ratioHeight}`;
 	}
 
-	private calculateLineHeightRatio(
-		fontSize: string,
-		lineHeight: string,
-	): string {
+	private calculateLineHeightRatio(fontSize: string, lineHeight: string): string {
 		const fontSizeValue = parseFloat(fontSize);
 		const lineHeightValue = parseFloat(lineHeight);
 
@@ -230,10 +219,7 @@ export class ElementInspector {
 		return `${top} ${right} ${bottom} ${left}`;
 	}
 
-	public areSameSize(
-		element?: HTMLElement | null,
-		parent?: HTMLElement | null,
-	): boolean {
+	public areSameSize(element?: HTMLElement | null, parent?: HTMLElement | null): boolean {
 		if (element == null || parent == null) {
 			return false;
 		}
@@ -241,10 +227,7 @@ export class ElementInspector {
 		const widthDiff = Math.abs(element.offsetWidth - parent.offsetWidth);
 		const heightDiff = Math.abs(element.offsetHeight - parent.offsetHeight);
 
-		return (
-			(widthDiff < 2 && heightDiff < 2) ||
-			parent.style.display === "contents"
-		);
+		return (widthDiff < 2 && heightDiff < 2) || parent.style.display === "contents";
 	}
 
 	private greatestCommonDivisor(a: number, b: number): number {
@@ -252,5 +235,4 @@ export class ElementInspector {
 	}
 }
 
-export const elementInspector: ElementInspector =
-	ElementInspector.getInstance();
+export const elementInspector: ElementInspector = ElementInspector.getInstance();

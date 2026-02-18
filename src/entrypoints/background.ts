@@ -27,9 +27,7 @@ export default defineBackground(() => {
 	});
 
 	browser.runtime.onInstalled.addListener(async ({ reason }) => {
-		console.log(
-			`Extension installed, reason: ${reason}, browser: ${import.meta.env.BROWSER}`,
-		);
+		console.log(`Extension installed, reason: ${reason}, browser: ${import.meta.env.BROWSER}`);
 
 		savePlatformInfo();
 		analytics.setEnabled(true);
@@ -129,11 +127,7 @@ async function updateIconForActiveTab(tabId?: number) {
 
 		setIcon(isActive);
 
-		console.trace(
-			`Icon updated for domain "${domain}": ${
-				isActive ? "active" : "inactive"
-			}`,
-		);
+		console.trace(`Icon updated for domain "${domain}": ${isActive ? "active" : "inactive"}`);
 	} catch (error: unknown) {
 		console.error("Failed to update icon for active tab:", error);
 	}
@@ -149,9 +143,7 @@ async function captureHandler(tab: Browser.tabs.Tab) {
 }
 
 async function downloadImage(dataUrl: string): Promise<number> {
-	const filename = `Screenshot-${new Date()
-		.toISOString()
-		.replaceAll(":", "-")}.png`;
+	const filename = `Screenshot-${new Date().toISOString().replaceAll(":", "-")}.png`;
 
 	console.log(`Downloading image: ${filename}`, { dataUrl });
 

@@ -20,7 +20,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: "24"
           cache: "pnpm"
 
       - name: Install dependencies
@@ -29,7 +29,7 @@ jobs:
       - name: Run lint
         run: pnpm lint
 
-      - name: Run svelte-echeck
+      - name: Run svelte-check
         run: pnpm check
 
       - name: Package all

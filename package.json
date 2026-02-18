@@ -18,7 +18,7 @@
 		"fmt:check": "oxfmt --check",
 		"lint": "oxlint",
 		"postinstall": "wxt prepare",
-		"test:e2e": "playwright test",
+		"test:e2e": "pnpm build && playwright test",
 		"wxt": "wxt",
 		"zip": "wxt zip",
 		"zip:all": "pnpm zip && pnpm zip:firefox",

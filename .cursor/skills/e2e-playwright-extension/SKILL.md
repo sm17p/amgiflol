@@ -5,17 +5,19 @@ description: Adds or updates extension E2E tests using the project Playwright se
 
 # E2E with Playwright (extension)
 
+Aligned with [WXT’s Playwright E2E example](https://github.com/wxt-dev/examples/tree/main/examples/playwright-e2e-testing): Chromium only, extension loaded from `dist/chrome-mv3`.
+
 ## Layout
 
 - Tests in [e2e/tests/](e2e/tests/)
-- Shared fixture in [e2e/fixutes.ts](e2e/fixutes.ts) (note: filename typo in repo)
+- Shared fixture in [e2e/fixtures.ts](e2e/fixtures.ts)
 - Page helpers in [e2e/pages/](e2e/pages/) (e.g. [e2e/pages/popup.ts](e2e/pages/popup.ts))
 
 ## Fixture
 
 The fixture extends Playwright with:
 
-- **context:** Firefox persistent context that loads the unpacked extension from `dist/firefox-mv3`
+- **context:** Chromium persistent context that loads the unpacked extension from `dist/chrome-mv3`
 - **extensionId:** Resolved from the service worker (MV3) or background page otherwise
 
 Use `context` and `extensionId` in tests. Import the extended `test` and `expect` from the fixture.
@@ -26,9 +28,10 @@ Navigate to `chrome-extension://${extensionId}/popup.html`. Use helpers like `op
 
 ## Run
 
-- `pnpm test:e2e`
-- Build the extension first so `dist/` exists: `pnpm build:firefox` or `pnpm build`
+- First-time: `pnpm exec playwright install chromium` (installs Chromium and headless shell; do not use `--no-shell` or default tests will fail).
+- Build the extension: `pnpm build` so `dist/chrome-mv3` exists.
+- Run tests: `pnpm test:e2e`
 
 ## Note
 
-`playwright-webextext` is in devDependencies for potential future use; current tests use the custom fixture in `fixutes.ts`.
+`playwright-webextext` is in devDependencies for potential future use; current tests use the custom fixture in `fixtures.ts`.

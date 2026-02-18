@@ -31,7 +31,7 @@
 				status: "complete",
 			});
 
-			if (tab.url) {
+			if (tab?.url) {
 				const url = new URL(tab.url);
 				domain = url.host;
 

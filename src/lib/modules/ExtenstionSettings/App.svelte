@@ -35,12 +35,10 @@
 				const url = new URL(tab.url);
 				domain = url.host;
 
-				let result = await browser.storage?.local.get([domain]);
-
-				console.log("🚀 ~ mount ~ result:", result);
-
-				if (result) {
-					isActive = result[domain] ?? false;
+				const result = await browser.storage?.local.get([domain]);
+				const value = result?.[domain];
+				if (result !== undefined) {
+					isActive = typeof value === "boolean" ? value : false;
 				}
 			}
 		} catch (error) {

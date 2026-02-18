@@ -26,14 +26,14 @@
   },
   "dependencies": {
     "@ark-ui/svelte": "^5.16.0",
-    "@lucide/svelte": "^0.525.0",
-    "@wxt-dev/analytics": "0.5.0"
+    "@lucide/svelte": "^0.574.0",
+    "@wxt-dev/analytics": "0.5.2"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
     "@playwright/test": "^1.58.2",
     "@tsconfig/svelte": "^5.0.8",
-    "@types/node": "^24.10.13",
+    "@types/node": "^25.2.3",
     "@unocss/extractor-svelte": "^66.6.0",
     "@unocss/preset-attributify": "^66.6.0",
     "@unocss/preset-rem-to-px": "^66.6.0",
@@ -42,11 +42,11 @@
     "@wxt-dev/module-svelte": "^2.0.4",
     "@wxt-dev/unocss": "^1.0.1",
     "oxfmt": "^0.33.0",
-    "oxlint": "1.6.0",
-    "oxlint-tsgolint": "^0.2.1",
+    "oxlint": "^1.48.0",
+    "oxlint-tsgolint": "^0.14.0",
     "playwright": "^1.58.2",
     "playwright-webextext": "^0.0.4",
-    "runed": "^0.29.2",
+    "runed": "^0.37.1",
     "svelte": "^5.51.5",
     "svelte-check": "^4.4.1",
     "tslib": "^2.8.1",

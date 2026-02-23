@@ -1,10 +1,10 @@
-import { test, expect } from "../fixtures";
+import { expect, test } from "../fixtures";
 import { openPopup } from "../pages/popup";
 import {
-	openStableTestPage,
 	expectSvelteAppLoaded,
 	getExtensionRoot,
 	getInspectorActiveMain,
+	openStableTestPage,
 } from "../pages/web";
 
 test.describe("Popup", () => {
@@ -15,11 +15,7 @@ test.describe("Popup", () => {
 });
 
 test.describe("Content injection", () => {
-	test("inspector root and app load on supported page", async ({
-		page,
-		context,
-		extensionId,
-	}) => {
+	test("inspector root and app load on supported page", async ({ page }) => {
 		await openStableTestPage(page);
 		await expect(getExtensionRoot(page)).toBeVisible();
 		await expectSvelteAppLoaded(page);
@@ -28,9 +24,8 @@ test.describe("Content injection", () => {
 
 test.describe("Per-domain activation", () => {
 	test("when domain is enabled in storage, inspector is active on page load", async ({
-		page,
 		context,
-		extensionId,
+		page,
 	}) => {
 		const [worker] = context.serviceWorkers();
 		const setStorage = (domain: string) => {

@@ -14,11 +14,13 @@ export default defineContentScript({
 			name: "amgif-lol",
 			position: "inline",
 			onMount: (container) => {
-				const root = container.getRootNode();
-				if (root instanceof ShadowRoot) {
-					root.host.setAttribute("data-amgiflol-root", "true");
+				const rootNode = container.getRootNode();
+				if (rootNode instanceof ShadowRoot) {
+					rootNode.host.setAttribute("data-amgiflol-root", "true");
+					return mount(Main, { target: container, props: { rootNode } });
 				}
-				return mount(Main, { target: container });
+
+				return null;
 			},
 			onRemove: (app) => {
 				unmount(app!);

@@ -1,4 +1,4 @@
-import { test as base, chromium, type BrowserContext } from "@playwright/test";
+import { test as base, type BrowserContext, chromium } from "@playwright/test";
 import os from "os";
 import path from "path";
 
@@ -9,7 +9,7 @@ export const test = base.extend<{
 	context: BrowserContext;
 	extensionId: string;
 }>({
-	context: async ({}, use) => {
+	context: async ({ browserName: _browserName }, use) => {
 		const context = await chromium.launchPersistentContext(userDataDir, {
 			headless: !!process.env.CI,
 			args: [

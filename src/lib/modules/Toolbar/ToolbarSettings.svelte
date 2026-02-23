@@ -20,7 +20,6 @@
   onOpenChange={(details) => {
     uiStore.toolbar.settings.open = details.open;
   }}
-  positioning={{ placement: "top-end", gutter: 4 }}
 >
   <Menu.Trigger
     class="size-7 sm:size-10 outline-none text-zinc-800 rounded-sm data-[state=closed]:not-disabled:hover:bg-lime-200 data-[state=closed]:not-disabled:hover:text-lime-500 !active:bg-lime-700 !active:text-lime-500 data-[state=open]:bg-lime-700 data-[state=open]:text-white/80 inline-flex items-center justify-center transition-all not-disabled:active:rounded-3xl not-disabled:active:scale-[0.85]"

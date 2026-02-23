@@ -32,6 +32,7 @@ description: Provides project context for the amgiflol WXT + Svelte 5 browser ex
 
 - `pnpm lint` (oxlint); import order and sort-imports per [.oxlintrc.jsonc](.oxlintrc.jsonc)
 - `pnpm fmt` (oxfmt); `pnpm fmt:check` to check only
+- Tooling is kept current with oxfmt/oxlint updates; update this section when upgrading formatter or linter.
 
 ## Additional context
 

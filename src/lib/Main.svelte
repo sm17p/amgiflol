@@ -5,6 +5,7 @@
     TrackersStore,
     UIStore,
   } from "@/lib/store/index.svelte";
+  import { EnvironmentProvider } from "@ark-ui/svelte";
   import { onMount, setContext } from "svelte";
 
   import SelectorManager from "./components/SelectorManager.svelte";
@@ -14,6 +15,12 @@
   import EventsManager from "./modules/EventsManager/index.svelte";
   import SidePanel from "./modules/SidePanel/index.svelte";
   import Toolbar from "./modules/Toolbar/index.svelte";
+
+  interface Props {
+    rootNode?: ShadowRoot | Document;
+  }
+
+  let { rootNode }: Props = $props();
 
   const metadataStore = new MetaDataStore();
   const trackersStore = new TrackersStore();
@@ -28,32 +35,42 @@
   });
 </script>
 
-<main
-  class={[
-    "amg-root relative prose prose-zinc max-w-screen",
-    {
-      active: uiStore.isActive,
-    },
-  ]}
->
-  {#if uiStore.isActive}
-    <EventsManager />
-    <SvgManager style="z-index: 1000000004" />
-    <SelectorManager
-      enabled={uiStore.isActive}
-      maxTrackers={10}
-      autoCleanup={true}
-    />
-    <DebugToolbar
-      showPerformance={true}
-      showMemory={true}
-      showMessages={true}
-    />
-    <SidePanel />
-    <!-- <Toaster /> -->
-    <Toolbar />
-  {/if}
-</main>
+{#snippet children()}
+  <main
+    class={[
+      "amg-root relative prose prose-zinc max-w-screen",
+      {
+        active: uiStore.isActive,
+      },
+    ]}
+  >
+    {#if uiStore.isActive}
+      <EventsManager />
+      <SvgManager style="z-index: 1000000004" />
+      <SelectorManager
+        enabled={uiStore.isActive}
+        maxTrackers={10}
+        autoCleanup={true}
+      />
+      <DebugToolbar
+        showPerformance={true}
+        showMemory={true}
+        showMessages={true}
+      />
+      <SidePanel />
+      <!-- <Toaster /> -->
+      <Toolbar />
+    {/if}
+  </main>
+{/snippet}
+
+{#if rootNode}
+  <EnvironmentProvider value={rootNode}>
+    {@render children()}
+  </EnvironmentProvider>
+{:else}
+  {@render children()}
+{/if}
 
 <style>
   /* :global(html) {

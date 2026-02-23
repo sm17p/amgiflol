@@ -4,6 +4,17 @@ import packageJson from "./package.json";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
+	// hooks: {
+	// 	"build:manifestGenerated"(wxt, manifest) {
+	// 		if (wxt.config.mode === "development") {
+	// 			manifest.content_scripts ??= [];
+	// 			manifest.content_scripts.push({
+	// 				matches: ["http://*/*", "https://*/*"],
+	// 				js: ["content-scripts/content.js"],
+	// 			});
+	// 		}
+	// 	},
+	// },
 	manifest({ browser }) {
 		const [author, email] = packageJson.author.split(" ");
 
@@ -53,6 +64,7 @@ export default defineConfig({
 	vite: (_env) => ({
 		build: {
 			sourcemap: "inline",
+			minify: false,
 		},
 		optimizeDeps: {
 			entries: ["src/entrypoints/**/*.html"],

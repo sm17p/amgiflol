@@ -11,16 +11,17 @@
 			"files": ["*.json", "*.jsonc"],
 			"options": {
 				"tabWidth": 4,
-			},
+				"trailingComma": "none"
+			}
 		},
 		{
 			"files": ["*.md", "*.yml", "*.yaml"],
 			"options": {
-				"tabWidth": 2,
-			},
-		},
+				"tabWidth": 2
+			}
+		}
 	],
-	"experimentalSortImports": {
+	"sortImports": {
 		"newlinesBetween": true,
 		"groups": [
 			"type-import",
@@ -29,12 +30,11 @@
 			"value-internal",
 			["type-parent", "type-sibling", "type-index"],
 			["value-parent", "value-sibling", "value-index"],
-			"unknown",
-		],
+			"unknown"
+		]
 	},
-	"experimentalTailwindcss": {
+	"sortTailwindcss": {
 		"functions": ["clsx", "cn"],
-		"preserveWhitespace": true,
-	},
-	"experimentalSortPackageJson": true,
+		"preserveWhitespace": true
+	}
 }

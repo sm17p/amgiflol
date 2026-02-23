@@ -15,7 +15,7 @@ export default defineAppConfig({
 		enabled: storage.defineItem("local:analytics-enabled", {
 			fallback: true,
 		}),
-		userId: storage.defineItem("local:amg-user-id-key", {
+		userId: storage.defineItem<string | undefined>("local:amg-user-id-key", {
 			fallback: crypto.randomUUID().toString(),
 		}),
 		userProperties: storage.defineItem("local:amg-user-properties-key", {

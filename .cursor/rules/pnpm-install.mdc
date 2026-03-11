@@ -1,0 +1,8 @@
+---
+alwaysApply: false
+---
+
+# pnpm install
+
+- Never run `pnpm install` or `pnpm i` in the sandbox.
+- When dependencies need installing or updating, **prompt the user** to run `pnpm install` (or the exact `pnpm` command) locally instead of running it here.

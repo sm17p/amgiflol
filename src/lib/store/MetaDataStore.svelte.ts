@@ -25,10 +25,9 @@ export class MetaDataStore implements App.MetaDataStore {
 	});
 
 	constructor() {
-		const platformInfoStore = storage.defineItem<
-			App.MetaDataStore["platformInfo"]
-		>("local:platformInfo");
-		platformInfoStore.getValue().then(value => {
+		const platformInfoStore =
+			storage.defineItem<App.MetaDataStore["platformInfo"]>("local:platformInfo");
+		platformInfoStore.getValue().then((value) => {
 			if (value) {
 				this.platformInfo = value;
 			}

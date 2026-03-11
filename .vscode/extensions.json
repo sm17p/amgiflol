@@ -1,7 +1,7 @@
 {
 	"recommendations": [
 		"bradlc.vscode-tailwindcss",
-		"dprint.dprint",
+		"oxc.oxc-vscode",
 		"svelte.svelte-vscode"
 	]
 }

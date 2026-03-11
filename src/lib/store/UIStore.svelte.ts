@@ -1,12 +1,9 @@
-import {
-	CONTENT,
-	createMessageHandler,
-	sendMessage,
-} from "@/lib/core/MessageBus";
-import rainbowLayoutCss from "@/lib/css/rainbow-translucent.css?raw";
-import { booleanToVote } from "@/utils/tracking";
 import { watch } from "runed";
 import { browser } from "wxt/browser";
+
+import { CONTENT, createMessageHandler, sendMessage } from "@/lib/core/MessageBus";
+import rainbowLayoutCss from "@/lib/css/rainbow-translucent.css?raw";
+import { booleanToVote } from "@/utils/tracking";
 
 export class UIStore implements App.UIStore {
 	isActive = $state(false);
@@ -81,10 +78,7 @@ export class UIStore implements App.UIStore {
 		);
 	}
 
-	handleKeyDown = (
-		event: KeyboardEvent,
-		_message: App.Message<KeyboardEvent>,
-	) => {
+	handleKeyDown = (event: KeyboardEvent, _message: App.Message<KeyboardEvent>) => {
 		switch (event.key) {
 			// case "i":
 			// case "I":
@@ -155,10 +149,7 @@ export class UIStore implements App.UIStore {
 	}
 
 	toggleRainbowLayout = () => {
-		if (
-			!import.meta.env.DEV &&
-			import.meta.env.FIREFOX
-		) return;
+		if (!import.meta.env.DEV && import.meta.env.FIREFOX) return;
 		this.rainbowLayout.css!.disabled = this.rainbowLayout.enabled;
 		this.rainbowLayout.enabled = !this.rainbowLayout.enabled;
 	};
@@ -180,8 +171,7 @@ export class UIStore implements App.UIStore {
 	}
 
 	toggleDebugToolbar() {
-		this.debugToolbar.isVisible = !this.debugToolbar
-			.isVisible;
+		this.debugToolbar.isVisible = !this.debugToolbar.isVisible;
 	}
 
 	setMode(mode: App.Mode) {
@@ -257,7 +247,7 @@ export class UIStore implements App.UIStore {
 	}
 
 	private broadcastStateChange() {
-		sendMessage("EXTENSION_TOGGLE", {
+		void sendMessage("EXTENSION_TOGGLE", {
 			isActive: this.isActive,
 			timestamp: Date.now(),
 		});
@@ -268,10 +258,7 @@ export class UIStore implements App.UIStore {
 			const { host } = window.location;
 			const result: {
 				uiStore?: App.UIStore;
-			} & { [host]: boolean } = await browser.storage?.local.get([
-				"uiStore",
-				host,
-			]);
+			} & { [host]: boolean } = await browser.storage?.local.get(["uiStore", host]);
 
 			if (Object.hasOwn(result, host)) {
 				this.isActive = result[host] ?? false;
@@ -282,11 +269,9 @@ export class UIStore implements App.UIStore {
 				this.sidePanel = result.uiStore.sidePanel;
 				this.svg = result.uiStore.svg;
 				this.toolbar = result.uiStore.toolbar;
-				this.rainbowLayout.enabled =
-					result.uiStore.rainbowLayout?.enabled ?? false;
+				this.rainbowLayout.enabled = result.uiStore.rainbowLayout?.enabled ?? false;
 				if (this.isActive) {
-					this.rainbowLayout.css!.disabled = !this.rainbowLayout
-						.enabled;
+					this.rainbowLayout.css!.disabled = !this.rainbowLayout.enabled;
 				}
 				// Handle store breaking change
 				if (result.uiStore.sidePanel.autoMove === undefined) {
@@ -294,10 +279,7 @@ export class UIStore implements App.UIStore {
 				}
 			}
 		} catch (error) {
-			console.error(
-				"Failed to load inspector state from storage:",
-				error,
-			);
+			console.error("Failed to load inspector state from storage:", error);
 		}
 	}
 }

@@ -7,12 +7,9 @@ export class UpvoteState {
 
 	constructor(key: string) {
 		this.key = key;
-		this.upvoteStore = storage.defineItem<boolean>(
-			`local:voting-${key}`,
-			{
-				fallback: false,
-			},
-		);
+		this.upvoteStore = storage.defineItem<boolean>(`local:voting-${key}`, {
+			fallback: false,
+		});
 		this.upvoteStore.getValue().then((res: boolean) => {
 			this.pressed = res;
 		});

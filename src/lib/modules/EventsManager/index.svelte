@@ -5,9 +5,9 @@
 		createMessageHandler,
 		sendMessage,
 	} from "@/lib/core/MessageBus";
+	import { getContext, onMount } from "svelte";
 	// import { documentAttachment } from "@/lib/store/CssVariableBlocker.svelte";
 	import { MetaDataStore, UIStore } from "@/lib/store/index.svelte";
-	import { onMount } from "svelte";
 
 	const metadataStore = getContext<MetaDataStore>("metadataStore");
 	const uiStore = getContext<UIStore>("uiStore");
@@ -39,8 +39,8 @@
 
 		// Disable shortcuts when typing
 		if (
-			event?.currentTarget instanceof Document &&
-				event?.currentTarget?.body === event.target ||
+			(event?.currentTarget instanceof Document &&
+				event?.currentTarget?.body === event.target) ||
 			(event.target instanceof HTMLElement &&
 				elementInspector.isExtensionElement(event.target))
 		) {
@@ -60,10 +60,14 @@
 
 	function handleWindowResize() {
 		if (uiStore.isActive) {
-			sendMessage("VIEWPORT_RESIZE", {
-				width: window.innerWidth,
-				height: window.innerHeight,
-			}, CONTENT);
+			sendMessage(
+				"VIEWPORT_RESIZE",
+				{
+					width: window.innerWidth,
+					height: window.innerHeight,
+				},
+				CONTENT,
+			);
 		}
 	}
 
@@ -94,10 +98,7 @@
 			},
 		);
 
-		unsubscribers.push(
-			toggleHandler,
-			zoomHandler,
-		);
+		unsubscribers.push(toggleHandler, zoomHandler);
 	}
 
 	async function initialize() {

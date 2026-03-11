@@ -6,7 +6,7 @@
 		createMessageHandler,
 		sendMessage,
 	} from "@/lib/core/MessageBus";
-	import { Label, Switch } from "bits-ui";
+	import { Switch } from "@ark-ui/svelte/switch";
 	import { browser } from "wxt/browser";
 	import "./app.css";
 	import { fade } from "svelte/transition";
@@ -31,18 +31,14 @@
 				status: "complete",
 			});
 
-			if (tab.url) {
+			if (tab?.url) {
 				const url = new URL(tab.url);
 				domain = url.host;
 
-				let result = await browser.storage?.local.get([
-					domain,
-				]);
-
-				console.log("🚀 ~ mount ~ result:", result);
-
-				if (result) {
-					isActive = result[domain] ?? false;
+				const result = await browser.storage?.local.get([domain]);
+				const value = result?.[domain];
+				if (result !== undefined) {
+					isActive = typeof value === "boolean" ? value : false;
 				}
 			}
 		} catch (error) {
@@ -94,9 +90,7 @@
 
 <main class="prose prose-zinc bg-lime-300 p-1">
 	<div class="grid grid-cols-1 rounded-xl gap-y-6 p-4 border-1 border-zinc-800 min-h-36">
-		<h1 class="font-bold text-center mt-0 mb-0 text-4xl">
-			Amgif
-		</h1>
+		<h1 class="font-bold text-center mt-0 mb-0 text-4xl">Amgif</h1>
 		{#if isActive !== undefined}
 			<div class="grid grid-row-1 grid-col-1">
 				{#if isActive}
@@ -119,19 +113,23 @@
 			</div>
 			<hr class="mt-0 mb-0 border-zinc-800" />
 			<div class="flex justify-between space-x-3">
-				<Label.Root
-					for="active"
-					class="font-semibold text-xl flex-1 cursor-pointer"
-				>Active:</Label.Root>
 				<Switch.Root
 					id="active"
-					class="focus-visible:ring-white focus-visible:ring-offset-netural-700 data-[state=checked]:bg-white data-[state=unchecked]:bg-neutral-700 data-[state=unchecked]:shadow-mini-inset dark:data-[state=checked]:bg-white focus-visible:outline-hidden peer inline-flex w-[60px] shrink-0 cursor-pointer items-center rounded-full px-[3px] py-1 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-					onclick={toggleActiveContent}
 					checked={isActive}
+					onCheckedChange={(details) => toggleActiveContent()}
+					class="flex justify-between items-center gap-3 w-full"
 				>
-					<Switch.Thumb
-						class="bg-neutral-500 data-[state=unchecked]:shadow-sm dark:border-netural-700/30 dark:bg-white dark:shadow-popover pointer-events-none block size-[26px] shrink-0 rounded-full transition-transform data-[state=checked]:translate-x-6.5 data-[state=unchecked]:translate-x-0 dark:border dark:data-[state=unchecked]:border"
-					/>
+					<Switch.Label
+						class="font-semibold text-xl flex-1 cursor-pointer"
+					>Active:</Switch.Label>
+					<Switch.Control
+						class="focus-visible:ring-white focus-visible:ring-offset-netural-700 data-[state=checked]:bg-white data-[state=unchecked]:bg-neutral-700 data-[state=unchecked]:shadow-mini-inset dark:data-[state=checked]:bg-white focus-visible:outline-hidden peer inline-flex w-[60px] shrink-0 cursor-pointer items-center rounded-full px-[3px] py-1 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+					>
+						<Switch.Thumb
+							class="bg-neutral-500 data-[state=unchecked]:shadow-sm dark:border-netural-700/30 dark:bg-white dark:shadow-popover pointer-events-none block size-[26px] shrink-0 rounded-full transition-transform data-[state=checked]:translate-x-6.5 data-[state=unchecked]:translate-x-0 dark:border dark:data-[state=unchecked]:border"
+						/>
+					</Switch.Control>
+					<Switch.HiddenInput />
 				</Switch.Root>
 			</div>
 

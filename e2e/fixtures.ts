@@ -1,15 +1,21 @@
 import { test as base, type BrowserContext, chromium } from "@playwright/test";
+import fs from "fs";
 import os from "os";
 import path from "path";
 
 const pathToExtension = path.resolve("dist/chrome-mv3");
-const userDataDir = path.join(os.tmpdir(), "playwright-amgiflol-extension");
 
 export const test = base.extend<{
 	context: BrowserContext;
 	extensionId: string;
 }>({
-	context: async ({ browserName: _browserName }, use) => {
+	context: async ({ browserName: _browserName }, use, testInfo) => {
+		const userDataDir = path.join(
+			os.tmpdir(),
+			`playwright-amgiflol-extension-${testInfo.workerIndex}`,
+		);
+		fs.rmSync(userDataDir, { recursive: true, force: true });
+
 		const context = await chromium.launchPersistentContext(userDataDir, {
 			headless: !!process.env.CI,
 			args: [
@@ -17,14 +23,17 @@ export const test = base.extend<{
 				`--load-extension=${pathToExtension}`,
 			],
 		});
-		await context.addInitScript(() => {
-			const orig = Element.prototype.attachShadow;
-			Element.prototype.attachShadow = function (init) {
-				return orig.call(this, { ...init, mode: "open" });
-			};
-		});
-		await use(context);
-		await context.close();
+		try {
+			await context.addInitScript(() => {
+				const orig = Element.prototype.attachShadow;
+				Element.prototype.attachShadow = function (init) {
+					return orig.call(this, { ...init, mode: "open" });
+				};
+			});
+			await use(context);
+		} finally {
+			await context.close();
+		}
 	},
 	extensionId: async ({ context }, use) => {
 		let [background] = context.serviceWorkers();

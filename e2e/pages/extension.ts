@@ -15,13 +15,15 @@ export function getExtensionToolbar(page: Page): Locator {
 }
 
 export function getToolbarSettingsButton(page: Page): Locator {
-	return getExtensionToolbar(page).locator("button").last();
+	return getExtensionToolbar(page).locator("button").filter({ hasText: "0" }).first();
 }
 
 export async function openToolbarSettings(page: Page): Promise<void> {
 	await getToolbarSettingsButton(page).click();
 }
 
-export function getToolbarButtonByLabel(page: Page, label: string | RegExp): Locator {
-	return page.locator(`${extensionRootSelector}`).getByRole("button", { name: label });
+export function getToolbarButtonByLabel(page: Page, label: string): Locator {
+	return getExtensionToolbar(page)
+		.locator(`button[data-scope="toggle"][aria-label="${label}"]`)
+		.first();
 }

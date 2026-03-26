@@ -33,6 +33,8 @@ Navigate to `chrome-extension://${extensionId}/popup.html`. Use helpers like `op
 
 ## Run
 
+- CI: [.github/workflows/playwright.yml](../../../.github/workflows/playwright.yml) uses `jdx/mise-action` then `pnpm install --frozen-lockfile`.
+
 - First-time: `pnpm exec playwright install chromium` (installs Chromium and headless shell; do not use `--no-shell` or default tests will fail).
 - Build the extension: `pnpm build` so `dist/chrome-mv3` exists.
 - Run tests: `pnpm test:e2e`

@@ -1,3 +1,7 @@
+interface ImportMetaEnv {
+	readonly WXT_MIN_CHROME_VERSION?: string;
+}
+
 /// <reference types="svelte" />
 /// <reference types="svelte/animate" />
 /// <reference types="svelte/elements" />

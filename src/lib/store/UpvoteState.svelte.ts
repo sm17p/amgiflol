@@ -1,5 +1,5 @@
-import { booleanToVote } from "@/utils/tracking";
 import { getVoteState, setVoteState } from "@/lib/storage/amgState";
+import { booleanToVote } from "@/utils/tracking";
 
 export class UpvoteState {
 	private key: string;

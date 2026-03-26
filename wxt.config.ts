@@ -41,7 +41,8 @@ export default defineConfig({
 		} else {
 			manifest.author = { email };
 			manifest.offline_enabled = true;
-			manifest.minimum_chrome_version = "130.0";
+			manifest.minimum_chrome_version =
+				import.meta.env.WXT_MIN_CHROME_VERSION;
 		}
 
 		return manifest;

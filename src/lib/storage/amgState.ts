@@ -52,11 +52,9 @@ function asStringRecord(value: unknown): Record<string, string> {
 function isUiStore(value: unknown): value is App.UIStore {
 	if (!isObject(value)) return false;
 	if (typeof value.isActive !== "boolean") return false;
-	if (!isObject(value.debugToolbar) || typeof value.debugToolbar.isVisible !== "boolean") return false;
-	if (
-		!isObject(value.rainbowLayout) ||
-		typeof value.rainbowLayout.enabled !== "boolean"
-	) {
+	if (!isObject(value.debugToolbar) || typeof value.debugToolbar.isVisible !== "boolean")
+		return false;
+	if (!isObject(value.rainbowLayout) || typeof value.rainbowLayout.enabled !== "boolean") {
 		return false;
 	}
 	if (
@@ -70,7 +68,9 @@ function isUiStore(value: unknown): value is App.UIStore {
 	}
 	if (
 		!isObject(value.svg) ||
-		(value.svg.mode !== "inspect" && value.svg.mode !== "select" && value.svg.mode !== "measure") ||
+		(value.svg.mode !== "inspect" &&
+			value.svg.mode !== "select" &&
+			value.svg.mode !== "measure") ||
 		typeof value.svg.showDistances !== "boolean" ||
 		typeof value.svg.showGrid !== "boolean" ||
 		typeof value.svg.showRuler !== "boolean" ||
@@ -246,7 +246,9 @@ export async function setUiStoreSnapshot(uiStore: App.UIStore): Promise<void> {
 	await setAmgState(nextState);
 }
 
-export async function getPlatformInfoState(): Promise<App.MetaDataStore["platformInfo"] | undefined> {
+export async function getPlatformInfoState(): Promise<
+	App.MetaDataStore["platformInfo"] | undefined
+> {
 	const state = await getAmgState();
 	if (state.platformInfo) return state.platformInfo;
 	const legacy = await browser.storage.local.get([LEGACY_PLATFORM_INFO_KEY]);
@@ -259,7 +261,9 @@ export async function getPlatformInfoState(): Promise<App.MetaDataStore["platfor
 	return undefined;
 }
 
-export async function setPlatformInfoState(platformInfo: App.MetaDataStore["platformInfo"]): Promise<void> {
+export async function setPlatformInfoState(
+	platformInfo: App.MetaDataStore["platformInfo"],
+): Promise<void> {
 	const state = await getAmgState();
 	const nextState: AmgState = {
 		...state,
@@ -360,7 +364,9 @@ export async function getAnalyticsUserPropertiesState(): Promise<Record<string, 
 	return {};
 }
 
-export async function setAnalyticsUserPropertiesState(value: Record<string, string>): Promise<void> {
+export async function setAnalyticsUserPropertiesState(
+	value: Record<string, string>,
+): Promise<void> {
 	const state = await getAmgState();
 	const nextState: AmgState = {
 		...state,
@@ -390,7 +396,10 @@ function createStateBackedStorageItem<T>(options: {
 		await options.setter(value);
 	};
 	const watch = (callback: StorageWatchCallback<T>) => {
-		const listener = (changes: Record<string, { oldValue?: unknown; newValue?: unknown }>, areaName: string) => {
+		const listener = (
+			changes: Record<string, { oldValue?: unknown; newValue?: unknown }>,
+			areaName: string,
+		) => {
 			if (areaName !== "local" || !(AMG_STATE_KEY in changes)) return;
 			const oldState = parseState(changes[AMG_STATE_KEY].oldValue);
 			const newState = parseState(changes[AMG_STATE_KEY].newValue);
@@ -431,7 +440,10 @@ export function createAnalyticsUserIdStorageItem() {
 		await setAnalyticsUserIdState(value);
 	};
 	const watch = (callback: StorageWatchCallback<string | undefined>) => {
-		const listener = (changes: Record<string, { oldValue?: unknown; newValue?: unknown }>, areaName: string) => {
+		const listener = (
+			changes: Record<string, { oldValue?: unknown; newValue?: unknown }>,
+			areaName: string,
+		) => {
 			if (areaName !== "local" || !(AMG_STATE_KEY in changes)) return;
 			const oldState = parseState(changes[AMG_STATE_KEY].oldValue);
 			const newState = parseState(changes[AMG_STATE_KEY].newValue);

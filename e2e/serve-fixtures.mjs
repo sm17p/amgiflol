@@ -63,4 +63,3 @@ const server = http.createServer((req, res) => {
 server.listen(port, "localhost", () => {
 	console.log(`fixtures server listening on http://localhost:${port}`);
 });
-

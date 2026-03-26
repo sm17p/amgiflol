@@ -1,5 +1,6 @@
 // <srcDir>/app.config.ts
 import { googleAnalytics4 } from "@wxt-dev/analytics/providers/google-analytics-4";
+
 import {
 	createAnalyticsEnabledStorageItem,
 	createAnalyticsUserIdStorageItem,

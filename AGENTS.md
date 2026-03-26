@@ -6,6 +6,7 @@
 
 ## Dev environment
 
+- **CI**: GitHub Actions use [jdx/mise-action](https://github.com/jdx/mise-action) with [`mise.toml`](mise.toml) (Node + env such as `WXT_MIN_CHROME_VERSION`).
 - **Install deps**: `pnpm install`
 - **Dev (Chrome, MV3)**: `pnpm dev`
 - **Dev (Firefox, MV3)**: `pnpm dev:firefox`

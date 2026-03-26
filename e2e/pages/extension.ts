@@ -7,11 +7,10 @@ export async function openExtensionPopup(page: Page, extensionId: string) {
 }
 
 const extensionRootSelector = "[data-amgiflol-root]";
+const toolbarRegionSelector = `${extensionRootSelector} [data-testid="amgiflol-toolbar-region"]`;
 
 export function getExtensionToolbar(page: Page): Locator {
-	return page
-		.locator(`${extensionRootSelector} >> main.active >> div.shadow-lg.inline-flex`)
-		.first();
+	return page.locator(`${toolbarRegionSelector} >> div.shadow-lg.inline-flex`).first();
 }
 
 export function getToolbarSettingsButton(page: Page): Locator {

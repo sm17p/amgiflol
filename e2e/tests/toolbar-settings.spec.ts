@@ -13,6 +13,8 @@ test.describe("Toolbar settings menu", () => {
 		extensionId: _extensionId,
 		page,
 	}) => {
+		test.setTimeout(15_000);
+
 		await enableStableDomainInStorage(context);
 		await openStableTestPage(page);
 		await expect(getExtensionRoot(page)).toHaveCount(1);
@@ -23,19 +25,28 @@ test.describe("Toolbar settings menu", () => {
 		const featureVoting = page.getByRole("group", { name: "Feature Voting" }).first();
 		await expect(featureVoting).toBeVisible();
 
-		const toolbarAutoHideItem = page.locator('[id*="toolbar-auto-hide"]').first();
+		const toolbarAutoHideItem = page
+			.getByRole("menuitemcheckbox", { name: /Auto-Hide/i })
+			.first();
 		await expect(toolbarAutoHideItem).toBeVisible();
+		await toolbarAutoHideItem.scrollIntoViewIfNeeded();
 
-		const toolbarAutoHideCheckbox = toolbarAutoHideItem.getByRole("checkbox").first();
-		await expect(toolbarAutoHideCheckbox).toBeVisible();
+		const autoHideBefore = await toolbarAutoHideItem.getAttribute("aria-checked");
+		await toolbarAutoHideItem.click({ force: true });
 
-		const autoHideBefore = await toolbarAutoHideCheckbox.isChecked();
-		await toolbarAutoHideCheckbox.click({ force: true });
+		const viewport = page.viewportSize();
+		expect(viewport).toBeTruthy();
+		if (!viewport) throw new Error("viewport not available");
 
-		if (autoHideBefore) {
-			await expect(toolbarAutoHideCheckbox).not.toBeChecked();
-		} else {
-			await expect(toolbarAutoHideCheckbox).toBeChecked();
-		}
+		await page.mouse.move(viewport.width / 2, viewport.height - 1);
+		await openToolbarSettings(page);
+
+		const toolbarAutoHideItemAfter = page
+			.getByRole("menuitemcheckbox", { name: /Auto-Hide/i })
+			.first();
+		await expect(toolbarAutoHideItemAfter).toBeVisible();
+
+		const autoHideAfter = await toolbarAutoHideItemAfter.getAttribute("aria-checked");
+		expect(autoHideAfter).not.toBe(autoHideBefore);
 	});
 });

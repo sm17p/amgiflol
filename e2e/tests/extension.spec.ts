@@ -8,6 +8,8 @@ import {
 } from "../pages/web";
 
 test.describe("Content injection", () => {
+	test.setTimeout(15_000);
+
 	test("inspector root and app load on supported page", async ({ page }) => {
 		await openStableTestPage(page);
 		await expect(getExtensionRoot(page)).toHaveCount(1);

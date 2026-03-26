@@ -1,8 +1,6 @@
 import { BrowserContext, Page } from "@playwright/test";
 import path from "path";
 
-import { STABLE_TEST_PAGE_URL } from "../constants";
-
 declare const chrome: {
 	storage: {
 		local: {
@@ -12,7 +10,7 @@ declare const chrome: {
 };
 
 export async function openStableTestPage(page: Page) {
-	await page.goto(STABLE_TEST_PAGE_URL);
+	await page.goto("/inspector-playground.html");
 	await page.waitForLoadState("domcontentloaded");
 	await page.waitForSelector('[data-testid="playground-main"]');
 }

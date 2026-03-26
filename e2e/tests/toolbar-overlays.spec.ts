@@ -39,4 +39,3 @@ test.describe("Toolbar overlays", () => {
 		await expect(rulerGroup).toBeVisible();
 	});
 });
-

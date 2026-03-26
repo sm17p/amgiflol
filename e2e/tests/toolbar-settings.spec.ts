@@ -20,9 +20,7 @@ test.describe("Toolbar settings menu", () => {
 
 		await openToolbarSettings(page);
 
-		const featureVoting = page
-			.getByRole("group", { name: "Feature Voting" })
-			.first();
+		const featureVoting = page.getByRole("group", { name: "Feature Voting" }).first();
 		await expect(featureVoting).toBeVisible();
 
 		const toolbarAutoHideItem = page.locator('[id*="toolbar-auto-hide"]').first();
@@ -41,4 +39,3 @@ test.describe("Toolbar settings menu", () => {
 		}
 	});
 });
-

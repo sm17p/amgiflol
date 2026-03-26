@@ -1,5 +1,5 @@
-import http from "http";
 import fs from "fs";
+import http from "http";
 import path from "path";
 
 const port = Number(process.argv[2] ?? 51234);
@@ -63,4 +63,3 @@ const server = http.createServer((req, res) => {
 server.listen(port, "127.0.0.1", () => {
 	console.log(`fixtures server listening on http://127.0.0.1:${port}`);
 });
-

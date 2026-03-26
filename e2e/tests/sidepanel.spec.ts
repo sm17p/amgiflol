@@ -8,7 +8,11 @@ import {
 } from "../pages/web";
 
 test.describe("Side panel", () => {
-	test("side panel can be shown from toolbar", async ({ context, extensionId: _extensionId, page }) => {
+	test("side panel can be shown from toolbar", async ({
+		context,
+		extensionId: _extensionId,
+		page,
+	}) => {
 		await enableStableDomainInStorage(context);
 		await openStableTestPage(page);
 		await expect(getExtensionRoot(page)).toHaveCount(1);
@@ -20,4 +24,3 @@ test.describe("Side panel", () => {
 		await expect(page.getByRole("heading", { name: "Element Inspector" })).toBeVisible();
 	});
 });
-

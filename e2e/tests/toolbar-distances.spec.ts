@@ -35,4 +35,3 @@ test.describe("Toolbar distances", () => {
 		await expect(distanceLines.first()).toHaveAttribute("stroke-dasharray", "none");
 	});
 });
-

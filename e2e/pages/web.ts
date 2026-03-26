@@ -35,7 +35,7 @@ export async function enableDomainInStorage(context: BrowserContext, domain: str
 }
 
 export async function enableStableDomainInStorage(context: BrowserContext) {
-	const domain = new URL(STABLE_TEST_PAGE_URL).host;
+	const domain = "127.0.0.1:51234";
 	await enableDomainInStorage(context, domain);
 }
 

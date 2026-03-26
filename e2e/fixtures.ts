@@ -17,7 +17,7 @@ export const test = base.extend<{
 		fs.rmSync(userDataDir, { recursive: true, force: true });
 
 		const context = await chromium.launchPersistentContext(userDataDir, {
-			headless: !!process.env.CI,
+			headless: false,
 			args: [
 				`--disable-extensions-except=${pathToExtension}`,
 				`--load-extension=${pathToExtension}`,

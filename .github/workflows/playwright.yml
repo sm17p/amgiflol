@@ -18,7 +18,7 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install chromium --with-deps
       - name: Run Playwright tests
-        run: pnpm test:e2e
+        run: xvfb-run -a pnpm test:e2e
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

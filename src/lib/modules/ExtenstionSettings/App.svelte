@@ -25,11 +25,18 @@
 		try {
 			analytics.page(location.href);
 
-			const [tab] = await browser.tabs.query({
+			let [tab] = await browser.tabs.query({
 				active: true,
 				currentWindow: true,
-				status: "complete",
 			});
+
+			if (!tab) {
+				const fallbackTabs = await browser.tabs.query({
+					active: true,
+					currentWindow: true,
+				});
+				[tab] = fallbackTabs;
+			}
 
 			if (tab?.url) {
 				const url = new URL(tab.url);
@@ -40,6 +47,10 @@
 				if (result !== undefined) {
 					isActive = typeof value === "boolean" ? value : false;
 				}
+			}
+
+			if (isActive === undefined) {
+				isActive = false;
 			}
 		} catch (error) {
 			errorMessage = "Failed to load inspector state";

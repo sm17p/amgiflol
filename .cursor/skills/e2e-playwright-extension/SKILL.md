@@ -12,6 +12,11 @@ Aligned with [WXT’s Playwright E2E example](https://github.com/wxt-dev/example
 - Tests in [e2e/tests/](e2e/tests/) — main suite [e2e/tests/extension.spec.ts](e2e/tests/extension.spec.ts) with describe blocks: **Popup**, **Content injection**, **Per-domain activation**
 - Shared fixture in [e2e/fixtures.ts](e2e/fixtures.ts)
 - Page helpers in [e2e/pages/](e2e/pages/) (e.g. [e2e/pages/popup.ts](e2e/pages/popup.ts))
+- Fixture page served via Playwright `webServer` + custom static server:
+  - `e2e/serve-fixtures.mjs`
+  - `playwright.config.ts` points `webServer.url` at `http://localhost:51234/inspector-playground.html`
+  - `use.baseURL` is `http://localhost:51234`
+  - Tests navigate with relative paths like `/inspector-playground.html`
 
 ## Fixture
 
@@ -34,4 +39,6 @@ Navigate to `chrome-extension://${extensionId}/popup.html`. Use helpers like `op
 
 ## Note
 
-`playwright-webextext` is in devDependencies for potential future use; current tests use the custom fixture in `fixtures.ts`.
+`playwright-webextext` is in devDependencies for potential future use; current tests use the custom extension fixture in `fixtures.ts`.
+
+When a test needs deterministic inspector target setup (distances/side panel), prefer triggering the inspector via a synthetic `mouseover` on a known element (see `toolbar-distances.spec.ts`) rather than relying on hit-testing/hover in the presence of the overlay.

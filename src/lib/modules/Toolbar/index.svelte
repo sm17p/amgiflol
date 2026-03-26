@@ -137,6 +137,7 @@
 {#snippet Toolbar(bottom: boolean, y: number)}
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <section
+    data-testid="amgiflol-toolbar-region"
     onmouseenter={onmouseenterToolbar}
     onmouseleave={onmouseleaveToolbar}
     class={[

@@ -7,21 +7,22 @@ export async function openExtensionPopup(page: Page, extensionId: string) {
 }
 
 const extensionRootSelector = "[data-amgiflol-root]";
+const toolbarRegionSelector = `${extensionRootSelector} [data-testid="amgiflol-toolbar-region"]`;
 
 export function getExtensionToolbar(page: Page): Locator {
-	return page
-		.locator(`${extensionRootSelector} >> main.active >> div.shadow-lg.inline-flex`)
-		.first();
+	return page.locator(`${toolbarRegionSelector} >> div.shadow-lg.inline-flex`).first();
 }
 
 export function getToolbarSettingsButton(page: Page): Locator {
-	return getExtensionToolbar(page).locator("button").last();
+	return getExtensionToolbar(page).locator("button").filter({ hasText: "0" }).first();
 }
 
 export async function openToolbarSettings(page: Page): Promise<void> {
 	await getToolbarSettingsButton(page).click();
 }
 
-export function getToolbarButtonByLabel(page: Page, label: string | RegExp): Locator {
-	return page.locator(`${extensionRootSelector}`).getByRole("button", { name: label });
+export function getToolbarButtonByLabel(page: Page, label: string): Locator {
+	return getExtensionToolbar(page)
+		.locator(`button[data-scope="toggle"][aria-label="${label}"]`)
+		.first();
 }

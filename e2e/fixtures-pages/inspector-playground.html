@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>amgiflol inspector playground</title>
+		<style>
+			:root {
+				--bg: #0b0f14;
+				--fg: #e6eef8;
+				--muted: rgba(230, 238, 248, 0.72);
+				--card: rgba(255, 255, 255, 0.06);
+				--line: rgba(255, 255, 255, 0.12);
+			}
+			* {
+				box-sizing: border-box;
+			}
+			html,
+			body {
+				height: 100%;
+			}
+			body {
+				margin: 0;
+				background:
+					radial-gradient(
+						1200px 800px at 20% 10%,
+						rgba(187, 244, 81, 0.18),
+						transparent 60%
+					),
+					radial-gradient(
+						900px 700px at 80% 20%,
+						rgba(59, 130, 246, 0.14),
+						transparent 55%
+					),
+					var(--bg);
+				color: var(--fg);
+				font-family:
+					ui-sans-serif,
+					system-ui,
+					-apple-system,
+					Segoe UI,
+					Roboto,
+					Helvetica,
+					Arial,
+					"Apple Color Emoji",
+					"Segoe UI Emoji";
+				line-height: 1.4;
+				padding: 24px;
+			}
+			header {
+				display: flex;
+				align-items: baseline;
+				justify-content: space-between;
+				gap: 16px;
+				padding: 12px 14px;
+				border: 1px solid var(--line);
+				border-radius: 14px;
+				background: var(--card);
+				backdrop-filter: blur(10px);
+			}
+			header h1 {
+				margin: 0;
+				font-size: 18px;
+				letter-spacing: 0.2px;
+			}
+			header p {
+				margin: 0;
+				color: var(--muted);
+				font-size: 12px;
+			}
+			main {
+				margin-top: 18px;
+				display: grid;
+				grid-template-columns: 1fr;
+				gap: 18px;
+			}
+			section {
+				border: 1px solid var(--line);
+				border-radius: 14px;
+				background: var(--card);
+				padding: 14px;
+			}
+			section h2 {
+				margin: 0 0 10px;
+				font-size: 14px;
+				color: var(--muted);
+				font-weight: 600;
+				letter-spacing: 0.2px;
+			}
+			.gridLab {
+				display: grid;
+				grid-template-columns: repeat(4, minmax(0, 1fr));
+				gap: 12px;
+			}
+			.tile {
+				height: 64px;
+				border-radius: 12px;
+				border: 1px solid rgba(255, 255, 255, 0.14);
+				background: linear-gradient(
+					180deg,
+					rgba(255, 255, 255, 0.08),
+					rgba(255, 255, 255, 0.02)
+				);
+			}
+			.flexRow {
+				display: flex;
+				gap: 20px;
+				align-items: center;
+				justify-content: flex-start;
+			}
+			.box {
+				width: 120px;
+				height: 80px;
+				border-radius: 14px;
+				border: 1px solid rgba(255, 255, 255, 0.16);
+				background: rgba(187, 244, 81, 0.12);
+			}
+			.layerOuter {
+				padding: 14px;
+				border-radius: 16px;
+				border: 1px solid rgba(255, 255, 255, 0.14);
+				background: rgba(59, 130, 246, 0.1);
+			}
+			.layerMid {
+				padding: 14px;
+				border-radius: 14px;
+				border: 1px solid rgba(255, 255, 255, 0.14);
+				background: rgba(187, 244, 81, 0.08);
+			}
+			.layerInner {
+				height: 90px;
+				border-radius: 12px;
+				border: 1px solid rgba(255, 255, 255, 0.14);
+				background: rgba(255, 255, 255, 0.06);
+				display: grid;
+				place-items: center;
+			}
+			.pulse {
+				width: 88px;
+				height: 34px;
+				border-radius: 999px;
+				border: 1px solid rgba(255, 255, 255, 0.16);
+				background: rgba(255, 255, 255, 0.08);
+				display: grid;
+				place-items: center;
+				color: var(--muted);
+				font-size: 12px;
+				animation: pulse 1.3s ease-in-out infinite;
+			}
+			@keyframes pulse {
+				0% {
+					transform: scale(1);
+					opacity: 0.85;
+				}
+				50% {
+					transform: scale(1.06);
+					opacity: 1;
+				}
+				100% {
+					transform: scale(1);
+					opacity: 0.85;
+				}
+			}
+			.swatches {
+				display: grid;
+				grid-template-columns: repeat(6, minmax(0, 1fr));
+				gap: 10px;
+			}
+			.swatch {
+				height: 34px;
+				border-radius: 10px;
+				border: 1px solid rgba(255, 255, 255, 0.12);
+			}
+		</style>
+	</head>
+	<body>
+		<header data-testid="playground-header">
+			<div>
+				<h1>Inspector playground</h1>
+				<p>Deterministic layout targets for amgiflol E2E</p>
+			</div>
+			<p data-testid="playground-version">v0</p>
+		</header>
+
+		<main data-testid="playground-main">
+			<section data-testid="layout-lab">
+				<h2>Grid lab</h2>
+				<div class="gridLab" data-testid="grid-lab">
+					<div class="tile" data-testid="grid-tile-1"></div>
+					<div class="tile" data-testid="grid-tile-2"></div>
+					<div class="tile" data-testid="grid-tile-3"></div>
+					<div class="tile" data-testid="grid-tile-4"></div>
+				</div>
+			</section>
+
+			<section data-testid="sibling-row">
+				<h2>Sibling row</h2>
+				<div class="flexRow" data-testid="sibling-row-inner">
+					<div class="box" data-testid="sibling-1"></div>
+					<div class="box" data-testid="sibling-2"></div>
+					<div class="box" data-testid="sibling-3"></div>
+				</div>
+			</section>
+
+			<section data-testid="layer-stack">
+				<h2>Layer stack</h2>
+				<div class="layerOuter" data-testid="layer-outer">
+					<div class="layerMid" data-testid="layer-mid">
+						<div class="layerInner" data-testid="layer-inner">
+							<div class="pulse" data-testid="animated-pill">pulse</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section data-testid="color-lab">
+				<h2>Color lab</h2>
+				<div class="swatches" data-testid="swatches">
+					<div class="swatch" style="background: #ffffff" data-testid="swatch-1"></div>
+					<div class="swatch" style="background: #0ea5e9" data-testid="swatch-2"></div>
+					<div class="swatch" style="background: #22c55e" data-testid="swatch-3"></div>
+					<div class="swatch" style="background: #e11d48" data-testid="swatch-4"></div>
+					<div class="swatch" style="background: #f59e0b" data-testid="swatch-5"></div>
+					<div class="swatch" style="background: #111827" data-testid="swatch-6"></div>
+				</div>
+			</section>
+
+			<section data-testid="typography-lab">
+				<h2>Typography</h2>
+				<p data-testid="editable-paragraph">
+					This paragraph is intended for design mode testing. It contains enough text to
+					verify editing.
+				</p>
+			</section>
+		</main>
+	</body>
+</html>

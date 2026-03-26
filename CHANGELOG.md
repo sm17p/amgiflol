@@ -1,5 +1,16 @@
 # amgiflol
 
+## 0.3.5
+
+### Patch Changes
+
+- d3adc76: # Storage migration to amg-state
+
+  Consolidate extension storage under `amg-state` and migrate shared legacy state.
+
+  This updates popup/background/store bindings and E2E coverage for the new storage shape.
+  Per-domain activation keys are not auto-migrated, so domains may need to be re-enabled once.
+
 ## 0.3.4
 
 ### Patch Changes
@@ -114,6 +125,7 @@
 
 - 9e2516f: unblock triggering of shorcuts while toolbar is focused
 - d75a508: update tracker on scroll and window resize
+
   1. Fixes [#12](https://github.com/sm17p/amgiflol/issues/12)
   2. Partial fix [#7](https://github.com/sm17p/amgiflol/issues/7)
 

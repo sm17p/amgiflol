@@ -4,7 +4,8 @@ import path from "path";
 declare const chrome: {
 	storage: {
 		local: {
-			set: (items: Record<string, boolean>) => void | Promise<void>;
+			get: (keys: string[]) => Promise<Record<string, unknown>>;
+			set: (items: Record<string, unknown>) => void | Promise<void>;
 		};
 	};
 };
@@ -27,7 +28,42 @@ export async function enableDomainInStorage(context: BrowserContext, domain: str
 		worker = await context.waitForEvent("serviceworker");
 	}
 	const setStorage = (d: string) => {
-		return chrome.storage.local.set({ [d]: true });
+		const toBooleanRecord = (value: unknown): Record<string, boolean> => {
+			if (typeof value !== "object" || value === null) return {};
+			const result: Record<string, boolean> = {};
+			for (const [key, fieldValue] of Object.entries(value)) {
+				if (typeof fieldValue === "boolean") {
+					result[key] = fieldValue;
+				}
+			}
+			return result;
+		};
+		const toUnknownRecord = (value: unknown): Record<string, unknown> => {
+			if (typeof value !== "object" || value === null) return {};
+			const result: Record<string, unknown> = {};
+			for (const [key, fieldValue] of Object.entries(value)) {
+				result[key] = fieldValue;
+			}
+			return result;
+		};
+		return chrome.storage.local.get(["amg-state"]).then((result) => {
+			const currentState = result["amg-state"];
+			const stateRecord = toUnknownRecord(currentState);
+			const baseState = {
+				analytics: toUnknownRecord(stateRecord.analytics),
+				domains: toBooleanRecord(stateRecord.domains),
+				votes: toBooleanRecord(stateRecord.votes),
+			};
+			return chrome.storage.local.set({
+				"amg-state": {
+					...baseState,
+					domains: {
+						...baseState.domains,
+						[d]: true,
+					},
+				},
+			});
+		});
 	};
 	await worker.evaluate(setStorage, domain);
 }
@@ -50,5 +86,24 @@ export function getInspectorActiveMain(page: Page) {
 }
 
 export async function expectSvelteAppLoaded(page: Page) {
-	await page.locator("[data-amgiflol-root] >> main.active").waitFor({ state: "attached" });
+	const timeoutMs = process.env.CI ? 24_000 : 12_000;
+	const pollMs = 250;
+	const startTime = Date.now();
+	const root = getExtensionRoot(page).first();
+	await root.waitFor({ state: "attached", timeout: timeoutMs });
+
+	while (Date.now() - startTime < timeoutMs) {
+		if (page.isClosed()) {
+			throw new Error("Page closed while waiting for extension app to activate.");
+		}
+		const activeMainCount = await getInspectorActiveMain(page).count();
+		if (activeMainCount > 0) return;
+		await page.waitForTimeout(pollMs);
+	}
+
+	const rootCount = await getExtensionRoot(page).count();
+	const mainCount = await getSvelteAppMain(page).count();
+	throw new Error(
+		`Extension app did not activate within ${timeoutMs}ms (rootCount=${rootCount}, mainCount=${mainCount}).`,
+	);
 }

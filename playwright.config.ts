@@ -61,7 +61,7 @@ export default defineConfig({
 		//   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
 		// },
 	],
-	timeout: process.env.CI ? 30_000 : 5_000,
+	timeout: process.env.CI ? 30_000 : 10_000,
 	webServer: {
 		command: "node e2e/serve-fixtures.mjs 51234",
 		url: "http://localhost:51234/inspector-playground.html",

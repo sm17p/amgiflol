@@ -13,6 +13,22 @@ All user-facing or notable changes get a changeset in [.changeset/](.changeset/)
 
 - Run `pnpm changeset`, or add a new `.md` file in `.changeset/` with the standard format: semver type (major/minor/patch) and a short summary for the changelog.
 
+### Non-interactive automation
+
+When automation must avoid interactive prompts:
+
+1. Run `pnpm changeset add --empty --message "<summary>"`.
+2. Update the generated `.changeset/*.md` frontmatter to include the release bump, for example:
+   - `"amgiflol": patch`
+3. Validate before finalizing:
+   - `pnpm changeset status`
+   - relevant project checks used by the current task (for example `pnpm check`, `pnpm lint`).
+
+Notes:
+
+- `--empty` creates an empty frontmatter block by default (`--- ---`) and does not select `patch/minor/major`.
+- `--message` only sets the summary text and does not set bump type.
+
 ## Config
 
 [.changeset/config.json](.changeset/config.json): `changelog: "@changesets/cli/changelog"`, `commit: false`, `baseBranch: "main"`.

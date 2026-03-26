@@ -33,7 +33,7 @@ export async function enableDomainInStorage(context: BrowserContext, domain: str
 }
 
 export async function enableStableDomainInStorage(context: BrowserContext) {
-	const domain = "127.0.0.1:51234";
+	const domain = "localhost:51234";
 	await enableDomainInStorage(context, domain);
 }
 

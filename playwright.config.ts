@@ -27,7 +27,7 @@ export default defineConfig({
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		/* Base URL to use in actions like `await page.goto('/')`. */
-		baseURL: "http://127.0.0.1:51234",
+		baseURL: "http://localhost:51234",
 
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: "on-first-retry",
@@ -64,7 +64,7 @@ export default defineConfig({
 	timeout: process.env.CI ? 30_000 : 5_000,
 	webServer: {
 		command: "node e2e/serve-fixtures.mjs 51234",
-		url: "http://127.0.0.1:51234/inspector-playground.html",
+		url: "http://localhost:51234/inspector-playground.html",
 		reuseExistingServer: true,
 		timeout: 60_000,
 	},

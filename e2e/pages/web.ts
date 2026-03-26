@@ -86,5 +86,24 @@ export function getInspectorActiveMain(page: Page) {
 }
 
 export async function expectSvelteAppLoaded(page: Page) {
-	await page.locator("[data-amgiflol-root] >> main.active").waitFor({ state: "attached" });
+	const timeoutMs = process.env.CI ? 24_000 : 12_000;
+	const pollMs = 250;
+	const startTime = Date.now();
+	const root = getExtensionRoot(page).first();
+	await root.waitFor({ state: "attached", timeout: timeoutMs });
+
+	while (Date.now() - startTime < timeoutMs) {
+		if (page.isClosed()) {
+			throw new Error("Page closed while waiting for extension app to activate.");
+		}
+		const activeMainCount = await getInspectorActiveMain(page).count();
+		if (activeMainCount > 0) return;
+		await page.waitForTimeout(pollMs);
+	}
+
+	const rootCount = await getExtensionRoot(page).count();
+	const mainCount = await getSvelteAppMain(page).count();
+	throw new Error(
+		`Extension app did not activate within ${timeoutMs}ms (rootCount=${rootCount}, mainCount=${mainCount}).`,
+	);
 }

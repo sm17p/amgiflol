@@ -63,7 +63,7 @@ export default defineConfig({
 	],
 	timeout: process.env.CI ? 30_000 : 5_000,
 	webServer: {
-		command: "node e2e/serve-fixtures.mjs 51234",
+		command: "pnpm e2e:preview",
 		url: "http://localhost:51234/inspector-playground.html",
 		reuseExistingServer: true,
 		timeout: 60_000,

@@ -6,6 +6,7 @@
 		createMessageHandler,
 		sendMessage,
 	} from "@/lib/core/MessageBus";
+	import { getDomainActive } from "@/lib/storage/amgState";
 	import { Switch } from "@ark-ui/svelte/switch";
 	import { browser } from "wxt/browser";
 	import "./app.css";
@@ -42,11 +43,7 @@
 				const url = new URL(tab.url);
 				domain = url.host;
 
-				const result = await browser.storage?.local.get([domain]);
-				const value = result?.[domain];
-				if (result !== undefined) {
-					isActive = typeof value === "boolean" ? value : false;
-				}
+				isActive = await getDomainActive(domain);
 			}
 
 			if (isActive === undefined) {

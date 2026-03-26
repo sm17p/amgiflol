@@ -1,3 +1,5 @@
+import { getPlatformInfoState } from "@/lib/storage/amgState";
+
 export class MetaDataStore implements App.MetaDataStore {
 	keyboard: App.KeyboardState = $state<App.KeyboardState>({
 		modifiers: {
@@ -25,9 +27,7 @@ export class MetaDataStore implements App.MetaDataStore {
 	});
 
 	constructor() {
-		const platformInfoStore =
-			storage.defineItem<App.MetaDataStore["platformInfo"]>("local:platformInfo");
-		platformInfoStore.getValue().then((value) => {
+		getPlatformInfoState().then((value) => {
 			if (value) {
 				this.platformInfo = value;
 			}

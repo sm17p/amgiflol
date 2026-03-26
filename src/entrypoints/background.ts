@@ -1,3 +1,10 @@
+import {
+	getDomainActive,
+	migrateLegacyState,
+	setDomainActive,
+	setPlatformInfoState,
+} from "@/lib/storage/amgState";
+
 const IconOff = {
 	16: "icons/icon-off-16.png",
 	32: "icons/icon-off-32.png",
@@ -19,9 +26,7 @@ export default defineBackground(() => {
 			captureHandler(sender.tab);
 		} else if (event.type === "EXTENSION_TOGGLE") {
 			const { domain, isActive } = event.payload;
-			browser.storage?.local.set({
-				[domain]: isActive,
-			});
+			await setDomainActive(domain, isActive);
 			setIcon(isActive);
 		}
 	});
@@ -29,13 +34,15 @@ export default defineBackground(() => {
 	browser.runtime.onInstalled.addListener(async ({ reason }) => {
 		console.log(`Extension installed, reason: ${reason}, browser: ${import.meta.env.BROWSER}`);
 
-		savePlatformInfo();
+		await migrateLegacyState();
+		await savePlatformInfo();
 		analytics.setEnabled(true);
 		void updateIconForActiveTab();
 	});
 
 	browser.runtime.onStartup.addListener(async () => {
 		console.log("Extension started");
+		await migrateLegacyState();
 		void updateIconForActiveTab();
 	});
 
@@ -62,7 +69,7 @@ export default defineBackground(() => {
 
 async function savePlatformInfo() {
 	const platformInfo = await browser.runtime.getPlatformInfo();
-	void browser.storage.local.set({ platformInfo: platformInfo });
+	await setPlatformInfoState(platformInfo);
 }
 
 /**
@@ -95,8 +102,7 @@ async function getCurrentDomain(tabId?: number): Promise<string | null> {
  */
 async function isDomainActive(domain: string): Promise<boolean> {
 	try {
-		const result = await browser.storage.local.get([domain]);
-		return Boolean(result[domain]);
+		return await getDomainActive(domain);
 	} catch (error) {
 		console.error("Failed to check domain state:", error);
 		return true;

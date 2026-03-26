@@ -1,8 +1,8 @@
 import { watch } from "runed";
-import { browser } from "wxt/browser";
 
 import { CONTENT, createMessageHandler, sendMessage } from "@/lib/core/MessageBus";
 import rainbowLayoutCss from "@/lib/css/rainbow-translucent.css?raw";
+import { getDomainActive, getUiStoreSnapshot, setDomainActive, setUiStoreSnapshot } from "@/lib/storage/amgState";
 import { booleanToVote } from "@/utils/tracking";
 
 export class UIStore implements App.UIStore {
@@ -20,9 +20,8 @@ export class UIStore implements App.UIStore {
 		width: 360,
 		selectedTab: "properties",
 	});
-	svg = $state({
-		// TODO: Why error?
-		mode: "inspect" as App.Mode,
+	svg = $state<App.UIStore["svg"]>({
+		mode: "inspect",
 		showDistances: true,
 		showGrid: false,
 		showRuler: false,
@@ -231,16 +230,13 @@ export class UIStore implements App.UIStore {
 
 	private async syncToStorage(from: App.Message["source"]) {
 		try {
-			let active: Record<string, boolean> = {};
+			let persistDomain = Promise.resolve();
 			if (from.content) {
 				const { host } = window.location;
-				active[host] = this.isActive;
+				persistDomain = setDomainActive(host, this.isActive);
 			}
 			const uiStore = this.snapshot();
-			await browser.storage?.local.set({
-				uiStore,
-				...active,
-			});
+			await Promise.all([setUiStoreSnapshot(uiStore), persistDomain]);
 		} catch (error) {
 			console.error("Failed to sync inspector state to storage:", error);
 		}
@@ -256,25 +252,97 @@ export class UIStore implements App.UIStore {
 	async loadFromStorage() {
 		try {
 			const { host } = window.location;
-			const result: {
-				uiStore?: App.UIStore;
-			} & { [host]: boolean } = await browser.storage?.local.get(["uiStore", host]);
+			this.isActive = await getDomainActive(host);
+			const uiStore = await getUiStoreSnapshot();
 
-			if (Object.hasOwn(result, host)) {
-				this.isActive = result[host] ?? false;
-			}
-
-			if (result.uiStore) {
-				this.debugToolbar = result.uiStore.debugToolbar;
-				this.sidePanel = result.uiStore.sidePanel;
-				this.svg = result.uiStore.svg;
-				this.toolbar = result.uiStore.toolbar;
-				this.rainbowLayout.enabled = result.uiStore.rainbowLayout?.enabled ?? false;
+			if (uiStore) {
+				if (
+					typeof uiStore.debugToolbar === "object" &&
+					uiStore.debugToolbar &&
+					typeof uiStore.debugToolbar.isVisible === "boolean"
+				) {
+					this.debugToolbar = {
+						isVisible: uiStore.debugToolbar.isVisible,
+					};
+				}
+				if (typeof uiStore.sidePanel === "object" && uiStore.sidePanel) {
+					const sidePanel = uiStore.sidePanel;
+					if (
+						typeof sidePanel.autoMove === "boolean" &&
+						typeof sidePanel.isVisible === "boolean" &&
+						typeof sidePanel.selectedTab === "string" &&
+						typeof sidePanel.width === "number"
+					) {
+						this.sidePanel = {
+							autoMove: sidePanel.autoMove,
+							isVisible: sidePanel.isVisible,
+							selectedTab: sidePanel.selectedTab,
+							width: sidePanel.width,
+						};
+					}
+				}
+				if (typeof uiStore.svg === "object" && uiStore.svg) {
+					const svg = uiStore.svg;
+					if (
+						(svg.mode === "inspect" || svg.mode === "select" || svg.mode === "measure") &&
+						typeof svg.showDistances === "boolean" &&
+						typeof svg.showGrid === "boolean" &&
+						typeof svg.showRuler === "boolean" &&
+						typeof svg.zoomLevel === "number"
+					) {
+						this.svg = {
+							mode: svg.mode,
+							showDistances: svg.showDistances,
+							showGrid: svg.showGrid,
+							showRuler: svg.showRuler,
+							zoomLevel: svg.zoomLevel,
+						};
+					}
+				}
+				if (typeof uiStore.toolbar === "object" && uiStore.toolbar) {
+					const toolbar = uiStore.toolbar;
+					if (
+						typeof toolbar.autoHide === "boolean" &&
+						typeof toolbar.autoMove === "boolean" &&
+						typeof toolbar.featureVotingVisible === "boolean" &&
+						typeof toolbar.isVisible === "boolean" &&
+						typeof toolbar.position === "object" &&
+						toolbar.position &&
+						typeof toolbar.position.x === "number" &&
+						typeof toolbar.position.y === "number" &&
+						typeof toolbar.settings === "object" &&
+						toolbar.settings &&
+						typeof toolbar.settings.open === "boolean"
+					) {
+						this.toolbar = {
+							activeFeature:
+								typeof toolbar.activeFeature === "string" ? toolbar.activeFeature : undefined,
+							autoHide: toolbar.autoHide,
+							autoMove: toolbar.autoMove,
+							featureVotingVisible: toolbar.featureVotingVisible,
+							isVisible: toolbar.isVisible,
+							position: {
+								x: toolbar.position.x,
+								y: toolbar.position.y,
+							},
+							settings: {
+								open: toolbar.settings.open,
+							},
+						};
+					}
+				}
+				const rainbowLayout = uiStore.rainbowLayout;
+				if (
+					typeof rainbowLayout === "object" &&
+					rainbowLayout &&
+					typeof rainbowLayout.enabled === "boolean"
+				) {
+					this.rainbowLayout.enabled = rainbowLayout.enabled;
+				}
 				if (this.isActive) {
 					this.rainbowLayout.css!.disabled = !this.rainbowLayout.enabled;
 				}
-				// Handle store breaking change
-				if (result.uiStore.sidePanel.autoMove === undefined) {
+				if (this.sidePanel.autoMove === undefined) {
 					this.sidePanel.autoMove = false;
 				}
 			}

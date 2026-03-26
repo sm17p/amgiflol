@@ -1,5 +1,10 @@
 // <srcDir>/app.config.ts
 import { googleAnalytics4 } from "@wxt-dev/analytics/providers/google-analytics-4";
+import {
+	createAnalyticsEnabledStorageItem,
+	createAnalyticsUserIdStorageItem,
+	createAnalyticsUserPropertiesStorageItem,
+} from "@/lib/storage/amgState";
 
 import pkg from "../package.json";
 
@@ -12,15 +17,9 @@ export default defineAppConfig({
 				measurementId: "G-XWT0HYT2KT",
 			}),
 		],
-		enabled: storage.defineItem("local:analytics-enabled", {
-			fallback: true,
-		}),
-		userId: storage.defineItem<string | undefined>("local:amg-user-id-key", {
-			fallback: crypto.randomUUID().toString(),
-		}),
-		userProperties: storage.defineItem("local:amg-user-properties-key", {
-			fallback: {},
-		}),
+		enabled: createAnalyticsEnabledStorageItem(),
+		userId: createAnalyticsUserIdStorageItem(),
+		userProperties: createAnalyticsUserPropertiesStorageItem(),
 	},
 	version: pkg.version.toString(),
 });

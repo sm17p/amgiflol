@@ -4,6 +4,10 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   test:
     timeout-minutes: 60

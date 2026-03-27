@@ -2,7 +2,12 @@ import { watch } from "runed";
 
 import { CONTENT, createMessageHandler, sendMessage } from "@/lib/core/MessageBus";
 import rainbowLayoutCss from "@/lib/css/rainbow-translucent.css?raw";
-import { getDomainActive, getUiStoreSnapshot, setDomainActive, setUiStoreSnapshot } from "@/lib/storage/amgState";
+import {
+	getDomainActive,
+	getUiStoreSnapshot,
+	setDomainActive,
+	setUiStoreSnapshot,
+} from "@/lib/storage/amgState";
 import { booleanToVote } from "@/utils/tracking";
 
 export class UIStore implements App.UIStore {
@@ -284,7 +289,9 @@ export class UIStore implements App.UIStore {
 				if (typeof uiStore.svg === "object" && uiStore.svg) {
 					const svg = uiStore.svg;
 					if (
-						(svg.mode === "inspect" || svg.mode === "select" || svg.mode === "measure") &&
+						(svg.mode === "inspect" ||
+							svg.mode === "select" ||
+							svg.mode === "measure") &&
 						typeof svg.showDistances === "boolean" &&
 						typeof svg.showGrid === "boolean" &&
 						typeof svg.showRuler === "boolean" &&
@@ -316,7 +323,9 @@ export class UIStore implements App.UIStore {
 					) {
 						this.toolbar = {
 							activeFeature:
-								typeof toolbar.activeFeature === "string" ? toolbar.activeFeature : undefined,
+								typeof toolbar.activeFeature === "string"
+									? toolbar.activeFeature
+									: undefined,
 							autoHide: toolbar.autoHide,
 							autoMove: toolbar.autoMove,
 							featureVotingVisible: toolbar.featureVotingVisible,

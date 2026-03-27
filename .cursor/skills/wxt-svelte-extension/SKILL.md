@@ -13,14 +13,14 @@ description: Provides project context for the amgiflol WXT + Svelte 5 browser ex
 
 ## Scripts
 
-| Command                     | Purpose                  |
-| --------------------------- | ------------------------ |
-| `pnpm dev`                  | Chrome dev (MV3)         |
-| `pnpm dev:firefox`          | Firefox dev (MV2 in dev) |
-| `pnpm build`                | Chrome build (MV3)       |
-| `pnpm build:firefox`        | Firefox build (MV3)      |
-| `pnpm build:all`            | Both targets             |
-| `pnpm zip` / `pnpm zip:all` | Distribution zips        |
+| Command                     | Purpose                                                                                     |
+| --------------------------- | ------------------------------------------------------------------------------------------- |
+| `pnpm dev`                  | Chrome dev (MV3)                                                                            |
+| `pnpm dev:firefox`          | Firefox dev (MV2 in dev)                                                                    |
+| `pnpm build`                | Chrome build (MV3)                                                                          |
+| `pnpm build:firefox`        | Firefox build (MV3)                                                                         |
+| `pnpm build:all`            | Both targets                                                                                |
+| `pnpm zip` / `pnpm zip:all` | Distribution zips                                                                           |
 
 ## Constraints
 
@@ -37,3 +37,7 @@ description: Provides project context for the amgiflol WXT + Svelte 5 browser ex
 ## Additional context
 
 For known issues and when to apply them (storage prefix, shadow root isolation, Firefox quirks), see [reference.md](reference.md).
+
+## Manifest / env
+
+- Chromium `minimum_chrome_version` comes only from `import.meta.env.WXT_MIN_CHROME_VERSION` in [`wxt.config.ts`](../../../wxt.config.ts). Set it via [`mise.toml`](../../../mise.toml) `[env]` (or `.env` locally); there is no build-time fallback string in config.

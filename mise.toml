@@ -1,2 +1,5 @@
 [tools]
 node = "24.11.1"
+
+[env]
+WXT_MIN_CHROME_VERSION = "130.0"

@@ -21,6 +21,10 @@ A browser extension that helps with design audit. Match web layouts with Figma d
 | Chromium | Chrome, Edge, Brave, Vivaldi, Arc, Dia | [![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl?style=for-the-badge&logo=GoogleChrome&label=Chromium)](https://chromewebstore.google.com/detail/amgiflol/kpkpcekkflbmmmhjlnkbkfkdjfjnnonl) |
 | Firefox  | Firefox, Zen                           | [![Mozilla Add-on Users](https://img.shields.io/amo/users/amgiflol?style=for-the-badge&logo=Firefox-Browser&label=Firefox)](https://addons.mozilla.org/en-US/firefox/addon/amgiflol/)                                                                |
 
+## Minimum browser support
+
+Chromium-based builds declare a minimum Chrome version via `WXT_MIN_CHROME_VERSION` (see [`wxt.config.ts`](wxt.config.ts)); the default is in [`mise.toml`](mise.toml) `[env]` (or a local `.env` if you set one). Firefox `strict_min_version` stays a fixed value in the manifest for now: we do not drive it through the same env setup because automated tests run against Chromium only, so we cannot validate or bisect a Firefox floor yet. Scope and migration order: [issue #35](https://github.com/sm17p/amgiflol/issues/35).
+
 ## Target Audience
 
 Any individual or web development teams including front-end developers, UI/UX designers, QA engineers, and product managers.

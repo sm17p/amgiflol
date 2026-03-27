@@ -27,7 +27,7 @@ export async function enableDomainInStorage(context: BrowserContext, domain: str
 	if (!worker) {
 		worker = await context.waitForEvent("serviceworker");
 	}
-	const setStorage = (d: string) => {
+	const setAndVerifyStorage = async (d: string) => {
 		const toBooleanRecord = (value: unknown): Record<string, boolean> => {
 			if (typeof value !== "object" || value === null) return {};
 			const result: Record<string, boolean> = {};
@@ -46,7 +46,9 @@ export async function enableDomainInStorage(context: BrowserContext, domain: str
 			}
 			return result;
 		};
-		return chrome.storage.local.get(["amg-state"]).then((result) => {
+		const maxAttempts = 5;
+		for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+			const result = await chrome.storage.local.get(["amg-state"]);
 			const currentState = result["amg-state"];
 			const stateRecord = toUnknownRecord(currentState);
 			const baseState = {
@@ -54,7 +56,7 @@ export async function enableDomainInStorage(context: BrowserContext, domain: str
 				domains: toBooleanRecord(stateRecord.domains),
 				votes: toBooleanRecord(stateRecord.votes),
 			};
-			return chrome.storage.local.set({
+			await chrome.storage.local.set({
 				"amg-state": {
 					...baseState,
 					domains: {
@@ -63,9 +65,17 @@ export async function enableDomainInStorage(context: BrowserContext, domain: str
 					},
 				},
 			});
-		});
+			const verifyResult = await chrome.storage.local.get(["amg-state"]);
+			const verifyState = toUnknownRecord(verifyResult["amg-state"]);
+			const verifyDomains = toBooleanRecord(verifyState.domains);
+			if (verifyDomains[d] === true) {
+				return;
+			}
+			await new Promise((resolve) => setTimeout(resolve, 50));
+		}
+		throw new Error(`Failed to enable domain state for ${d}`);
 	};
-	await worker.evaluate(setStorage, domain);
+	await worker.evaluate(setAndVerifyStorage, domain);
 }
 
 export async function enableStableDomainInStorage(context: BrowserContext) {

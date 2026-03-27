@@ -13,14 +13,14 @@ description: Provides project context for the amgiflol WXT + Svelte 5 browser ex
 
 ## Scripts
 
-| Command                     | Purpose                                                                                     |
-| --------------------------- | ------------------------------------------------------------------------------------------- |
-| `pnpm dev`                  | Chrome dev (MV3)                                                                            |
-| `pnpm dev:firefox`          | Firefox dev (MV2 in dev)                                                                    |
-| `pnpm build`                | Chrome build (MV3)                                                                          |
-| `pnpm build:firefox`        | Firefox build (MV3)                                                                         |
-| `pnpm build:all`            | Both targets                                                                                |
-| `pnpm zip` / `pnpm zip:all` | Distribution zips                                                                           |
+| Command                     | Purpose                  |
+| --------------------------- | ------------------------ |
+| `pnpm dev`                  | Chrome dev (MV3)         |
+| `pnpm dev:firefox`          | Firefox dev (MV2 in dev) |
+| `pnpm build`                | Chrome build (MV3)       |
+| `pnpm build:firefox`        | Firefox build (MV3)      |
+| `pnpm build:all`            | Both targets             |
+| `pnpm zip` / `pnpm zip:all` | Distribution zips        |
 
 ## Constraints
 

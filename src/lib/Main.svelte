@@ -44,8 +44,8 @@
       },
     ]}
   >
+    <EventsManager />
     {#if uiStore.isActive}
-      <EventsManager />
       <SvgManager style="z-index: 1000000004" />
       <SelectorManager
         enabled={uiStore.isActive}

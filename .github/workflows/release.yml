@@ -145,7 +145,6 @@ jobs:
         run: |
           pnpm run zip:all
 
-
       - name: Get Version
         id: version
         run: |

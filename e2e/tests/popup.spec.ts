@@ -1,5 +1,21 @@
 import pkg from "../../package.json" assert { type: "json" };
 import { expect, test } from "../fixtures";
+import { getExtensionToolbar } from "../pages/extension";
+import {
+	enableStableDomainInStorage,
+	expectSvelteAppLoaded,
+	openStableTestPage,
+} from "../pages/web";
+
+declare const chrome: {
+	tabs: {
+		query: (queryInfo: {
+			active: boolean;
+			currentWindow: boolean;
+		}) => Promise<Array<{ id?: number }>>;
+		sendMessage: (tabId: number, message: unknown) => Promise<void>;
+	};
+};
 
 function toUnknownRecord(value: unknown): Record<string, unknown> {
 	if (typeof value !== "object" || value === null) return {};
@@ -72,5 +88,48 @@ test.describe("Popup", () => {
 
 		expect(beforeDomainValue === undefined || beforeDomainValue === false).toBeTruthy();
 		expect(afterDomainValue).toBeTruthy();
+	});
+
+	test("popup toggle off and on restores toolbar without reload", async ({
+		context,
+		extensionId: _extensionId,
+		page,
+	}) => {
+		await enableStableDomainInStorage(context);
+		await openStableTestPage(page);
+		await expectSvelteAppLoaded(page);
+		await expect(getExtensionToolbar(page)).toBeVisible();
+		let [worker] = context.serviceWorkers();
+		if (!worker) {
+			worker = await context.waitForEvent("serviceworker");
+		}
+		await worker.evaluate(async () => {
+			const [tab] = await chrome.tabs.query({
+				active: true,
+				currentWindow: true,
+			});
+			if (!tab?.id) return;
+			await chrome.tabs.sendMessage(tab.id, {
+				type: "EXTENSION_TOGGLE",
+				payload: { isActive: false },
+				source: { popup: true },
+				timestamp: Date.now(),
+			});
+		});
+		await expect(getExtensionToolbar(page)).toHaveCount(0);
+		await worker.evaluate(async () => {
+			const [tab] = await chrome.tabs.query({
+				active: true,
+				currentWindow: true,
+			});
+			if (!tab?.id) return;
+			await chrome.tabs.sendMessage(tab.id, {
+				type: "EXTENSION_TOGGLE",
+				payload: { isActive: true },
+				source: { popup: true },
+				timestamp: Date.now(),
+			});
+		});
+		await expect(getExtensionToolbar(page)).toBeVisible();
 	});
 });

@@ -31,6 +31,10 @@ When updating a skill (see `.cursor/rules/skill-maintenance.mdc` for when to do 
 - **Fixture:** context/extensionId and MV3 vs background page still match [e2e/fixutes.ts](e2e/fixutes.ts).
 - **Run:** `pnpm test:e2e` and build-before-test still correct.
 
+## code-quality-principles
+
+- Thin Cursor skill points at [.agents/dev/skills/code-quality-principles.md](../../../.agents/dev/skills/code-quality-principles.md); if that path or agent roles change, update the skill and [AGENTS.md](../../../AGENTS.md).
+
 ## After editing
 
 - Keep SKILL.md under 500 lines; move long detail to reference.md if needed.

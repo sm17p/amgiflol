@@ -1,67 +1,62 @@
 <script lang="ts">
-	import {
-		MetaDataStore,
-		TrackersStore,
-	} from "@/lib/store/index.svelte";
+  import { getContext } from "svelte";
 
-	interface TrackerProps {
-		trackerId?: string;
-		zIndex?: number;
-	}
+  import { TrackersStore } from "@/lib/store/index.svelte";
 
-	let {
-		trackerId,
-		zIndex,
-	}: TrackerProps = $props();
+  interface TrackerProps {
+    trackerId?: string;
+    zIndex?: number;
+  }
 
-	const trackersStore = getContext<TrackersStore>("trackersStore");
+  let { trackerId, zIndex }: TrackerProps = $props();
 
-	if (!trackerId) {
-		trackersStore.createCurrentTracker();
-	}
+  const trackersStore = getContext<TrackersStore>("trackersStore");
 
-	let tracker = $derived(trackersStore.current);
+  $effect.pre(() => {
+    if (!trackerId) {
+      trackersStore.createCurrentTracker();
+    }
+  });
 
-	let isHovered = $state(false);
-	let isSelected = $state(false);
+  let tracker = $derived(trackersStore.current);
 
-	$effect(() => {
-		isHovered = trackersStore.hoveredTracker === trackerId;
-	});
+  let isHovered = $state(false);
+  let isSelected = $state(false);
 
-	$effect(() => {
-		isSelected = trackersStore.selectedTracker === trackerId;
-	});
+  $effect(() => {
+    isHovered = trackersStore.hoveredTracker === trackerId;
+  });
+
+  $effect(() => {
+    isSelected = trackersStore.selectedTracker === trackerId;
+  });
 </script>
 
 {#if tracker}
-	{#if tracker.parentOfTarget}
-		<div
-			class="follower-p bg-rose-300/10 origin-top-left inline-block border-1 border-zinc-700 top-0 fixed duration-75"
-			style={`${tracker.parentOfTarget.overlayStyles}z-index: ${zIndex};`}
-		>
-		</div>
-	{/if}
+  {#if tracker.parentOfTarget}
+    <div
+      class="follower-p bg-rose-300/10 origin-top-left inline-block border-1 border-zinc-700 top-0 fixed duration-75"
+      style={`${tracker.parentOfTarget.overlayStyles}z-index: ${zIndex};`}
+    ></div>
+  {/if}
 
-	<div
-		class="follower origin-top-left inline-block border-1 border-zinc-700 top-0 mix-blend-difference bg-lime-700/10 fixed duration-75"
-		style={`${tracker.target?.overlayStyles}z-index: ${zIndex};`}
-	>
-	</div>
+  <div
+    class="follower origin-top-left inline-block border-1 border-zinc-700 top-0 mix-blend-difference bg-lime-700/10 fixed duration-75"
+    style={`${tracker.target?.overlayStyles}z-index: ${zIndex};`}
+  ></div>
 
-	{#if tracker.hoveredAltTarget}
-		<div
-			class="follower-p bg-indigo-500/10 origin-top-left inline-block border-1 border-zinc-700 top-0 fixed duration-75"
-			style={`${tracker.hoveredAltTarget.overlayStyles}z-index: ${zIndex};`}
-		>
-		</div>
-	{/if}
+  {#if tracker.hoveredAltTarget}
+    <div
+      class="follower-p bg-indigo-500/10 origin-top-left inline-block border-1 border-zinc-700 top-0 fixed duration-75"
+      style={`${tracker.hoveredAltTarget.overlayStyles}z-index: ${zIndex};`}
+    ></div>
+  {/if}
 {/if}
 
 <style>
-	/* .follower-p { */
-	/* box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.5); */
-	/* outline: 99999px solid rgba(0, 0, 0, 0.25); */
-	/* box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.65); */
-	/* } */
+  /* .follower-p { */
+  /* box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.5); */
+  /* outline: 99999px solid rgba(0, 0, 0, 0.25); */
+  /* box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.65); */
+  /* } */
 </style>

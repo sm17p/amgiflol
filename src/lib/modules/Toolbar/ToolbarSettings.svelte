@@ -73,7 +73,7 @@
               </Tooltip>
               <UpvoteAction
                 disabled={disableForFirefox}
-                key="animation-debugger"
+                voteKey="animation-debugger"
                 label="Animation Debugger"
               />
             </Menu.Item>
@@ -91,7 +91,7 @@
               </Tooltip>
               <UpvoteAction
                 disabled={disableForFirefox}
-                key="color-debugger"
+                voteKey="color-debugger"
                 label="Color Debugger"
               />
             </Menu.Item>
@@ -109,7 +109,7 @@
               </Tooltip>
               <UpvoteAction
                 disabled={disableForFirefox}
-                key="multiple-trackers"
+                voteKey="multiple-trackers"
                 label="Multi Inspect"
               />
             </Menu.Item>
@@ -127,7 +127,7 @@
               </Tooltip>
               <UpvoteAction
                 disabled={disableForFirefox}
-                key="neighbour-distances"
+                voteKey="neighbour-distances"
                 label="Neighbour Distances"
               />
             </Menu.Item>
@@ -145,7 +145,7 @@
               </Tooltip>
               <UpvoteAction
                 disabled={disableForFirefox}
-                key="on-screen-measurement-lines"
+                voteKey="on-screen-measurement-lines"
                 label="On-screen Measurement Lines"
               />
             </Menu.Item>
@@ -163,7 +163,7 @@
               </Tooltip>
               <UpvoteAction
                 disabled={disableForFirefox}
-                key="parent-traversal"
+                voteKey="parent-traversal"
                 label="Parent-Child Traversal"
               />
             </Menu.Item>
@@ -181,7 +181,7 @@
               </Tooltip>
               <UpvoteAction
                 disabled={disableForFirefox}
-                key="responsive-mode"
+                voteKey="responsive-mode"
                 label="Responsive Mode"
               />
             </Menu.Item>
@@ -199,7 +199,7 @@
               </Tooltip>
               <UpvoteAction
                 disabled={disableForFirefox}
-                key="sibling-traversal"
+                voteKey="sibling-traversal"
                 label="Sibling Traversal"
               />
             </Menu.Item>

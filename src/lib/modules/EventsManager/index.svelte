@@ -100,8 +100,6 @@
 
     setupMessageHandlers();
 
-    await uiStore.loadFromStorage();
-
     isInitialized = true;
   }
 

@@ -65,6 +65,16 @@ High-level agents for this project:
   - Focus: Svelte 5 + WXT extension code (popup, background, settings, stores).
   - Reads: this file, Svelte/WXT rules, and relevant e2e sections.
   - Must keep diffs small, update tests when behavior changes, and ensure `pnpm check`, `pnpm lint`, and relevant tests pass.
+- **Dev agent (code quality) – `code-quality`**:
+  - Focus: Review, refactors, naming, and structure using `.agents/dev/skills/code-quality-principles.md`.
+  - Reads: that file, `.agents/dev/agents/code-quality.md`, the nearest `AGENTS.md`, and relevant code.
+  - When to use: see **Choosing dev agents** below.
+
+### Choosing dev agents
+
+- **`typescript-pro`**: New features, bug fixes that change behaviour, wiring stores/popup/background, and any work whose main deliverable is implementation in `src/`.
+- **`code-quality`**: PR-style review, refactors driven by structure/naming/decomposition, applying the numbered principles in `.agents/dev/skills/code-quality-principles.md`, cleanup without a feature spec, or when the user asks for a quality or review pass.
+
 - **QA agent – `test-automator`**:
   - Focus: Playwright e2e tests and fixtures under `e2e/`.
   - Reads: testing and e2e sections here plus any nested `AGENTS.md` inside `e2e/` (if present).

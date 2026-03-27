@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { useId } from "@/lib/utils/useId";
+	import { generateId } from "@/lib/utils/useId";
 	import { Tooltip } from "@ark-ui/svelte/tooltip";
 	import { type Snippet } from "svelte";
-	import type { ComponentProps } from "svelte";
 	import { fade } from "svelte/transition";
 
 	interface Props {
@@ -15,7 +14,7 @@
 	let { children, label, side = "top", sideOffset = -2 }: Props =
 		$props();
 
-	const tooltipId = useId("tooltip");
+	const tooltipId = generateId("tooltip");
 </script>
 
 <Tooltip.Root

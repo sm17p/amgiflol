@@ -1,4 +1,4 @@
-import pkg from "../../package.json" assert { type: "json" };
+import pkg from "../../package.json" with { type: "json" };
 import { expect, test } from "../fixtures";
 import { getExtensionToolbar } from "../pages/extension";
 import {

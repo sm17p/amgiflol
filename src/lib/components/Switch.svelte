@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { useId } from "@/lib/utils/useId";
+	import { generateId } from "@/lib/utils/useId";
 	import { Switch } from "@ark-ui/svelte/switch";
-	import type { ComponentProps } from "svelte";
 
 	interface Props {
 		id?: string;
@@ -13,8 +12,10 @@
 		onCheckedChange?: (details: { checked: boolean }) => void;
 	}
 
+	const defaultSwitchId = generateId("switch");
+
 	let {
-		id = useId(),
+		id: idProp,
 		checked = $bindable(false),
 		labelText,
 		disabled = false,
@@ -22,6 +23,8 @@
 		style = "",
 		...restProps
 	}: Props = $props();
+
+	const id = $derived(idProp ?? defaultSwitchId);
 
 	function handleCheckedChange(details: { checked: boolean }) {
 		checked = details.checked;

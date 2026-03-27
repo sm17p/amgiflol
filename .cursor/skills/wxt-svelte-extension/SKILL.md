@@ -7,7 +7,7 @@ description: Provides project context for the amgiflol WXT + Svelte 5 browser ex
 
 ## Stack
 
-- WXT, Svelte 5 (runes), UnoCSS
+- WXT, Svelte 5 (runes), UnoCSS, `@lucide/svelte` v1 for icons
 - Entrypoints in [src/entrypoints/](src/entrypoints/) (e.g. background.ts, content.ts)
 - Config in [wxt.config.ts](wxt.config.ts); srcDir `src`, outDir `dist`
 

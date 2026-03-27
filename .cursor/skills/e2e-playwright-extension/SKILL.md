@@ -9,7 +9,7 @@ Aligned with [WXT’s Playwright E2E example](https://github.com/wxt-dev/example
 
 ## Layout
 
-- Tests in [e2e/tests/](e2e/tests/) — main suite [e2e/tests/extension.spec.ts](e2e/tests/extension.spec.ts) with describe blocks: **Popup**, **Content injection**, **Per-domain activation**
+- Tests in [e2e/tests/](e2e/tests/) — main suite [e2e/tests/extension.spec.ts](e2e/tests/extension.spec.ts) with describe blocks: **Popup**, **Content injection**, **Per-domain activation**; [e2e/tests/toolbar-settings.spec.ts](e2e/tests/toolbar-settings.spec.ts) covers toolbar settings menu (Feature Voting upvotes multi-on + isolation, behaviour toggles)
 - Shared fixture in [e2e/fixtures.ts](e2e/fixtures.ts)
 - Page helpers in [e2e/pages/](e2e/pages/) (e.g. [e2e/pages/popup.ts](e2e/pages/popup.ts))
 - Fixture page served via Playwright `webServer` + custom static server:

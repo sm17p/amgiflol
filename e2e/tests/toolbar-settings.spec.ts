@@ -1,4 +1,4 @@
-import type { Locator } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 
 import { expect, test } from "../fixtures";
 import { openToolbarSettings } from "../pages/extension";
@@ -19,6 +19,17 @@ async function ensureVotePressedOn(locator: Locator): Promise<void> {
 	await expect(locator).toHaveAttribute("aria-pressed", "true");
 }
 
+async function openToolbarSettingsUntilVisible(page: Page, target: Locator): Promise<void> {
+	for (let i = 0; i < 2; i++) {
+		await openToolbarSettings(page);
+		const visible = await target.isVisible({ timeout: 1000 }).catch(() => false);
+		if (visible) {
+			return;
+		}
+	}
+	await expect(target).toBeVisible();
+}
+
 test.describe("Toolbar settings menu", () => {
 	test("feature voting and behaviour toggles are visible and interactive", async ({
 		context,
@@ -31,11 +42,10 @@ test.describe("Toolbar settings menu", () => {
 		await openStableTestPage(page);
 		await expect(getExtensionRoot(page)).toHaveCount(1);
 		await expectSvelteAppLoaded(page);
-
-		await openToolbarSettings(page);
+		const settingsMenu = page.getByRole("menu").first();
 
 		const featureVoting = page.getByRole("group", { name: "Feature Voting" }).first();
-		await expect(featureVoting).toBeVisible();
+		await openToolbarSettingsUntilVisible(page, featureVoting);
 
 		const animationDebuggerVote = page
 			.getByRole("button", { name: "Animation Debugger" })
@@ -55,21 +65,21 @@ test.describe("Toolbar settings menu", () => {
 
 		const autoHideBefore = await toolbarAutoHideItem.getAttribute("aria-checked");
 		await toolbarAutoHideItem.click();
+		const autoHideAfter = await toolbarAutoHideItem.getAttribute("aria-checked");
+		expect(autoHideAfter).not.toBe(autoHideBefore);
 
 		const viewport = page.viewportSize();
 		expect(viewport).toBeTruthy();
 		if (!viewport) throw new Error("viewport not available");
-
 		await page.mouse.move(viewport.width / 2, viewport.height - 1);
-		await openToolbarSettings(page);
+		await openToolbarSettingsUntilVisible(page, settingsMenu);
 
-		const toolbarAutoHideItemAfter = page
+		const toolbarAutoHideItemAfter = settingsMenu
 			.getByRole("menuitemcheckbox", { name: /Auto-Hide/i })
 			.first();
 		await expect(toolbarAutoHideItemAfter).toBeVisible();
-
-		const autoHideAfter = await toolbarAutoHideItemAfter.getAttribute("aria-checked");
-		expect(autoHideAfter).not.toBe(autoHideBefore);
+		const autoHideAfterReopen = await toolbarAutoHideItemAfter.getAttribute("aria-checked");
+		expect(autoHideAfterReopen).toBe(autoHideAfter);
 	});
 
 	test("Feature Voting upvotes can both be on and do not cross-toggle", async ({
@@ -84,10 +94,8 @@ test.describe("Toolbar settings menu", () => {
 		await expect(getExtensionRoot(page)).toHaveCount(1);
 		await expectSvelteAppLoaded(page);
 
-		await openToolbarSettings(page);
-
 		const featureVoting = page.getByRole("group", { name: "Feature Voting" }).first();
-		await expect(featureVoting).toBeVisible();
+		await openToolbarSettingsUntilVisible(page, featureVoting);
 
 		const voteA = featureVoting.getByRole("button", {
 			name: "Animation Debugger",

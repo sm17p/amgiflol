@@ -1,13 +1,13 @@
 ---
 name: issue-refinement-triage
-description: Refines GitHub issues into the ISSUE_REFINEMENTS format and keeps docs/ISSUE_REFINEMENTS.md in sync. Use when triaging issues, refining a new issue, updating the refinements doc, or when the user asks to refine an issue or add to refinements.
+description: Refines GitHub issues using the block template and label table below. Tracking lives on GitHub; use when triaging issues, refining a new issue, or when the user asks to refine an issue.
 ---
 
 # Issue Refinement and Triage
 
 ## Canonical source
 
-Read [docs/ISSUE_REFINEMENTS.md](docs/ISSUE_REFINEMENTS.md) for the current open/closed list and label table before editing.
+Use **GitHub issues** for open/closed tracking and descriptions. This file defines the **label table** and **issue block template** only.
 
 ## Issue block template
 
@@ -40,5 +40,5 @@ Suggest only these labels; use space-separated list in the block.
 ## Workflow
 
 1. **New or raw issue:** Propose labels (from the table) and a one-line **Refined** that scopes or clarifies the issue.
-2. **Updating ISSUE_REFINEMENTS:** Add new refined issues under "Open issues (refined)". When an issue is closed, move its block to "Closed issues (reference)" and keep the same format.
+2. **GitHub:** Update the issue body or add a triage comment using the block template so the refined scope stays visible on the issue.
 3. **My comments:** Reserved for maintainer notes (priority, blockers, batching). Leave as `*(add notes here)*` if no note.

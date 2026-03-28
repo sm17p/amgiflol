@@ -9,7 +9,7 @@ Use GitHub MCP (server `user-github`) for all GitHub actions. Before calling any
 
 ## Quick decision
 
-1. **Issue:** From conversation (e.g. "issue #5") or search — identify the main issue #M. If none exists, create one via GitHub MCP and use labels from [docs/ISSUE_REFINEMENTS.md](docs/ISSUE_REFINEMENTS.md) / [issue-refinement-triage](.cursor/skills/issue-refinement-triage/SKILL.md).
+1. **Issue:** From conversation (e.g. "issue #5") or search — identify the main issue #M. If none exists, create one via GitHub MCP and use labels from [issue-refinement-triage](.cursor/skills/issue-refinement-triage/SKILL.md).
 2. **Scope:** If the change is small or not splittable → single PR. If large and decomposable → create sub-issues S1…Sn, then multiple PRs (see [reference.md](reference.md) for heuristics).
 
 ## Single PR workflow
@@ -36,7 +36,7 @@ Use `call_mcp_tool` with `server: "user-github"`. Typical tools and intent:
 | ---------------------------------- | ------------------------------------------------------------------------- |
 | get_me                             | Current user and permissions; infer or confirm owner/repo                 |
 | search_issues                      | Find existing issue by number, title, or labels; avoid duplicate creation |
-| create_issue (or equivalent)       | Create main or sub-issue when missing; use ISSUE_REFINEMENTS labels       |
+| create_issue (or equivalent)       | Create main or sub-issue when missing; use issue-refinement-triage labels |
 | create_pull_request                | Create PR from branch; use repo PR template if present                    |
 | list_issue_types                   | Optional; use for orgs that use issue types                               |
 

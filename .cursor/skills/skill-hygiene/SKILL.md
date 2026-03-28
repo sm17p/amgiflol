@@ -9,8 +9,8 @@ When updating a skill (see `.cursor/rules/skill-maintenance.mdc` for when to do 
 
 ## issue-refinement-triage
 
-- Issue block template still matches `docs/ISSUE_REFINEMENTS.md`.
-- Label table matches the "Label usage summary" in ISSUE_REFINEMENTS (same labels and "Use for" text).
+- Issue block template still matches [issue-refinement-triage/SKILL.md](issue-refinement-triage/SKILL.md).
+- Label table matches the label table in that skill (same labels and "Use for" text).
 - Workflow steps still reflect how open/closed issues and "My comments" are used.
 
 ## wxt-svelte-extension

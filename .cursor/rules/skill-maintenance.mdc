@@ -13,7 +13,7 @@ When you change any of the following, update the corresponding skill(s) in `.cur
 | package.json scripts (dev/build/zip) or new build targets | wxt-svelte-extension, releases-changesets if release steps change |
 | E2E layout (e2e/tests, e2e/pages, fixture file path or name) | e2e-playwright-extension |
 | Release workflow (.changeset/, release steps, workflow_dispatch) | releases-changesets |
-| Issue refinement format or label set (docs/ISSUE_REFINEMENTS.md) | issue-refinement-triage |
+| Issue refinement format or label set (issue-refinement-triage template) | issue-refinement-triage |
 | New recurring “known issue” that should guide extension code | wxt-svelte-extension/reference.md |
 
 Read the current skill file before editing so the update stays consistent with existing structure and wording.
